@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,248 +17,166 @@
 body{
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
-    background:#07111f;
-    color:white;
+    background:#f4f7fb;
+    color:#172033;
 }
 
 header{
-    background:#040c17;
-    border-bottom:1px solid rgba(255,255,255,.08);
-    padding:16px 20px;
+    background:#071a33;
+    color:white;
+    padding:20px;
+    text-align:center;
 }
 
-.header-inner{
-    max-width:900px;
-    margin:auto;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
+header h1{
+    margin:0;
+    font-size:28px;
 }
 
-.logo{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.logo-badge{
-    width:45px;
-    height:45px;
-    border-radius:12px;
-    background:#f5c400;
-    color:#07111f;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:900;
-    font-size:20px;
-}
-
-.logo-text{
-    font-size:19px;
-    font-weight:900;
-}
-
-.logo-text span{
-    display:block;
-    color:#f5c400;
-    font-size:9px;
-    letter-spacing:1.5px;
-    margin-top:4px;
-}
-
-.back{
-    color:#f5c400;
-    text-decoration:none;
-    font-size:13px;
-    font-weight:bold;
+header p{
+    margin:7px 0 0;
+    color:#ffd21c;
 }
 
 .container{
     max-width:850px;
-    margin:50px auto;
-    padding:0 20px;
+    margin:30px auto;
+    padding:20px;
 }
 
-.title{
-    text-align:center;
-    margin-bottom:35px;
-}
-
-.title .label{
-    color:#f5c400;
-    font-size:12px;
-    font-weight:900;
-    letter-spacing:2px;
-}
-
-.title h1{
-    font-size:40px;
-    margin:12px 0;
-}
-
-.title p{
-    color:#9facbd;
-    line-height:1.7;
-}
-
-.form-box{
-    background:#0d1a2a;
-    border:1px solid rgba(255,255,255,.08);
+.card{
+    background:white;
     border-radius:18px;
-    padding:30px;
+    padding:28px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
 }
 
-.form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-}
-
-.field{
-    display:flex;
-    flex-direction:column;
-}
-
-.field.full{
-    grid-column:1 / -1;
+h2{
+    margin-top:0;
+    color:#071a33;
 }
 
 label{
-    font-size:13px;
+    display:block;
+    margin-top:18px;
+    margin-bottom:7px;
     font-weight:bold;
-    margin-bottom:8px;
-    color:#dce3eb;
 }
 
 input,
-textarea{
+textarea,
+select{
     width:100%;
     padding:14px;
-    border-radius:9px;
-    border:1px solid rgba(255,255,255,.12);
-    background:#07111f;
-    color:white;
-    font-size:14px;
+    border:1px solid #d7dce5;
+    border-radius:10px;
+    font-size:16px;
     outline:none;
 }
 
 input:focus,
-textarea:focus{
-    border-color:#f5c400;
+textarea:focus,
+select:focus{
+    border-color:#071a33;
 }
 
 textarea{
-    min-height:120px;
+    min-height:110px;
     resize:vertical;
 }
 
 button{
     width:100%;
-    border:none;
-    border-radius:9px;
-    padding:16px;
     margin-top:25px;
-    background:#f5c400;
-    color:#07111f;
-    font-size:16px;
-    font-weight:900;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#ffd21c;
+    color:#071a33;
+    font-size:17px;
+    font-weight:bold;
     cursor:pointer;
 }
 
 button:hover{
-    background:#ffda37;
+    opacity:.9;
 }
 
 button:disabled{
-    opacity:.6;
+    opacity:.7;
     cursor:not-allowed;
 }
 
-.message{
+.back{
+    display:inline-block;
+    margin-bottom:20px;
+    color:#071a33;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.success{
     display:none;
     margin-top:25px;
     padding:20px;
     border-radius:12px;
-    text-align:center;
-    line-height:1.7;
+    background:#e8fff0;
+    border:1px solid #9be7b2;
 }
 
-.success{
-    background:rgba(37,211,102,.12);
-    border:1px solid rgba(37,211,102,.35);
-    color:#d9ffe7;
+.success h3{
+    margin-top:0;
+    color:#137333;
+}
+
+.request-number{
+    font-size:24px;
+    font-weight:bold;
+    color:#071a33;
+    word-break:break-word;
 }
 
 .error{
-    background:rgba(255,70,70,.12);
-    border:1px solid rgba(255,70,70,.35);
-    color:#ffdada;
-}
-
-.request-id{
-    display:block;
-    font-size:22px;
-    font-weight:900;
-    color:#f5c400;
-    margin:10px 0;
-}
-
-.receipt-link{
-    display:inline-block;
-    margin-top:15px;
-    padding:12px 18px;
-    background:#f5c400;
-    color:#07111f;
-    border-radius:8px;
-    text-decoration:none;
-    font-weight:900;
-}
-
-.home-link{
-    display:inline-block;
+    display:none;
     margin-top:20px;
-    color:#f5c400;
+    padding:15px;
+    border-radius:10px;
+    background:#ffe9e9;
+    color:#a40000;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+.actions a{
+    flex:1;
+    min-width:180px;
+    text-align:center;
+    padding:13px;
+    border-radius:9px;
     text-decoration:none;
     font-weight:bold;
+}
+
+.track{
+    background:#071a33;
+    color:white;
 }
 
 .whatsapp{
+    background:#25D366;
+    color:white;
+}
+
+footer{
     text-align:center;
-    margin-top:25px;
-    color:#9facbd;
-    font-size:13px;
-}
-
-.whatsapp a{
-    color:#25D366;
-    text-decoration:none;
-    font-weight:bold;
-}
-
-@media(max-width:650px){
-
-    .form-grid{
-        grid-template-columns:1fr;
-    }
-
-    .field.full{
-        grid-column:auto;
-    }
-
-    .title h1{
-        font-size:32px;
-    }
-
-    .form-box{
-        padding:22px;
-    }
-
-    .header-inner{
-        flex-direction:column;
-        text-align:center;
-    }
+    padding:25px;
+    color:#667085;
+    font-size:14px;
 }
 </style>
 </head>
@@ -265,223 +184,198 @@ button:disabled{
 <body>
 
 <header>
-    <div class="header-inner">
 
-        <div class="logo">
+    <h1>
+        NB Logistics Hub
+    </h1>
 
-            <div class="logo-badge">
-                NB
-            </div>
+    <p>
+        Reliable Motorcycle Delivery in Ilorin
+    </p>
 
-            <div class="logo-text">
-                NB Logistics Hub
-                <span>ILORIN DELIVERY SERVICE</span>
-            </div>
-
-        </div>
-
-        <a href="index.html" class="back">
-            ← Back to Home
-        </a>
-
-    </div>
 </header>
 
 
 <div class="container">
 
-    <div class="title">
+    <a href="index.html" class="back">
+        ← Back to Home
+    </a>
 
-        <div class="label">
-            DELIVERY REQUEST
-        </div>
 
-        <h1>
+    <div class="card">
+
+        <h2>
             Request a Delivery
-        </h1>
+        </h2>
 
         <p>
-            Enter your pickup and delivery details below.
-            NB Logistics Hub will review your request and arrange the delivery.
+            Fill in your delivery details below.
+            NB Logistics Hub will review your request
+            and arrange your delivery.
         </p>
 
-    </div>
-
-
-    <div class="form-box">
 
         <form id="deliveryForm">
 
-            <div class="form-grid">
 
-                <div class="field">
-                    <label for="customer_name">
-                        Customer Name
-                    </label>
+            <label for="customerName">
+                Customer Name
+            </label>
 
-                    <input
-                        type="text"
-                        id="customer_name"
-                        required
-                        placeholder="Enter your name">
-                </div>
+            <input
+                type="text"
+                id="customerName"
+                placeholder="Enter your full name"
+                required
+            >
 
 
-                <div class="field">
-                    <label for="phone">
-                        Phone Number
-                    </label>
+            <label for="phone">
+                Phone Number
+            </label>
 
-                    <input
-                        type="tel"
-                        id="phone"
-                        required
-                        placeholder="Enter your phone number">
-                </div>
-
-
-                <div class="field">
-                    <label for="pickup_location">
-                        Pickup Location
-                    </label>
-
-                    <input
-                        type="text"
-                        id="pickup_location"
-                        required
-                        placeholder="Where should we collect the package?">
-                </div>
+            <input
+                type="tel"
+                id="phone"
+                placeholder="e.g. 09150798901"
+                required
+            >
 
 
-                <div class="field">
-                    <label for="delivery_location">
-                        Delivery Location
-                    </label>
+            <label for="pickup">
+                Pickup Location
+            </label>
 
-                    <input
-                        type="text"
-                        id="delivery_location"
-                        required
-                        placeholder="Where should we deliver it?">
-                </div>
-
-
-                <div class="field full">
-                    <label for="package_details">
-                        Package Details
-                    </label>
-
-                    <textarea
-                        id="package_details"
-                        required
-                        placeholder="What are you sending? Example: clothes, documents, food, parcel..."></textarea>
-                </div>
+            <input
+                type="text"
+                id="pickup"
+                placeholder="Where should we collect the goods?"
+                required
+            >
 
 
-                <div class="field">
-                    <label for="preferred_time">
-                        Preferred Delivery Time
-                    </label>
+            <label for="destination">
+                Delivery Destination
+            </label>
 
-                    <input
-                        type="text"
-                        id="preferred_time"
-                        placeholder="Example: 2:00 PM">
-                </div>
-
-
-                <div class="field">
-                    <label for="delivery_fee">
-                        Delivery Fee
-                    </label>
-
-                    <input
-                        type="number"
-                        id="delivery_fee"
-                        min="0"
-                        step="1"
-                        placeholder="Enter agreed fee">
-                </div>
-
-            </div>
+            <input
+                type="text"
+                id="destination"
+                placeholder="Where should we deliver the goods?"
+                required
+            >
 
 
-            <button type="submit" id="submitBtn">
-                📦 Submit Delivery Request
+            <label for="packageDetails">
+                Package / Goods Details
+            </label>
+
+            <textarea
+                id="packageDetails"
+                placeholder="Describe the goods or package"
+                required
+            ></textarea>
+
+
+            <label for="preferredTime">
+                Preferred Delivery Time
+            </label>
+
+            <input
+                type="datetime-local"
+                id="preferredTime"
+                required
+            >
+
+
+            <button
+                type="submit"
+                id="submitBtn">
+
+                Submit Delivery Request
+
             </button>
 
         </form>
 
 
-        <div id="successMessage" class="message success">
-
-            <strong>
-                Delivery Request Submitted Successfully!
-            </strong>
-
-            <br>
-
-            Your request has been received by NB Logistics Hub.
-
-            <span class="request-id" id="requestId"></span>
-
-            Please keep this Request ID so you can track your delivery.
-
-            <br>
-
-            <a
-                href="#"
-                id="receiptLink"
-                class="receipt-link">
-                View Delivery Receipt
-            </a>
-
-            <br>
-
-            <a href="index.html" class="home-link">
-                ← Back to NB Logistics Hub
-            </a>
-
+        <div
+            class="error"
+            id="errorBox">
         </div>
 
 
-        <div id="errorMessage" class="message error">
+        <div
+            class="success"
+            id="successBox">
 
-            <strong>
-                We could not submit your request.
-            </strong>
+            <h3>
+                Delivery Request Received!
+            </h3>
 
-            <br><br>
 
-            Please try again or contact NB Logistics Hub on WhatsApp.
+            <p>
+                Your delivery request has been received by
+                <strong>NB Logistics Hub.</strong>
+            </p>
 
-            <br><br>
 
-            <a
-                href="https://wa.me/2349150798901"
-                target="_blank"
-                style="color:#25D366;font-weight:bold;">
-                💬 Contact NB Logistics Hub on WhatsApp
-            </a>
+            <p>
+                Your Request Number:
+            </p>
+
+
+            <div
+                class="request-number"
+                id="requestNumber">
+            </div>
+
+
+            <p>
+                Please keep this request number.
+                You can use it to track your delivery.
+            </p>
+
+
+            <div id="requestDetails"></div>
+
+
+            <div class="actions">
+
+                <a
+                    href="NB_Logistics_Track.html"
+                    class="track">
+
+                    Track Delivery
+
+                </a>
+
+
+                <a
+                    href="https://wa.me/2349150798901"
+                    target="_blank"
+                    rel="noopener"
+                    class="whatsapp">
+
+                    WhatsApp NB Logistics
+
+                </a>
+
+            </div>
 
         </div>
-
-    </div>
-
-
-    <div class="whatsapp">
-
-        Need help?
-
-        <a
-            href="https://wa.me/2349150798901"
-            target="_blank">
-            Chat with NB Logistics Hub on WhatsApp
-        </a>
 
     </div>
 
 </div>
+
+
+<footer>
+
+    © 2026 NB Logistics Hub — Ilorin, Kwara State, Nigeria
+
+</footer>
 
 
 <script>
@@ -491,6 +385,7 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
     "sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
+
 
 const supabaseClient =
     window.supabase.createClient(
@@ -507,208 +402,373 @@ function generateRequestCode(){
         now.getFullYear();
 
     const month =
-        String(now.getMonth() + 1).padStart(2,"0");
+        String(
+            now.getMonth() + 1
+        ).padStart(2,"0");
 
     const day =
-        String(now.getDate()).padStart(2,"0");
+        String(
+            now.getDate()
+        ).padStart(2,"0");
 
     const random =
-        Math.floor(1000 + Math.random() * 9000);
+        Math.floor(
+            1000 + Math.random() * 9000
+        );
 
     return `NB-${year}${month}${day}-${random}`;
 }
 
 
-document
-.getElementById("deliveryForm")
-.addEventListener("submit", async function(event){
-
-    event.preventDefault();
-
-
-    const submitBtn =
-        document.getElementById("submitBtn");
-
-    const successMessage =
-        document.getElementById("successMessage");
-
-    const errorMessage =
-        document.getElementById("errorMessage");
-
-
-    successMessage.style.display = "none";
-    errorMessage.style.display = "none";
-
-
-    submitBtn.disabled = true;
-
-    submitBtn.textContent =
-        "Submitting Request...";
-
-
-    const requestCode =
-        generateRequestCode();
-
-
-    const customerName =
-        document
-        .getElementById("customer_name")
-        .value
-        .trim();
-
-
-    const phone =
-        document
-        .getElementById("phone")
-        .value
-        .trim();
-
-
-    const pickupLocation =
-        document
-        .getElementById("pickup_location")
-        .value
-        .trim();
-
-
-    const deliveryLocation =
-        document
-        .getElementById("delivery_location")
-        .value
-        .trim();
-
-
-    const packageDetails =
-        document
-        .getElementById("package_details")
-        .value
-        .trim();
-
-
-    const preferredTime =
-        document
-        .getElementById("preferred_time")
-        .value
-        .trim();
-
-
-    const deliveryFeeValue =
-        document
-        .getElementById("delivery_fee")
-        .value
-        .trim();
-
-
-    const deliveryFee =
-        deliveryFeeValue === ""
-        ? null
-        : Number(deliveryFeeValue);
-
-
-    const requestData = {
-
-        request_code:
-            requestCode,
-
-        customer_name:
-            customerName,
-
-        phone:
-            phone,
-
-        pickup_location:
-            pickupLocation,
-
-        delivery_location:
-            deliveryLocation,
-
-        package_details:
-            packageDetails,
-
-        preferred_time:
-            preferredTime || null,
-
-        delivery_fee:
-            deliveryFee,
-
-        status:
-            "New",
-
-        status_message:
-            "Your delivery request has been received by NB Logistics Hub."
-
-    };
-
-
-    console.log(
-        "Submitting delivery request:",
-        requestData
+const form =
+    document.getElementById(
+        "deliveryForm"
     );
 
 
-    try{
-
-        const { error } =
-            await supabaseClient
-            .from("delivery_requests")
-            .insert([requestData]);
+const submitBtn =
+    document.getElementById(
+        "submitBtn"
+    );
 
 
-        if(error){
-
-            console.error(
-                "SUPABASE ERROR:",
-                error
-            );
-
-            throw error;
-        }
+const successBox =
+    document.getElementById(
+        "successBox"
+    );
 
 
-        document
-        .getElementById("requestId")
-        .textContent =
-            "Request ID: " + requestCode;
+const errorBox =
+    document.getElementById(
+        "errorBox"
+    );
 
 
-        document
-        .getElementById("receiptLink")
-        .href =
-            "NB_Logistics_Receipt.html?request=" +
-            encodeURIComponent(requestCode);
+form.addEventListener(
+    "submit",
+    async function(event){
+
+        event.preventDefault();
 
 
-        document
-        .getElementById("deliveryForm")
-        .style.display =
+        errorBox.style.display =
+            "none";
+
+        successBox.style.display =
             "none";
 
 
-        successMessage.style.display =
-            "block";
-
-
-    }catch(error){
-
-        console.error(
-            "DELIVERY REQUEST ERROR:",
-            error
-        );
-
-        errorMessage.style.display =
-            "block";
-
         submitBtn.disabled =
-            false;
+            true;
 
         submitBtn.textContent =
-            "📦 Submit Delivery Request";
+            "Submitting Request...";
+
+
+        const customerName =
+            document
+            .getElementById(
+                "customerName"
+            )
+            .value
+            .trim();
+
+
+        const phone =
+            document
+            .getElementById(
+                "phone"
+            )
+            .value
+            .trim();
+
+
+        const pickup =
+            document
+            .getElementById(
+                "pickup"
+            )
+            .value
+            .trim();
+
+
+        const destination =
+            document
+            .getElementById(
+                "destination"
+            )
+            .value
+            .trim();
+
+
+        const packageDetails =
+            document
+            .getElementById(
+                "packageDetails"
+            )
+            .value
+            .trim();
+
+
+        const preferredTime =
+            document
+            .getElementById(
+                "preferredTime"
+            )
+            .value;
+
+
+        const requestCode =
+            generateRequestCode();
+
+
+        /*
+         * IMPORTANT:
+         *
+         * The form says "destination",
+         * but the Supabase column is
+         * "delivery_location".
+         *
+         * The form does not ask the customer
+         * for a delivery fee, so we leave
+         * delivery_fee as null.
+         */
+
+
+        const requestData = {
+
+            request_code:
+                requestCode,
+
+            customer_name:
+                customerName,
+
+            phone:
+                phone,
+
+            pickup_location:
+                pickup,
+
+            delivery_location:
+                destination,
+
+            package_details:
+                packageDetails,
+
+            preferred_time:
+                preferredTime,
+
+            delivery_fee:
+                null,
+
+            status:
+                "New",
+
+            status_message:
+                "Your delivery request has been received by NB Logistics Hub."
+
+        };
+
+
+        console.log(
+            "NB Logistics request:",
+            requestData
+        );
+
+
+        try{
+
+
+            /*
+             * IMPORTANT:
+             *
+             * We intentionally DO NOT use
+             * .select() after insert.
+             *
+             * This avoids requiring a public
+             * SELECT policy.
+             */
+
+
+            const { error } =
+                await supabaseClient
+                .from("delivery_requests")
+                .insert([
+                    requestData
+                ]);
+
+
+            if(error){
+
+                console.error(
+                    "SUPABASE ERROR:",
+                    error
+                );
+
+                throw error;
+            }
+
+
+            document
+            .getElementById(
+                "requestNumber"
+            )
+            .textContent =
+                requestCode;
+
+
+            document
+            .getElementById(
+                "requestDetails"
+            )
+            .innerHTML = `
+
+                <div style="
+                    margin-top:15px;
+                    padding:15px;
+                    background:#f7f9fc;
+                    border-radius:10px;
+                    line-height:1.7;
+                ">
+
+                    <strong>Customer:</strong>
+                    ${escapeHtml(customerName)}
+                    <br>
+
+                    <strong>Phone:</strong>
+                    ${escapeHtml(phone)}
+                    <br>
+
+                    <strong>Pickup:</strong>
+                    ${escapeHtml(pickup)}
+                    <br>
+
+                    <strong>Destination:</strong>
+                    ${escapeHtml(destination)}
+                    <br>
+
+                    <strong>Package:</strong>
+                    ${escapeHtml(packageDetails)}
+                    <br>
+
+                    <strong>Status:</strong>
+                    New
+
+                </div>
+
+            `;
+
+
+            successBox.style.display =
+                "block";
+
+
+            form.reset();
+
+
+            submitBtn.disabled =
+                false;
+
+
+            submitBtn.textContent =
+                "Submit Delivery Request";
+
+
+        }
+        catch(error){
+
+
+            console.error(
+                "DELIVERY REQUEST ERROR:",
+                error
+            );
+
+
+            /*
+             * During testing, show the actual
+             * Supabase error so we can identify
+             * any remaining database problem.
+             */
+
+
+            errorBox.innerHTML = `
+
+                <strong>
+                    We could not submit your request.
+                </strong>
+
+                <br><br>
+
+                Please try again or contact
+                NB Logistics Hub on WhatsApp.
+
+                <br><br>
+
+                <small style="
+                    display:block;
+                    padding:10px;
+                    background:#fff;
+                    border-radius:6px;
+                    color:#700;
+                    word-break:break-word;
+                ">
+                    Technical error:
+                    ${escapeHtml(
+                        error.message ||
+                        String(error)
+                    )}
+                </small>
+
+            `;
+
+
+            errorBox.style.display =
+                "block";
+
+
+            submitBtn.disabled =
+                false;
+
+
+            submitBtn.textContent =
+                "Submit Delivery Request";
+
+        }
 
     }
+);
 
-});
+
+function escapeHtml(value){
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
 
 </script>
 
 </body>
 </html>
+```
