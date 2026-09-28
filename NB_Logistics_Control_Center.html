@@ -1,1 +1,1022 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NB Logistics Hub — Control Center</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#eef1f5;
+    color:#172033;
+}
+
+header{
+    background:#071b33;
+    color:white;
+    padding:18px 24px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.logo{
+    font-size:23px;
+    font-weight:bold;
+}
+
+.logo span{
+    color:#f4c400;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.header-email{
+    font-size:13px;
+    color:#dce5ef;
+}
+
+button{
+    border:none;
+    cursor:pointer;
+    border-radius:7px;
+    padding:11px 15px;
+    font-weight:bold;
+}
+
+.logout{
+    background:#f4c400;
+    color:#071b33;
+}
+
+main{
+    max-width:1250px;
+    margin:auto;
+    padding:25px;
+}
+
+.login-screen{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    background:#071b33;
+}
+
+.login-card{
+    width:100%;
+    max-width:430px;
+    background:white;
+    border-radius:15px;
+    padding:35px;
+    box-shadow:0 15px 50px rgba(0,0,0,.25);
+}
+
+.login-card h1{
+    margin-top:0;
+    color:#071b33;
+}
+
+.login-card p{
+    color:#667085;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccd3dd;
+    border-radius:7px;
+    margin-top:7px;
+    font-size:15px;
+}
+
+label{
+    display:block;
+    margin-top:15px;
+    font-weight:bold;
+}
+
+.login-btn{
+    width:100%;
+    margin-top:20px;
+    background:#f4c400;
+    color:#071b33;
+    font-size:16px;
+}
+
+.error{
+    background:#ffe5e5;
+    color:#a40000;
+    padding:12px;
+    border-radius:7px;
+    margin-top:15px;
+    display:none;
+}
+
+.dashboard-title{
+    margin-bottom:5px;
+}
+
+.subtitle{
+    color:#667085;
+    margin-top:5px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin:25px 0;
+}
+
+.stat{
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.06);
+}
+
+.stat h3{
+    margin:0;
+    font-size:14px;
+    color:#667085;
+}
+
+.stat strong{
+    display:block;
+    font-size:30px;
+    margin-top:8px;
+    color:#071b33;
+}
+
+.refresh{
+    background:#071b33;
+    color:white;
+    margin-bottom:18px;
+}
+
+.request-card{
+    background:white;
+    border-radius:13px;
+    margin-bottom:20px;
+    padding:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.07);
+}
+
+.request-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+    border-bottom:1px solid #e5e7eb;
+    padding-bottom:15px;
+}
+
+.request-code{
+    font-weight:bold;
+    color:#071b33;
+    font-size:18px;
+}
+
+.status{
+    padding:7px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.status-New{
+    background:#fff3cd;
+    color:#856404;
+}
+
+.status-Accepted{
+    background:#dbeafe;
+    color:#1e40af;
+}
+
+.status-In-Progress{
+    background:#e0e7ff;
+    color:#3730a3;
+}
+
+.status-Completed{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.details{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-top:18px;
+}
+
+.detail{
+    background:#f8fafc;
+    padding:12px;
+    border-radius:8px;
+}
+
+.detail b{
+    display:block;
+    color:#667085;
+    font-size:12px;
+    margin-bottom:4px;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:18px;
+}
+
+.whatsapp{
+    background:#25d366;
+    color:white;
+}
+
+.call{
+    background:#071b33;
+    color:white;
+}
+
+.receipt{
+    background:#e5e7eb;
+    color:#172033;
+}
+
+.management{
+    border-top:1px solid #e5e7eb;
+    margin-top:18px;
+    padding-top:18px;
+}
+
+.management-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.save{
+    background:#f4c400;
+    color:#071b33;
+    margin-top:15px;
+}
+
+.empty{
+    text-align:center;
+    background:white;
+    padding:40px;
+    border-radius:12px;
+    color:#667085;
+}
+
+.loading{
+    text-align:center;
+    padding:30px;
+}
+
+@media(max-width:850px){
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .details,
+    .management-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:550px){
+    header{
+        padding:15px;
+    }
+
+    main{
+        padding:15px;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .stat{
+        padding:15px;
+    }
+
+    .stat strong{
+        font-size:25px;
+    }
+
+    .login-card{
+        padding:25px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="login-screen">
+
+    <div class="login-card">
+
+        <h1>NB Logistics Hub</h1>
+
+        <p>
+            Private Delivery Control Center
+        </p>
+
+        <label>Email</label>
+        <input
+            type="email"
+            id="loginEmail"
+            placeholder="Admin email"
+        >
+
+        <label>Password</label>
+        <input
+            type="password"
+            id="loginPassword"
+            placeholder="Password"
+        >
+
+        <button
+            class="login-btn"
+            onclick="login()"
+        >
+            Sign In
+        </button>
+
+        <div id="loginError" class="error"></div>
+
+    </div>
+
+</div>
+
+
+<!-- CONTROL CENTER -->
+<div id="controlCenter" style="display:none;">
+
+<header>
+
+    <div class="logo">
+        NB <span>Logistics Hub</span>
+    </div>
+
+    <div class="header-right">
+
+        <div
+            id="headerEmail"
+            class="header-email"
+        ></div>
+
+        <button
+            class="logout"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <h1 class="dashboard-title">
+        Delivery Control Center
+    </h1>
+
+    <p class="subtitle">
+        Manage your Ilorin motorcycle deliveries.
+    </p>
+
+
+    <div class="stats">
+
+        <div class="stat">
+            <h3>Total Requests</h3>
+            <strong id="totalCount">0</strong>
+        </div>
+
+        <div class="stat">
+            <h3>New</h3>
+            <strong id="newCount">0</strong>
+        </div>
+
+        <div class="stat">
+            <h3>In Progress</h3>
+            <strong id="progressCount">0</strong>
+        </div>
+
+        <div class="stat">
+            <h3>Completed</h3>
+            <strong id="completedCount">0</strong>
+        </div>
+
+    </div>
+
+
+    <button
+        class="refresh"
+        onclick="loadRequests()"
+    >
+        🔄 Refresh Requests
+    </button>
+
+
+    <div id="requestsContainer">
+        <div class="loading">
+            Loading delivery requests...
+        </div>
+    </div>
+
+</main>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://kygkgcpuiwawatugkfne.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
+
+const supabaseClient =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+const defaultMessages = {
+
+    "New":
+    "Your delivery request has been received by NB Logistics Hub.",
+
+    "Accepted":
+    "Your delivery request has been accepted by NB Logistics Hub. Your delivery will be arranged shortly.",
+
+    "In Progress":
+    "Your delivery goods have been collected by NB Logistics Hub and are on the way to the delivery point.",
+
+    "Completed":
+    "Your delivery has been delivered to the final destination."
+
+};
+
+
+async function login(){
+
+    const email =
+        document.getElementById("loginEmail").value.trim();
+
+    const password =
+        document.getElementById("loginPassword").value;
+
+    const errorBox =
+        document.getElementById("loginError");
+
+    errorBox.style.display = "none";
+
+    if(!email || !password){
+
+        errorBox.textContent =
+            "Please enter your email and password.";
+
+        errorBox.style.display = "block";
+
+        return;
+    }
+
+
+    const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+
+    if(error){
+
+        errorBox.textContent =
+            error.message;
+
+        errorBox.style.display = "block";
+
+        return;
+    }
+
+
+    showControlCenter(data.user);
+
+}
+
+
+async function logout(){
+
+    await supabaseClient.auth.signOut();
+
+    document.getElementById("controlCenter")
+        .style.display = "none";
+
+    document.getElementById("loginScreen")
+        .style.display = "flex";
+
+}
+
+
+function showControlCenter(user){
+
+    document.getElementById("loginScreen")
+        .style.display = "none";
+
+    document.getElementById("controlCenter")
+        .style.display = "block";
+
+    document.getElementById("headerEmail")
+        .textContent =
+        "Signed in as " + user.email;
+
+    loadRequests();
+
+}
+
+
+async function checkSession(){
+
+    const { data } =
+        await supabaseClient.auth.getSession();
+
+    if(data.session){
+
+        showControlCenter(
+            data.session.user
+        );
+
+    }
+
+}
+
+
+async function loadRequests(){
+
+    const container =
+        document.getElementById("requestsContainer");
+
+    container.innerHTML =
+        '<div class="loading">Loading delivery requests...</div>';
+
+
+    const { data, error } =
+        await supabaseClient
+        .from("delivery_requests")
+        .select("*")
+        .order("created_at", {
+            ascending:false
+        });
+
+
+    if(error){
+
+        container.innerHTML =
+            '<div class="empty">Unable to load delivery requests.<br><br>' +
+            error.message +
+            '</div>';
+
+        return;
+    }
+
+
+    updateStats(data || []);
+
+    renderRequests(data || []);
+
+}
+
+
+function updateStats(requests){
+
+    document.getElementById("totalCount")
+        .textContent =
+        requests.length;
+
+    document.getElementById("newCount")
+        .textContent =
+        requests.filter(
+            r => r.status === "New"
+        ).length;
+
+    document.getElementById("progressCount")
+        .textContent =
+        requests.filter(
+            r => r.status === "In Progress"
+        ).length;
+
+    document.getElementById("completedCount")
+        .textContent =
+        requests.filter(
+            r => r.status === "Completed"
+        ).length;
+
+}
+
+
+function renderRequests(requests){
+
+    const container =
+        document.getElementById("requestsContainer");
+
+
+    if(!requests.length){
+
+        container.innerHTML =
+            '<div class="empty">' +
+            'No delivery requests yet.' +
+            '</div>';
+
+        return;
+    }
+
+
+    container.innerHTML =
+        requests.map(request => {
+
+            const statusClass =
+                String(request.status || "New")
+                .replace(/\s+/g,"-");
+
+
+            return `
+
+            <div class="request-card">
+
+                <div class="request-header">
+
+                    <div>
+
+                        <div class="request-code">
+                            ${escapeHtml(request.request_code || "No Request ID")}
+                        </div>
+
+                        <small>
+                            ${formatDate(request.created_at)}
+                        </small>
+
+                    </div>
+
+                    <div class="status status-${statusClass}">
+                        ${escapeHtml(request.status || "New")}
+                    </div>
+
+                </div>
+
+
+                <div class="details">
+
+                    <div class="detail">
+                        <b>CUSTOMER</b>
+                        ${escapeHtml(request.customer_name || "")}
+                    </div>
+
+                    <div class="detail">
+                        <b>PHONE</b>
+                        ${escapeHtml(request.phone || "")}
+                    </div>
+
+                    <div class="detail">
+                        <b>PICKUP</b>
+                        ${escapeHtml(request.pickup_location || "")}
+                    </div>
+
+                    <div class="detail">
+                        <b>DESTINATION</b>
+                        ${escapeHtml(request.delivery_location || "")}
+                    </div>
+
+                    <div class="detail">
+                        <b>PACKAGE / GOODS</b>
+                        ${escapeHtml(request.package_details || "")}
+                    </div>
+
+                    <div class="detail">
+                        <b>PREFERRED TIME</b>
+                        ${escapeHtml(request.preferred_time || "")}
+                    </div>
+
+                    <div class="detail">
+                        <b>DELIVERY FEE</b>
+                        ₦${Number(request.delivery_fee || 0).toLocaleString()}
+                    </div>
+
+                    <div class="detail">
+                        <b>LAST UPDATED</b>
+                        ${formatDate(request.updated_at || request.created_at)}
+                    </div>
+
+                </div>
+
+
+                <div class="actions">
+
+                    <button
+                        class="whatsapp"
+                        onclick="openWhatsApp('${escapeJs(request.phone || "")}')"
+                    >
+                        WhatsApp
+                    </button>
+
+                    <button
+                        class="call"
+                        onclick="callCustomer('${escapeJs(request.phone || "")}')"
+                    >
+                        📞 Call Customer
+                    </button>
+
+                    <button
+                        class="receipt"
+                        onclick="viewReceipt('${escapeJs(request.request_code || "")}')"
+                    >
+                        🧾 View Receipt
+                    </button>
+
+                </div>
+
+
+                <div class="management">
+
+                    <div class="management-grid">
+
+                        <div>
+
+                            <label>
+                                Delivery Fee
+                            </label>
+
+                            <input
+                                type="number"
+                                id="fee-${request.id}"
+                                value="${request.delivery_fee || ""}"
+                                placeholder="Enter delivery fee"
+                            >
+
+                        </div>
+
+
+                        <div>
+
+                            <label>
+                                Status
+                            </label>
+
+                            <select
+                                id="status-${request.id}"
+                                onchange="updateMessage('${escapeJs(request.id)}')"
+                            >
+
+                                <option
+                                    value="New"
+                                    ${request.status === "New" ? "selected" : ""}
+                                >
+                                    New
+                                </option>
+
+                                <option
+                                    value="Accepted"
+                                    ${request.status === "Accepted" ? "selected" : ""}
+                                >
+                                    Accepted
+                                </option>
+
+                                <option
+                                    value="In Progress"
+                                    ${request.status === "In Progress" ? "selected" : ""}
+                                >
+                                    In Progress
+                                </option>
+
+                                <option
+                                    value="Completed"
+                                    ${request.status === "Completed" ? "selected" : ""}
+                                >
+                                    Completed
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <label>
+                        Customer Message
+                    </label>
+
+                    <textarea
+                        id="message-${request.id}"
+                        rows="3"
+                    >${escapeHtml(request.status_message || defaultMessages[request.status] || "")}</textarea>
+
+
+                    <button
+                        class="save"
+                        onclick="saveRequest('${escapeJs(request.id)}')"
+                    >
+                        💾 Save Changes
+                    </button>
+
+                </div>
+
+            </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+function updateMessage(id){
+
+    const status =
+        document.getElementById(
+            "status-" + id
+        ).value;
+
+    const message =
+        document.getElementById(
+            "message-" + id
+        );
+
+    message.value =
+        defaultMessages[status] || "";
+
+}
+
+
+async function saveRequest(id){
+
+    const fee =
+        document.getElementById(
+            "fee-" + id
+        ).value;
+
+    const status =
+        document.getElementById(
+            "status-" + id
+        ).value;
+
+    const statusMessage =
+        document.getElementById(
+            "message-" + id
+        ).value;
+
+
+    const { error } =
+        await supabaseClient
+        .from("delivery_requests")
+        .update({
+
+            delivery_fee:
+                fee === ""
+                ? null
+                : Number(fee),
+
+            status:
+                status,
+
+            status_message:
+                statusMessage,
+
+            updated_at:
+                new Date().toISOString()
+
+        })
+        .eq("id", id);
+
+
+    if(error){
+
+        alert(
+            "Could not save changes:\n\n" +
+            error.message
+        );
+
+        return;
+    }
+
+
+    alert(
+        "Delivery request updated successfully."
+    );
+
+    loadRequests();
+
+}
+
+
+function openWhatsApp(phone){
+
+    let number =
+        String(phone).replace(/\D/g,"");
+
+    if(number.startsWith("0")){
+        number =
+            "234" + number.substring(1);
+    }
+
+    window.open(
+        "https://wa.me/" + number,
+        "_blank"
+    );
+
+}
+
+
+function callCustomer(phone){
+
+    window.location.href =
+        "tel:" + phone;
+
+}
+
+
+function viewReceipt(requestCode){
+
+    window.open(
+        "NB_Logistics_Receipt.html?request=" +
+        encodeURIComponent(requestCode),
+        "_blank"
+    );
+
+}
+
+
+function formatDate(date){
+
+    if(!date) return "";
+
+    return new Date(date)
+        .toLocaleString();
+
+}
+
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+function escapeJs(value){
+
+    return String(value ?? "")
+        .replace(/\\/g,"\\\\")
+        .replace(/'/g,"\\'")
+        .replace(/"/g,"&quot;")
+        .replace(/\n/g,"\\n")
+        .replace(/\r/g,"\\r");
+
+}
+
+
+checkSession();
+
+</script>
+
+</body>
+</html>
