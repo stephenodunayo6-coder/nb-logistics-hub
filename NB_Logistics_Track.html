@@ -86,6 +86,11 @@ h2{
     cursor:pointer;
 }
 
+.search-box button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
 .result{
     display:none;
     margin-top:30px;
@@ -369,7 +374,7 @@ footer{
                 <div class="detail-row">
 
                     <div class="detail-label">
-                        Destination
+                        Delivery Destination
                     </div>
 
                     <div
@@ -504,21 +509,18 @@ const supabaseClient =
     );
 
 
-function escapeHtml(value){
-
-    return String(value ?? "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-}
-
-
 function formatFee(value){
 
+    if(
+        value === null ||
+        value === undefined ||
+        value === ""
+    ){
+        return "₦0";
+    }
+
     const number =
-        Number(value || 0);
+        Number(value);
 
     if(isNaN(number)){
         return "₦0";
@@ -562,36 +564,6 @@ function createReceiptLink(data){
         data.request_code || ""
     );
 
-    params.set(
-        "customer",
-        data.customer_name || ""
-    );
-
-    params.set(
-        "pickup",
-        data.pickup_location || ""
-    );
-
-    params.set(
-        "destination",
-        data.destination || ""
-    );
-
-    params.set(
-        "package",
-        data.package_details || ""
-    );
-
-    params.set(
-        "time",
-        data.preferred_time || ""
-    );
-
-    params.set(
-        "fee",
-        data.fee || 0
-    );
-
     return "NB_Logistics_Receipt.html?" +
         params.toString();
 }
@@ -600,28 +572,38 @@ function createReceiptLink(data){
 async function trackDelivery(){
 
     const input =
-        document
-        .getElementById("requestCode");
+        document.getElementById(
+            "requestCode"
+        );
 
     const code =
         input.value.trim();
 
     const result =
-        document.getElementById("result");
+        document.getElementById(
+            "result"
+        );
 
     const errorBox =
-        document.getElementById("errorBox");
+        document.getElementById(
+            "errorBox"
+        );
 
     const loading =
-        document.getElementById("loading");
+        document.getElementById(
+            "loading"
+        );
 
     const trackBtn =
-        document.getElementById("trackBtn");
+        document.getElementById(
+            "trackBtn"
+        );
 
 
     result.style.display = "none";
 
     errorBox.style.display = "none";
+
 
     if(!code){
 
@@ -728,10 +710,11 @@ async function trackDelivery(){
         data.pickup_location || "—";
 
 
+    /* CORRECT DATABASE FIELD */
     document
         .getElementById("destination")
         .textContent =
-        data.destination || "—";
+        data.delivery_location || "—";
 
 
     document
@@ -743,24 +726,24 @@ async function trackDelivery(){
     document
         .getElementById("preferredTime")
         .textContent =
-        formatDate(
-            data.preferred_time
-        );
+        data.preferred_time || "—";
 
 
     document
         .getElementById("updatedAt")
         .textContent =
         formatDate(
-            data.updated_at
+            data.updated_at ||
+            data.created_at
         );
 
 
+    /* CORRECT DATABASE FIELD */
     document
         .getElementById("fee")
         .textContent =
         formatFee(
-            data.fee
+            data.delivery_fee
         );
 
 
