@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NB Logistics Hub — Delivery Receipt</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#eef2f7;
+    color:#172033;
+}
+
+.header{
+    background:#071a33;
+    color:white;
+    text-align:center;
+    padding:25px 15px;
+}
+
+.header h1{
+    margin:0;
+    font-size:28px;
+}
+
+.header p{
+    margin:7px 0 0;
+    color:#ffd21c;
+}
+
+.container{
+    max-width:800px;
+    margin:30px auto;
+    padding:15px;
+}
+
+.receipt{
+    background:white;
+    border-radius:16px;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.receipt-top{
+    text-align:center;
+    border-bottom:2px solid #071a33;
+    padding-bottom:20px;
+}
+
+.receipt-top h2{
+    margin:0;
+    color:#071a33;
+}
+
+.receipt-top p{
+    margin:6px 0;
+    color:#667085;
+}
+
+.details{
+    margin-top:25px;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    padding:13px 0;
+    border-bottom:1px solid #e6e9ef;
+}
+
+.label{
+    font-weight:bold;
+    color:#667085;
+}
+
+.value{
+    text-align:right;
+    font-weight:600;
+    word-break:break-word;
+}
+
+.total{
+    margin-top:25px;
+    padding:18px;
+    border-radius:12px;
+    background:#071a33;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.total strong{
+    color:#ffd21c;
+    font-size:22px;
+}
+
+.actions{
+    display:flex;
+    gap:12px;
+    margin-top:25px;
+}
+
+button,
+a{
+    flex:1;
+    border:none;
+    border-radius:10px;
+    padding:14px;
+    text-align:center;
+    text-decoration:none;
+    font-weight:bold;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.print{
+    background:#ffd21c;
+    color:#071a33;
+}
+
+.back{
+    background:#071a33;
+    color:white;
+}
+
+.note{
+    margin-top:25px;
+    text-align:center;
+    color:#667085;
+    font-size:14px;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    color:#667085;
+    font-size:14px;
+}
+
+@media(max-width:600px){
+
+    .receipt{
+        padding:20px;
+    }
+
+    .row{
+        display:block;
+    }
+
+    .value{
+        text-align:left;
+        margin-top:5px;
+    }
+
+    .total{
+        display:block;
+        text-align:center;
+    }
+
+    .total strong{
+        display:block;
+        margin-top:8px;
+    }
+
+    .actions{
+        flex-direction:column;
+    }
+}
+
+@media print{
+
+    body{
+        background:white;
+    }
+
+    .header{
+        background:white;
+        color:#071a33;
+        border-bottom:2px solid #071a33;
+    }
+
+    .header p{
+        color:#071a33;
+    }
+
+    .receipt{
+        box-shadow:none;
+        border:none;
+    }
+
+    .actions,
+    .note,
+    footer{
+        display:none;
+    }
+
+    .total{
+        color:#000;
+        background:#fff;
+        border:2px solid #071a33;
+    }
+
+    .total strong{
+        color:#000;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>NB Logistics Hub</h1>
+
+    <p>Delivery Receipt</p>
+
+</div>
+
+
+<div class="container">
+
+    <div class="receipt">
+
+        <div class="receipt-top">
+
+            <h2>DELIVERY RECEIPT</h2>
+
+            <p>
+                NB Logistics Hub — Ilorin, Kwara State
+            </p>
+
+        </div>
+
+
+        <div class="details">
+
+            <div class="row">
+
+                <div class="label">
+                    Request Number
+                </div>
+
+                <div
+                    class="value"
+                    id="request"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="label">
+                    Customer
+                </div>
+
+                <div
+                    class="value"
+                    id="customer"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="label">
+                    Pickup Location
+                </div>
+
+                <div
+                    class="value"
+                    id="pickup"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="label">
+                    Destination
+                </div>
+
+                <div
+                    class="value"
+                    id="destination"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="label">
+                    Package / Goods
+                </div>
+
+                <div
+                    class="value"
+                    id="package"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="label">
+                    Preferred Time
+                </div>
+
+                <div
+                    class="value"
+                    id="time"
+                >
+                    —
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="total">
+
+            <span>
+                Delivery Fee
+            </span>
+
+            <strong id="fee">
+                ₦0
+            </strong>
+
+        </div>
+
+
+        <div class="actions">
+
+            <button
+                class="print"
+                onclick="window.print()"
+            >
+                🖨 Print Receipt
+            </button>
+
+            <a
+                href="NB_Logistics_Track.html"
+                class="back"
+            >
+                Track Delivery
+            </a>
+
+        </div>
+
+
+        <div class="note">
+
+            Thank you for choosing
+            <strong>NB Logistics Hub.</strong>
+
+            <br>
+
+            For enquiries, contact us on WhatsApp:
+            <strong>09150798901</strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    © 2026 NB Logistics Hub — Ilorin, Kwara State, Nigeria
+
+</footer>
+
+
+<script>
+
+function getParameter(name){
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    return params.get(name) || "";
+
+}
+
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+const request =
+    getParameter("request");
+
+const customer =
+    getParameter("customer");
+
+const pickup =
+    getParameter("pickup");
+
+const destination =
+    getParameter("destination");
+
+const packageDetails =
+    getParameter("package");
+
+const time =
+    getParameter("time");
+
+const fee =
+    getParameter("fee");
+
+
+document.getElementById("request")
+    .textContent =
+    request || "—";
+
+
+document.getElementById("customer")
+    .textContent =
+    customer || "—";
+
+
+document.getElementById("pickup")
+    .textContent =
+    pickup || "—";
+
+
+document.getElementById("destination")
+    .textContent =
+    destination || "—";
+
+
+document.getElementById("package")
+    .textContent =
+    packageDetails || "—";
+
+
+document.getElementById("time")
+    .textContent =
+    time || "—";
+
+
+let formattedFee = "₦0";
+
+
+if(fee){
+
+    const numericFee =
+        Number(
+            String(fee)
+            .replace(/[^\d.-]/g,"")
+        );
+
+    if(!isNaN(numericFee)){
+
+        formattedFee =
+            "₦" +
+            numericFee.toLocaleString(
+                "en-NG"
+            );
+
+    }
+
+}
+
+
+document.getElementById("fee")
+    .textContent =
+    formattedFee;
+
+</script>
+
+</body>
+</html>
