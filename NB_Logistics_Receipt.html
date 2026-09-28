@@ -6,6 +6,8 @@
 
 <title>NB Logistics Hub — Delivery Receipt</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *{
     box-sizing:border-box;
@@ -103,6 +105,24 @@ body{
     font-size:22px;
 }
 
+.status-box{
+    margin-top:20px;
+    padding:15px;
+    border-radius:10px;
+    background:#f5f7fa;
+    text-align:center;
+}
+
+.status-box strong{
+    color:#071a33;
+}
+
+.message{
+    margin-top:10px;
+    color:#667085;
+    font-size:14px;
+}
+
 .actions{
     display:flex;
     gap:12px;
@@ -144,6 +164,18 @@ footer{
     padding:25px;
     color:#667085;
     font-size:14px;
+}
+
+.loading{
+    text-align:center;
+    padding:40px;
+    font-weight:bold;
+}
+
+.error{
+    text-align:center;
+    padding:30px;
+    color:#a40000;
 }
 
 @media(max-width:600px){
@@ -212,6 +244,10 @@ footer{
     .total strong{
         color:#000;
     }
+
+    .status-box{
+        border:1px solid #ddd;
+    }
 }
 </style>
 </head>
@@ -242,17 +278,170 @@ footer{
         </div>
 
 
-        <div class="details">
+        <div id="loading" class="loading">
+            Loading delivery information...
+        </div>
 
-            <div class="row">
 
-                <div class="label">
-                    Request Number
+        <div id="receiptContent" style="display:none;">
+
+            <div class="details">
+
+                <div class="row">
+
+                    <div class="label">
+                        Request Number
+                    </div>
+
+                    <div
+                        class="value"
+                        id="request"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="label">
+                        Customer
+                    </div>
+
+                    <div
+                        class="value"
+                        id="customer"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="label">
+                        Phone
+                    </div>
+
+                    <div
+                        class="value"
+                        id="phone"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="label">
+                        Pickup Location
+                    </div>
+
+                    <div
+                        class="value"
+                        id="pickup"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="label">
+                        Delivery Destination
+                    </div>
+
+                    <div
+                        class="value"
+                        id="destination"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="label">
+                        Package / Goods
+                    </div>
+
+                    <div
+                        class="value"
+                        id="package"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="label">
+                        Preferred Time
+                    </div>
+
+                    <div
+                        class="value"
+                        id="time"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+
+                    <div class="label">
+                        Request Date
+                    </div>
+
+                    <div
+                        class="value"
+                        id="date"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="total">
+
+                <span>
+                    Delivery Fee
+                </span>
+
+                <strong id="fee">
+                    ₦0
+                </strong>
+
+            </div>
+
+
+            <div class="status-box">
+
+                <div>
+                    Status:
+                    <strong id="status">
+                        —
+                    </strong>
                 </div>
 
                 <div
-                    class="value"
-                    id="request"
+                    class="message"
+                    id="statusMessage"
                 >
                     —
                 </div>
@@ -260,131 +449,45 @@ footer{
             </div>
 
 
-            <div class="row">
+            <div class="actions">
 
-                <div class="label">
-                    Customer
-                </div>
-
-                <div
-                    class="value"
-                    id="customer"
+                <button
+                    class="print"
+                    onclick="window.print()"
                 >
-                    —
-                </div>
+                    🖨 Print Receipt
+                </button>
+
+                <a
+                    href="NB_Logistics_Track.html"
+                    class="back"
+                >
+                    Track Delivery
+                </a>
 
             </div>
 
 
-            <div class="row">
+            <div class="note">
 
-                <div class="label">
-                    Pickup Location
-                </div>
+                Thank you for choosing
+                <strong>NB Logistics Hub.</strong>
 
-                <div
-                    class="value"
-                    id="pickup"
-                >
-                    —
-                </div>
+                <br><br>
 
-            </div>
-
-
-            <div class="row">
-
-                <div class="label">
-                    Destination
-                </div>
-
-                <div
-                    class="value"
-                    id="destination"
-                >
-                    —
-                </div>
-
-            </div>
-
-
-            <div class="row">
-
-                <div class="label">
-                    Package / Goods
-                </div>
-
-                <div
-                    class="value"
-                    id="package"
-                >
-                    —
-                </div>
-
-            </div>
-
-
-            <div class="row">
-
-                <div class="label">
-                    Preferred Time
-                </div>
-
-                <div
-                    class="value"
-                    id="time"
-                >
-                    —
-                </div>
+                For enquiries, contact us on WhatsApp:
+                <strong>09150798901</strong>
 
             </div>
 
         </div>
 
 
-        <div class="total">
-
-            <span>
-                Delivery Fee
-            </span>
-
-            <strong id="fee">
-                ₦0
-            </strong>
-
-        </div>
-
-
-        <div class="actions">
-
-            <button
-                class="print"
-                onclick="window.print()"
-            >
-                🖨 Print Receipt
-            </button>
-
-            <a
-                href="NB_Logistics_Track.html"
-                class="back"
-            >
-                Track Delivery
-            </a>
-
-        </div>
-
-
-        <div class="note">
-
-            Thank you for choosing
-            <strong>NB Logistics Hub.</strong>
-
-            <br>
-
-            For enquiries, contact us on WhatsApp:
-            <strong>09150798901</strong>
-
-        </div>
+        <div
+            id="errorBox"
+            class="error"
+            style="display:none;"
+        ></div>
 
     </div>
 
@@ -400,6 +503,19 @@ footer{
 
 <script>
 
+const SUPABASE_URL =
+"https://kygkgcpuiwawatugkfne.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
+
+const supabaseClient =
+supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
 function getParameter(name){
 
     const params =
@@ -412,73 +528,32 @@ function getParameter(name){
 }
 
 
-function escapeHtml(value){
+function formatDate(date){
 
-    return String(value ?? "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+    if(!date){
+        return "—";
+    }
+
+    return new Date(date).toLocaleString(
+        "en-NG",
+        {
+            dateStyle:"medium",
+            timeStyle:"short"
+        }
+    );
+
 }
 
 
-const request =
-    getParameter("request");
+function formatFee(fee){
 
-const customer =
-    getParameter("customer");
-
-const pickup =
-    getParameter("pickup");
-
-const destination =
-    getParameter("destination");
-
-const packageDetails =
-    getParameter("package");
-
-const time =
-    getParameter("time");
-
-const fee =
-    getParameter("fee");
-
-
-document.getElementById("request")
-    .textContent =
-    request || "—";
-
-
-document.getElementById("customer")
-    .textContent =
-    customer || "—";
-
-
-document.getElementById("pickup")
-    .textContent =
-    pickup || "—";
-
-
-document.getElementById("destination")
-    .textContent =
-    destination || "—";
-
-
-document.getElementById("package")
-    .textContent =
-    packageDetails || "—";
-
-
-document.getElementById("time")
-    .textContent =
-    time || "—";
-
-
-let formattedFee = "₦0";
-
-
-if(fee){
+    if(
+        fee === null ||
+        fee === undefined ||
+        fee === ""
+    ){
+        return "₦0";
+    }
 
     const numericFee =
         Number(
@@ -486,22 +561,139 @@ if(fee){
             .replace(/[^\d.-]/g,"")
         );
 
-    if(!isNaN(numericFee)){
-
-        formattedFee =
-            "₦" +
-            numericFee.toLocaleString(
-                "en-NG"
-            );
-
+    if(isNaN(numericFee)){
+        return "₦0";
     }
+
+    return "₦" +
+        numericFee.toLocaleString("en-NG");
 
 }
 
 
-document.getElementById("fee")
-    .textContent =
-    formattedFee;
+async function loadReceipt(){
+
+    const requestCode =
+        getParameter("request");
+
+
+    if(!requestCode){
+
+        showError(
+            "No delivery request number was provided."
+        );
+
+        return;
+    }
+
+
+    const { data, error } =
+        await supabaseClient
+        .from("delivery_requests")
+        .select("*")
+        .eq("request_code", requestCode)
+        .single();
+
+
+    if(error){
+
+        showError(
+            "We could not find this delivery request."
+        );
+
+        console.error(error);
+
+        return;
+    }
+
+
+    document.getElementById("request")
+        .textContent =
+        data.request_code || "—";
+
+
+    document.getElementById("customer")
+        .textContent =
+        data.customer_name || "—";
+
+
+    document.getElementById("phone")
+        .textContent =
+        data.phone || "—";
+
+
+    document.getElementById("pickup")
+        .textContent =
+        data.pickup_location || "—";
+
+
+    document.getElementById("destination")
+        .textContent =
+        data.delivery_location || "—";
+
+
+    document.getElementById("package")
+        .textContent =
+        data.package_details || "—";
+
+
+    document.getElementById("time")
+        .textContent =
+        data.preferred_time || "—";
+
+
+    document.getElementById("date")
+        .textContent =
+        formatDate(data.created_at);
+
+
+    document.getElementById("fee")
+        .textContent =
+        formatFee(data.delivery_fee);
+
+
+    document.getElementById("status")
+        .textContent =
+        data.status || "New";
+
+
+    document.getElementById("statusMessage")
+        .textContent =
+        data.status_message ||
+        "Your delivery request has been received by NB Logistics Hub.";
+
+
+    document.getElementById("loading")
+        .style.display =
+        "none";
+
+
+    document.getElementById("receiptContent")
+        .style.display =
+        "block";
+
+}
+
+
+function showError(message){
+
+    document.getElementById("loading")
+        .style.display =
+        "none";
+
+    const errorBox =
+        document.getElementById("errorBox");
+
+    errorBox.textContent =
+        message;
+
+    errorBox.style.display =
+        "block";
+
+}
+
+
+loadReceipt();
 
 </script>
 
