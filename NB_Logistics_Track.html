@@ -16,224 +16,198 @@
 body{
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
-    background:#f4f7fb;
+    background:#f3f4f6;
     color:#172033;
 }
 
 header{
-    background:#071a33;
+    background:#071a35;
     color:white;
+    padding:22px 15px;
     text-align:center;
-    padding:25px 15px;
 }
 
 header h1{
     margin:0;
-    font-size:28px;
+    font-size:26px;
 }
 
 header p{
     margin:7px 0 0;
     color:#ffd21c;
+    font-weight:bold;
 }
 
 .container{
-    max-width:850px;
+    width:94%;
+    max-width:650px;
     margin:30px auto;
-    padding:15px;
 }
 
 .card{
     background:white;
-    border-radius:18px;
-    padding:28px;
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
-}
-
-.back{
-    display:inline-block;
+    border-radius:15px;
+    padding:25px;
+    box-shadow:0 5px 20px rgba(0,0,0,.10);
     margin-bottom:20px;
-    text-decoration:none;
-    color:#071a33;
-    font-weight:bold;
 }
 
 h2{
     margin-top:0;
-    color:#071a33;
+    color:#071a35;
 }
 
-.search-box{
-    display:flex;
-    gap:10px;
+label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:8px;
 }
 
-.search-box input{
-    flex:1;
-    padding:15px;
-    border:1px solid #d7dce5;
-    border-radius:10px;
+input{
+    width:100%;
+    padding:14px;
+    border:1px solid #ccc;
+    border-radius:8px;
     font-size:16px;
+    margin-bottom:14px;
 }
 
-.search-box button{
-    padding:15px 22px;
-    border:0;
-    border-radius:10px;
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:8px;
     background:#ffd21c;
-    color:#071a33;
+    color:#071a35;
+    font-size:17px;
     font-weight:bold;
     cursor:pointer;
 }
 
-.search-box button:disabled{
-    opacity:.6;
-    cursor:not-allowed;
+button:hover{
+    background:#f0c500;
 }
 
-.result{
+.message{
     display:none;
-    margin-top:30px;
+    padding:13px;
+    border-radius:8px;
+    margin-top:15px;
+    font-weight:bold;
 }
 
-.status-card{
-    padding:22px;
-    border-radius:14px;
-    background:#071a33;
-    color:white;
-    text-align:center;
+.error{
+    background:#ffe1e1;
+    color:#a00000;
 }
 
-.status-card h3{
-    margin:0 0 10px;
-    color:#ffd21c;
-    font-size:25px;
-}
-
-.status-message{
-    font-size:17px;
-    line-height:1.6;
+.success{
+    background:#e1f7e7;
+    color:#146b2d;
 }
 
 .details{
-    margin-top:20px;
+    display:none;
 }
 
-.detail-row{
+.row{
     display:flex;
     justify-content:space-between;
     gap:20px;
-    padding:14px 0;
-    border-bottom:1px solid #e5e7eb;
+    padding:13px 0;
+    border-bottom:1px solid #eee;
 }
 
-.detail-label{
+.row:last-child{
+    border-bottom:none;
+}
+
+.label{
     font-weight:bold;
-    color:#667085;
+    color:#555;
+    width:42%;
 }
 
-.detail-value{
+.value{
+    width:58%;
     text-align:right;
     font-weight:600;
     word-break:break-word;
 }
 
-.fee{
-    margin-top:20px;
-    padding:18px;
-    background:#f7f9fc;
-    border-radius:12px;
-    display:flex;
-    justify-content:space-between;
-    font-weight:bold;
-}
-
-.receipt-box{
-    margin-top:25px;
-    padding:20px;
-    border-radius:14px;
-    background:#fff8d6;
-    border:1px solid #f0d64a;
-    text-align:center;
-}
-
-.receipt-box h3{
-    margin-top:0;
-}
-
-.receipt-button{
+.status{
     display:inline-block;
-    margin-top:10px;
-    padding:13px 20px;
-    border-radius:9px;
-    background:#071a33;
-    color:white;
-    text-decoration:none;
+    padding:7px 13px;
+    border-radius:20px;
+    background:#071a35;
+    color:#ffd21c;
     font-weight:bold;
 }
 
-.error{
-    display:none;
+.status-message{
     margin-top:20px;
-    padding:16px;
-    border-radius:10px;
-    background:#ffe8e8;
-    color:#a00000;
+    background:#f7f7f7;
+    border-left:5px solid #ffd21c;
+    padding:15px;
+    border-radius:6px;
+    line-height:1.5;
 }
 
-.loading{
-    display:none;
-    margin-top:20px;
-    text-align:center;
-    color:#667085;
+.fee{
+    color:#008000;
+    font-size:18px;
 }
 
-.whatsapp{
+.receipt-btn{
     display:block;
+    text-align:center;
+    text-decoration:none;
     margin-top:20px;
     padding:14px;
-    text-align:center;
-    background:#25D366;
+    background:#071a35;
     color:white;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.receipt-btn:hover{
+    background:#102b50;
+}
+
+.back{
+    display:block;
+    text-align:center;
+    margin-top:15px;
+    color:#071a35;
     text-decoration:none;
-    border-radius:10px;
     font-weight:bold;
 }
 
 footer{
     text-align:center;
-    padding:25px;
-    color:#667085;
+    padding:25px 10px;
+    color:#666;
     font-size:14px;
 }
 
-@media(max-width:650px){
+@media(max-width:500px){
 
-    .search-box{
-        flex-direction:column;
+    .card{
+        padding:20px;
     }
 
-    .search-box button{
-        width:100%;
-    }
-
-    .detail-row{
+    .row{
         display:block;
     }
 
-    .detail-value{
-        margin-top:5px;
+    .label,
+    .value{
+        width:100%;
         text-align:left;
     }
 
-    .fee{
-        display:block;
-        text-align:center;
-    }
-
-    .fee strong{
-        display:block;
-        margin-top:7px;
+    .value{
+        margin-top:5px;
     }
 }
 </style>
@@ -242,255 +216,113 @@ footer{
 <body>
 
 <header>
-
     <h1>NB Logistics Hub</h1>
-
     <p>Track Your Delivery</p>
-
 </header>
 
-
 <div class="container">
-
-    <a href="index.html" class="back">
-        ← Back to Home
-    </a>
-
 
     <div class="card">
 
         <h2>Track Delivery</h2>
 
         <p>
-            Enter your NB Logistics Hub request number
-            to see the latest delivery status.
+            Enter your delivery request number to see the latest delivery status.
         </p>
 
+        <label for="requestCode">Request Number</label>
 
-        <div class="search-box">
-
-            <input
-                type="text"
-                id="requestCode"
-                placeholder="Example: NB-20260928-1234"
-                autocomplete="off"
-            >
-
-            <button
-                id="trackBtn"
-                onclick="trackDelivery()"
-            >
-                Track Delivery
-            </button>
-
-        </div>
-
-
-        <div
-            class="loading"
-            id="loading"
-        >
-            Checking your delivery...
-        </div>
-
-
-        <div
-            class="error"
-            id="errorBox"
-        ></div>
-
-
-        <div
-            class="result"
-            id="result"
+        <input
+            type="text"
+            id="requestCode"
+            placeholder="Example: NB-20260928-0001"
+            autocomplete="off"
         >
 
-            <div class="status-card">
+        <button onclick="trackDelivery()">
+            Track Delivery
+        </button>
 
-                <h3 id="status">
-                    —
-                </h3>
-
-                <div
-                    class="status-message"
-                    id="statusMessage"
-                >
-                    —
-                </div>
-
-            </div>
-
-
-            <div class="details">
-
-                <div class="detail-row">
-
-                    <div class="detail-label">
-                        Request Number
-                    </div>
-
-                    <div
-                        class="detail-value"
-                        id="displayRequest"
-                    >
-                        —
-                    </div>
-
-                </div>
-
-
-                <div class="detail-row">
-
-                    <div class="detail-label">
-                        Customer
-                    </div>
-
-                    <div
-                        class="detail-value"
-                        id="customer"
-                    >
-                        —
-                    </div>
-
-                </div>
-
-
-                <div class="detail-row">
-
-                    <div class="detail-label">
-                        Pickup Location
-                    </div>
-
-                    <div
-                        class="detail-value"
-                        id="pickup"
-                    >
-                        —
-                    </div>
-
-                </div>
-
-
-                <div class="detail-row">
-
-                    <div class="detail-label">
-                        Delivery Destination
-                    </div>
-
-                    <div
-                        class="detail-value"
-                        id="destination"
-                    >
-                        —
-                    </div>
-
-                </div>
-
-
-                <div class="detail-row">
-
-                    <div class="detail-label">
-                        Package / Goods
-                    </div>
-
-                    <div
-                        class="detail-value"
-                        id="package"
-                    >
-                        —
-                    </div>
-
-                </div>
-
-
-                <div class="detail-row">
-
-                    <div class="detail-label">
-                        Preferred Time
-                    </div>
-
-                    <div
-                        class="detail-value"
-                        id="preferredTime"
-                    >
-                        —
-                    </div>
-
-                </div>
-
-
-                <div class="detail-row">
-
-                    <div class="detail-label">
-                        Last Updated
-                    </div>
-
-                    <div
-                        class="detail-value"
-                        id="updatedAt"
-                    >
-                        —
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="fee">
-
-                <span>
-                    Delivery Fee
-                </span>
-
-                <strong id="fee">
-                    ₦0
-                </strong>
-
-            </div>
-
-
-            <div class="receipt-box">
-
-                <h3>
-                    Delivery Receipt
-                </h3>
-
-                <p>
-                    Your delivery details can be viewed
-                    on your receipt.
-                </p>
-
-                <a
-                    href="#"
-                    id="receiptButton"
-                    class="receipt-button"
-                >
-                    View Receipt
-                </a>
-
-            </div>
-
-
-            <a
-                href="https://wa.me/2349150798901"
-                target="_blank"
-                class="whatsapp"
-            >
-                Contact NB Logistics Hub on WhatsApp
-            </a>
-
-        </div>
+        <div id="errorMessage" class="message error"></div>
 
     </div>
 
+
+    <div id="detailsCard" class="card details">
+
+        <h2>Delivery Details</h2>
+
+        <div class="row">
+            <div class="label">Request Number</div>
+            <div class="value" id="requestNumber"></div>
+        </div>
+
+        <div class="row">
+            <div class="label">Customer</div>
+            <div class="value" id="customerName"></div>
+        </div>
+
+        <div class="row">
+            <div class="label">Pickup Location</div>
+            <div class="value" id="pickupLocation"></div>
+        </div>
+
+        <div class="row">
+            <div class="label">Delivery Destination</div>
+            <div class="value" id="deliveryLocation"></div>
+        </div>
+
+        <div class="row">
+            <div class="label">Package / Goods</div>
+            <div class="value" id="packageDetails"></div>
+        </div>
+
+        <div class="row">
+            <div class="label">Preferred Time</div>
+            <div class="value" id="preferredTime"></div>
+        </div>
+
+        <div class="row">
+            <div class="label">Delivery Fee</div>
+            <div class="value fee" id="deliveryFee"></div>
+        </div>
+
+        <div class="row">
+            <div class="label">Status</div>
+            <div class="value">
+                <span class="status" id="deliveryStatus"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="label">Last Updated</div>
+            <div class="value" id="lastUpdated"></div>
+        </div>
+
+        <div class="status-message">
+            <strong>Delivery Update</strong>
+            <br><br>
+            <span id="statusMessage"></span>
+        </div>
+
+        <a
+            id="receiptButton"
+            class="receipt-btn"
+            href="#"
+        >
+            View Delivery Receipt
+        </a>
+
+    </div>
+
+    <a class="back" href="index.html">
+        ← Back to NB Logistics Hub
+    </a>
+
 </div>
 
-
 <footer>
-
-    © 2026 NB Logistics Hub — Ilorin, Kwara State, Nigeria
-
+    © 2026 NB Logistics Hub — Ilorin Delivery Service
 </footer>
 
 
@@ -509,21 +341,43 @@ const supabaseClient =
     );
 
 
-function formatFee(value){
+function getDefaultStatusMessage(status){
+
+    if(status === "New"){
+        return "Your delivery request has been received by NB Logistics Hub.";
+    }
+
+    if(status === "Accepted"){
+        return "Your delivery request has been accepted by NB Logistics Hub. Your delivery will be arranged shortly.";
+    }
+
+    if(status === "In Progress"){
+        return "Your delivery goods have been collected by NB Logistics Hub and are on the way to the delivery point.";
+    }
+
+    if(status === "Completed"){
+        return "Your delivery has been delivered to the final destination.";
+    }
+
+    return "Your delivery status is being updated by NB Logistics Hub.";
+}
+
+
+function formatFee(fee){
 
     if(
-        value === null ||
-        value === undefined ||
-        value === ""
+        fee === null ||
+        fee === undefined ||
+        fee === ""
     ){
-        return "₦0";
+        return "Not yet assigned";
     }
 
     const number =
-        Number(value);
+        Number(fee);
 
     if(isNaN(number)){
-        return "₦0";
+        return fee;
     }
 
     return "₦" +
@@ -531,17 +385,17 @@ function formatFee(value){
 }
 
 
-function formatDate(value){
+function formatDate(dateValue){
 
-    if(!value){
-        return "—";
+    if(!dateValue){
+        return "Not available";
     }
 
     const date =
-        new Date(value);
+        new Date(dateValue);
 
     if(isNaN(date.getTime())){
-        return value;
+        return dateValue;
     }
 
     return date.toLocaleString(
@@ -554,55 +408,23 @@ function formatDate(value){
 }
 
 
-function createReceiptLink(data){
-
-    const params =
-        new URLSearchParams();
-
-    params.set(
-        "request",
-        data.request_code || ""
-    );
-
-    return "NB_Logistics_Receipt.html?" +
-        params.toString();
-}
-
-
 async function trackDelivery(){
 
     const input =
-        document.getElementById(
-            "requestCode"
-        );
+        document.getElementById("requestCode");
 
     const code =
         input.value.trim();
 
-    const result =
-        document.getElementById(
-            "result"
-        );
-
     const errorBox =
-        document.getElementById(
-            "errorBox"
-        );
+        document.getElementById("errorMessage");
 
-    const loading =
-        document.getElementById(
-            "loading"
-        );
+    const detailsCard =
+        document.getElementById("detailsCard");
 
-    const trackBtn =
-        document.getElementById(
-            "trackBtn"
-        );
-
-
-    result.style.display = "none";
 
     errorBox.style.display = "none";
+    detailsCard.style.display = "none";
 
 
     if(!code){
@@ -610,198 +432,139 @@ async function trackDelivery(){
         errorBox.textContent =
             "Please enter your delivery request number.";
 
-        errorBox.style.display =
-            "block";
+        errorBox.style.display = "block";
 
         return;
     }
 
 
-    loading.style.display =
-        "block";
+    try{
 
-    trackBtn.disabled =
-        true;
-
-    trackBtn.textContent =
-        "Checking...";
-
-
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-        .from("delivery_requests")
-        .select("*")
-        .eq(
-            "request_code",
-            code
-        )
-        .maybeSingle();
+        const { data, error } =
+            await supabaseClient
+            .from("delivery_requests")
+            .select("*")
+            .eq("request_code", code)
+            .maybeSingle();
 
 
-    loading.style.display =
-        "none";
+        if(error){
 
-    trackBtn.disabled =
-        false;
+            console.error(error);
 
-    trackBtn.textContent =
-        "Track Delivery";
+            errorBox.textContent =
+                "Unable to check your delivery right now. Please try again.";
+
+            errorBox.style.display = "block";
+
+            return;
+        }
 
 
-    if(error){
+        if(!data){
+
+            errorBox.textContent =
+                "No delivery request was found with that request number.";
+
+            errorBox.style.display = "block";
+
+            return;
+        }
+
+
+        /*
+        IMPORTANT:
+        These are the exact Supabase column names.
+        */
+
+        document.getElementById("requestNumber").textContent =
+            data.request_code || "—";
+
+        document.getElementById("customerName").textContent =
+            data.customer_name || "—";
+
+        document.getElementById("pickupLocation").textContent =
+            data.pickup_location || "—";
+
+
+        // CORRECT DESTINATION FIELD
+        document.getElementById("deliveryLocation").textContent =
+            data.delivery_location || "—";
+
+
+        document.getElementById("packageDetails").textContent =
+            data.package_details || "—";
+
+        document.getElementById("preferredTime").textContent =
+            data.preferred_time || "—";
+
+
+        // CORRECT FEE FIELD
+        document.getElementById("deliveryFee").textContent =
+            formatFee(data.delivery_fee);
+
+
+        document.getElementById("deliveryStatus").textContent =
+            data.status || "New";
+
+
+        document.getElementById("lastUpdated").textContent =
+            formatDate(
+                data.updated_at ||
+                data.created_at
+            );
+
+
+        document.getElementById("statusMessage").textContent =
+            data.status_message ||
+            getDefaultStatusMessage(data.status);
+
+
+        /*
+        Receipt only needs the request number.
+        The receipt page now fetches the rest directly
+        from Supabase.
+        */
+
+        const receiptUrl =
+            "NB_Logistics_Receipt.html?request=" +
+            encodeURIComponent(
+                data.request_code
+            );
+
+        document.getElementById("receiptButton").href =
+            receiptUrl;
+
+
+        detailsCard.style.display =
+            "block";
+
+    }
+    catch(error){
 
         console.error(error);
 
         errorBox.textContent =
-            "We could not check your delivery right now. Please try again.";
+            "Something went wrong while checking the delivery.";
 
         errorBox.style.display =
             "block";
-
-        return;
     }
-
-
-    if(!data){
-
-        errorBox.textContent =
-            "No delivery request was found with that request number. Please check the number and try again.";
-
-        errorBox.style.display =
-            "block";
-
-        return;
-    }
-
-
-    document
-        .getElementById("status")
-        .textContent =
-        data.status || "New";
-
-
-    document
-        .getElementById("statusMessage")
-        .textContent =
-        data.status_message ||
-        getDefaultStatusMessage(
-            data.status
-        );
-
-
-    document
-        .getElementById("displayRequest")
-        .textContent =
-        data.request_code || "—";
-
-
-    document
-        .getElementById("customer")
-        .textContent =
-        data.customer_name || "—";
-
-
-    document
-        .getElementById("pickup")
-        .textContent =
-        data.pickup_location || "—";
-
-
-    /* CORRECT DATABASE FIELD */
-    document
-        .getElementById("destination")
-        .textContent =
-        data.delivery_location || "—";
-
-
-    document
-        .getElementById("package")
-        .textContent =
-        data.package_details || "—";
-
-
-    document
-        .getElementById("preferredTime")
-        .textContent =
-        data.preferred_time || "—";
-
-
-    document
-        .getElementById("updatedAt")
-        .textContent =
-        formatDate(
-            data.updated_at ||
-            data.created_at
-        );
-
-
-    /* CORRECT DATABASE FIELD */
-    document
-        .getElementById("fee")
-        .textContent =
-        formatFee(
-            data.delivery_fee
-        );
-
-
-    document
-        .getElementById("receiptButton")
-        .href =
-        createReceiptLink(data);
-
-
-    result.style.display =
-        "block";
-
-}
-
-
-function getDefaultStatusMessage(status){
-
-    switch(status){
-
-        case "New":
-
-            return "Your delivery request has been received by NB Logistics Hub.";
-
-        case "Accepted":
-
-            return "Your delivery request has been accepted by NB Logistics Hub. Your delivery will be arranged shortly.";
-
-        case "In Progress":
-
-            return "Your delivery goods have been collected by NB Logistics Hub and are on the way to the delivery point.";
-
-        case "Completed":
-
-            return "Your delivery has been delivered to the final destination.";
-
-        default:
-
-            return "Your delivery status has been updated by NB Logistics Hub.";
-
-    }
-
 }
 
 
 document
-    .getElementById("requestCode")
-    .addEventListener(
-        "keydown",
-        function(event){
+.getElementById("requestCode")
+.addEventListener(
+    "keydown",
+    function(event){
 
-            if(event.key === "Enter"){
-
-                trackDelivery();
-
-            }
-
+        if(event.key === "Enter"){
+            trackDelivery();
         }
-    );
+
+    }
+);
 
 </script>
 
