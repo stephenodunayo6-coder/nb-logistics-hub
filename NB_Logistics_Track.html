@@ -32,6 +32,7 @@ body{
     color:#172033;
 }
 
+
 /* =====================================================
    HEADER
 ===================================================== */
@@ -63,6 +64,7 @@ header p{
     font-size:14px;
 }
 
+
 /* =====================================================
    CONTAINER
 ===================================================== */
@@ -72,6 +74,7 @@ header p{
     max-width:900px;
     margin:35px auto 60px;
 }
+
 
 /* =====================================================
    CARD
@@ -90,7 +93,6 @@ h1{
     text-align:center;
     color:#071b3a;
     margin:0;
-
     font-size:30px;
 }
 
@@ -99,6 +101,7 @@ h1{
     color:#667085;
     margin:10px 0 28px;
 }
+
 
 /* =====================================================
    SEARCH
@@ -157,6 +160,7 @@ button:disabled{
     cursor:not-allowed;
 }
 
+
 /* =====================================================
    LOADING
 ===================================================== */
@@ -187,6 +191,7 @@ button:disabled{
     }
 
 }
+
 
 /* =====================================================
    MESSAGE
@@ -226,6 +231,7 @@ button:disabled{
     border:1px solid #efb5b5;
 }
 
+
 /* =====================================================
    RESULT
 ===================================================== */
@@ -235,6 +241,7 @@ button:disabled{
 
     display:none;
 }
+
 
 /* =====================================================
    RESULT HEADER
@@ -269,6 +276,7 @@ button:disabled{
     font-size:18px;
 }
 
+
 /* =====================================================
    STATUS BOX
 ===================================================== */
@@ -284,6 +292,7 @@ button:disabled{
 
     border-radius:0 0 16px 16px;
 }
+
 
 /* =====================================================
    CURRENT STATUS
@@ -333,6 +342,7 @@ button:disabled{
     line-height:1.6;
 }
 
+
 /* =====================================================
    SECTION TITLE
 ===================================================== */
@@ -346,6 +356,7 @@ button:disabled{
 
     margin:30px 0 15px;
 }
+
 
 /* =====================================================
    TIMELINE
@@ -414,7 +425,10 @@ button:disabled{
     color:#071b3a;
 }
 
-/* Completed */
+
+/* =====================================================
+   COMPLETED
+===================================================== */
 
 .timeline-item.completed
 .timeline-dot{
@@ -431,7 +445,10 @@ button:disabled{
     background:#ffc107;
 }
 
-/* Current */
+
+/* =====================================================
+   CURRENT
+===================================================== */
 
 .timeline-item.current
 .timeline-dot{
@@ -450,7 +467,10 @@ button:disabled{
     color:#071b3a;
 }
 
-/* Content */
+
+/* =====================================================
+   TIMELINE CONTENT
+===================================================== */
 
 .timeline-content{
     padding-bottom:22px;
@@ -485,6 +505,7 @@ button:disabled{
 
     color:#596575;
 }
+
 
 /* =====================================================
    DETAILS
@@ -523,6 +544,7 @@ button:disabled{
     word-break:break-word;
 }
 
+
 /* =====================================================
    LAST UPDATED
 ===================================================== */
@@ -537,12 +559,57 @@ button:disabled{
     font-size:13px;
 }
 
+
+/* =====================================================
+   APPROVAL ACTION
+===================================================== */
+
+.approval-action{
+    margin-top:18px;
+
+    display:none;
+}
+
+.approval-btn{
+    display:block;
+
+    width:100%;
+
+    padding:17px;
+
+    border-radius:12px;
+
+    background:#15803d;
+
+    color:white;
+
+    text-decoration:none;
+
+    text-align:center;
+
+    font-weight:800;
+
+    font-size:17px;
+
+    transition:.2s;
+
+    box-shadow:
+        0 6px 18px rgba(21,128,61,.18);
+}
+
+.approval-btn:hover{
+    background:#166534;
+
+    transform:translateY(-2px);
+}
+
+
 /* =====================================================
    ACTIONS
 ===================================================== */
 
 .actions{
-    margin-top:25px;
+    margin-top:18px;
 
     display:flex;
 
@@ -581,6 +648,7 @@ button:disabled{
     color:white;
 }
 
+
 /* =====================================================
    BACK HOME
 ===================================================== */
@@ -602,6 +670,7 @@ button:disabled{
 .back-home:hover{
     text-decoration:underline;
 }
+
 
 /* =====================================================
    DIAGNOSTIC
@@ -629,6 +698,7 @@ button:disabled{
     display:none;
 }
 
+
 /* =====================================================
    FOOTER
 ===================================================== */
@@ -642,6 +712,7 @@ button:disabled{
 
     font-size:13px;
 }
+
 
 /* =====================================================
    MOBILE
@@ -1096,6 +1167,25 @@ button:disabled{
 
 
 
+                <!-- APPROVAL -->
+
+                <div
+                    id="approvalAction"
+                    class="approval-action"
+                >
+
+                    <a
+                        id="approvalLink"
+                        class="approval-btn"
+                        href="#"
+                    >
+                        ✅ Review & Approve Delivery
+                    </a>
+
+                </div>
+
+
+
                 <!-- ACTIONS -->
 
                 <div class="actions">
@@ -1116,6 +1206,7 @@ button:disabled{
                         class="action whatsapp"
                         href="https://wa.me/2349150798901"
                         target="_blank"
+                        rel="noopener"
                     >
 
                         💬 Contact Us on WhatsApp
@@ -1213,6 +1304,18 @@ const resultBox =
 const diagnosticBox =
     document.getElementById(
         "diagnostic"
+    );
+
+
+const approvalAction =
+    document.getElementById(
+        "approvalAction"
+    );
+
+
+const approvalLink =
+    document.getElementById(
+        "approvalLink"
     );
 
 
@@ -1513,6 +1616,16 @@ function displayDelivery(
         data.status || "New";
 
 
+    const approvalStatus =
+        (
+            data.customer_approval_status ||
+            ""
+        )
+        .toString()
+        .trim()
+        .toLowerCase();
+
+
     document.getElementById(
         "displayCode"
     ).textContent =
@@ -1593,6 +1706,10 @@ function displayDelivery(
     );
 
 
+    /* =================================================
+       RECEIPT LINK
+    ================================================= */
+
     document.getElementById(
         "receiptLink"
     ).href =
@@ -1600,6 +1717,71 @@ function displayDelivery(
         encodeURIComponent(
             data.request_code
         );
+
+
+    /* =================================================
+       APPROVAL / PAYMENT FLOW
+    ================================================= */
+
+    if(
+        approvalStatus === "approved"
+    ){
+
+        approvalAction.style.display =
+            "block";
+
+
+        approvalLink.href =
+            "NB_Logistics_Payment.html?request=" +
+            encodeURIComponent(
+                data.request_code
+            );
+
+
+        approvalLink.textContent =
+            "💳 Proceed to Payment";
+
+
+    }
+
+    else if(
+        approvalStatus === "declined"
+    ){
+
+        approvalAction.style.display =
+            "block";
+
+
+        approvalLink.href =
+            "NB_Logistics_Approval.html?request=" +
+            encodeURIComponent(
+                data.request_code
+            );
+
+
+        approvalLink.textContent =
+            "↩ Review Delivery Request";
+
+
+    }
+
+    else{
+
+        approvalAction.style.display =
+            "block";
+
+
+        approvalLink.href =
+            "NB_Logistics_Approval.html?request=" +
+            encodeURIComponent(
+                data.request_code
+            );
+
+
+        approvalLink.textContent =
+            "✅ Review & Approve Delivery";
+
+    }
 
 
     resultBox.style.display =
@@ -1864,24 +2046,49 @@ requestInput.addEventListener(
    REQUEST FROM URL
 ===================================================== */
 
-const urlParams =
-    new URLSearchParams(
-        window.location.search
-    );
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        const urlParams =
+            new URLSearchParams(
+                window.location.search
+            );
 
 
-const urlRequest =
-    urlParams.get(
-        "request"
-    );
+        const urlRequest =
+            (
+                urlParams.get("request") ||
+                urlParams.get("request_number") ||
+                urlParams.get("requestCode") ||
+                urlParams.get("id") ||
+                ""
+            )
+            .trim()
+            .toUpperCase();
 
 
-if(urlRequest){
+        if(urlRequest){
 
-    requestInput.value =
-        urlRequest.toUpperCase();
+            requestInput.value =
+                urlRequest;
 
-}
+
+            /*
+             * Automatically track the request.
+             * This makes URLs such as:
+             *
+             * NB_Logistics_Track.html?request=NB-20260929-9340
+             *
+             * work automatically.
+             */
+
+            trackDelivery();
+
+        }
+
+    }
+);
 
 </script>
 
