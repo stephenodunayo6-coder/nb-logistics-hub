@@ -17,6 +17,10 @@
 
 <style>
 
+/* =====================================================
+   GLOBAL
+===================================================== */
+
 *{
     box-sizing:border-box;
 }
@@ -28,12 +32,17 @@ body{
     color:#172033;
 }
 
-/* ==============================
+/* =====================================================
    HEADER
-============================== */
+===================================================== */
 
 header{
-    background:linear-gradient(135deg,#061936,#0c2e61);
+    background:linear-gradient(
+        135deg,
+        #061936,
+        #0c2e61
+    );
+
     color:white;
     padding:20px;
     text-align:center;
@@ -54,9 +63,9 @@ header p{
     font-size:14px;
 }
 
-/* ==============================
+/* =====================================================
    CONTAINER
-============================== */
+===================================================== */
 
 .container{
     width:92%;
@@ -64,21 +73,24 @@ header p{
     margin:35px auto 60px;
 }
 
-/* ==============================
-   MAIN CARD
-============================== */
+/* =====================================================
+   CARD
+===================================================== */
 
 .track-card{
     background:white;
     border-radius:20px;
     padding:30px;
-    box-shadow:0 10px 35px rgba(0,0,0,.08);
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.08);
 }
 
 h1{
     text-align:center;
     color:#071b3a;
     margin:0;
+
     font-size:30px;
 }
 
@@ -88,9 +100,9 @@ h1{
     margin:10px 0 28px;
 }
 
-/* ==============================
+/* =====================================================
    SEARCH
-============================== */
+===================================================== */
 
 .input-group{
     display:flex;
@@ -99,11 +111,16 @@ h1{
 
 input{
     flex:1;
+
     padding:16px;
+
     border:2px solid #d8dee8;
     border-radius:11px;
+
     font-size:16px;
+
     outline:none;
+
     text-transform:uppercase;
 }
 
@@ -113,13 +130,21 @@ input:focus{
 
 button{
     border:0;
+
     border-radius:11px;
+
     padding:0 25px;
+
     background:#ffc107;
+
     color:#071b3a;
+
     font-size:16px;
+
     font-weight:800;
+
     cursor:pointer;
+
     min-width:160px;
 }
 
@@ -132,175 +157,300 @@ button:disabled{
     cursor:not-allowed;
 }
 
+/* =====================================================
+   LOADING
+===================================================== */
+
 .spinner{
     display:inline-block;
+
     width:16px;
     height:16px;
+
     border:3px solid rgba(7,27,58,.3);
+
     border-top-color:#071b3a;
+
     border-radius:50%;
+
     animation:spin .7s linear infinite;
+
     vertical-align:middle;
+
     margin-right:7px;
 }
 
 @keyframes spin{
+
     to{
         transform:rotate(360deg);
     }
+
 }
 
-/* ==============================
+/* =====================================================
    MESSAGE
-============================== */
+===================================================== */
 
 .message{
     margin-top:20px;
+
     padding:15px;
+
     border-radius:10px;
+
     display:none;
+
     line-height:1.5;
+
     font-weight:600;
 }
 
 .success{
     display:block;
+
     background:#eaf8ef;
+
     color:#176b35;
+
     border:1px solid #b9e4c6;
 }
 
 .error{
     display:block;
+
     background:#fff0f0;
+
     color:#a32121;
+
     border:1px solid #efb5b5;
 }
 
-/* ==============================
+/* =====================================================
    RESULT
-============================== */
+===================================================== */
 
 .result{
     margin-top:28px;
+
     display:none;
 }
 
+/* =====================================================
+   RESULT HEADER
+===================================================== */
+
 .result-header{
-    background:linear-gradient(135deg,#071b3a,#0d3773);
+    background:
+        linear-gradient(
+            135deg,
+            #071b3a,
+            #0d3773
+        );
+
     color:white;
+
     padding:22px;
+
     border-radius:16px 16px 0 0;
 }
 
 .result-header h2{
     margin:0 0 8px;
+
     font-size:22px;
 }
 
 .request-code{
     color:#ffc107;
+
     font-weight:800;
+
     font-size:18px;
 }
 
-/* ==============================
-   STATUS AREA
-============================== */
+/* =====================================================
+   STATUS BOX
+===================================================== */
 
 .status-box{
     background:white;
+
     border:1px solid #e2e7ef;
+
     border-top:0;
+
     padding:25px;
+
     border-radius:0 0 16px 16px;
 }
 
+/* =====================================================
+   CURRENT STATUS
+===================================================== */
+
 .current-status{
     text-align:center;
+
     margin-bottom:30px;
 }
 
 .current-label{
     font-size:13px;
+
     color:#7b8492;
+
     text-transform:uppercase;
-    letter-spacing:.5px;
+
+    letter-spacing:.6px;
+
     margin-bottom:8px;
 }
 
 .current-status span{
     display:inline-block;
+
     background:#ffc107;
+
     color:#071b3a;
+
     font-weight:800;
+
     padding:10px 22px;
+
     border-radius:30px;
+
     font-size:17px;
 }
 
 .status-message{
     margin:15px auto 0;
+
     max-width:650px;
+
     color:#4d5969;
+
     line-height:1.6;
 }
 
-/* ==============================
+/* =====================================================
+   SECTION TITLE
+===================================================== */
+
+.section-title{
+    font-size:18px;
+
+    font-weight:800;
+
+    color:#071b3a;
+
+    margin:30px 0 15px;
+}
+
+/* =====================================================
    TIMELINE
-============================== */
+===================================================== */
 
 .timeline{
-    margin:30px auto;
+    margin:25px auto 35px;
+
     max-width:700px;
 }
 
 .timeline-item{
     display:flex;
+
     position:relative;
+
     min-height:82px;
 }
 
 .timeline-line{
     position:absolute;
+
     left:14px;
+
     top:30px;
+
     width:3px;
+
     height:52px;
+
     background:#dfe4eb;
 }
 
-.timeline-item:last-child .timeline-line{
+.timeline-item:last-child
+.timeline-line{
     display:none;
 }
 
 .timeline-dot{
     width:30px;
+
     height:30px;
+
     min-width:30px;
+
     border-radius:50%;
+
     background:#dfe4eb;
+
     margin-right:16px;
+
     position:relative;
+
     z-index:2;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
+
     font-size:14px;
+
     font-weight:bold;
+
     color:#071b3a;
 }
 
-.timeline-item.reached .timeline-dot{
+/* Completed */
+
+.timeline-item.completed
+.timeline-dot{
+
     background:#ffc107;
-    box-shadow:0 0 0 5px #fff4c7;
+
+    box-shadow:
+        0 0 0 5px #fff4c7;
 }
 
-.timeline-item.current .timeline-dot{
-    background:#071b3a;
-    color:#ffc107;
-    box-shadow:0 0 0 5px #dce8fa;
+.timeline-item.completed
+.timeline-line{
+
+    background:#ffc107;
 }
+
+/* Current */
+
+.timeline-item.current
+.timeline-dot{
+
+    background:#071b3a;
+
+    color:#ffc107;
+
+    box-shadow:
+        0 0 0 5px #dce8fa;
+}
+
+.timeline-item.current
+.timeline-content strong{
+
+    color:#071b3a;
+}
+
+/* Content */
 
 .timeline-content{
     padding-bottom:22px;
@@ -308,81 +458,110 @@ button:disabled{
 
 .timeline-content strong{
     display:block;
-    color:#7a8492;
+
+    color:#8b95a3;
+
     margin-bottom:5px;
+
     font-size:16px;
 }
 
 .timeline-content div{
-    color:#8a93a0;
+    color:#9aa3af;
+
     font-size:14px;
+
     line-height:1.5;
 }
 
-.timeline-item.reached .timeline-content strong{
+.timeline-item.completed
+.timeline-content strong{
+
     color:#071b3a;
 }
 
-.timeline-item.reached .timeline-content div{
+.timeline-item.completed
+.timeline-content div{
+
     color:#596575;
 }
 
-.timeline-item.current .timeline-content strong{
-    color:#071b3a;
-}
-
-/* ==============================
-   DELIVERY DETAILS
-============================== */
-
-.section-title{
-    font-size:18px;
-    font-weight:800;
-    color:#071b3a;
-    margin:30px 0 15px;
-}
+/* =====================================================
+   DETAILS
+===================================================== */
 
 .details{
     display:grid;
-    grid-template-columns:1fr 1fr;
+
+    grid-template-columns:
+        1fr 1fr;
+
     gap:12px;
 }
 
 .detail{
     background:#f7f9fc;
+
     padding:16px;
+
     border-radius:11px;
+
     border:1px solid #edf0f4;
 }
 
 .detail small{
     display:block;
+
     color:#7a8595;
+
     margin-bottom:6px;
 }
 
 .detail strong{
     color:#172033;
+
     word-break:break-word;
 }
 
-/* ==============================
-   ACTION BUTTONS
-============================== */
+/* =====================================================
+   LAST UPDATED
+===================================================== */
+
+.last-updated{
+    text-align:center;
+
+    margin-top:25px;
+
+    color:#7a8492;
+
+    font-size:13px;
+}
+
+/* =====================================================
+   ACTIONS
+===================================================== */
 
 .actions{
     margin-top:25px;
+
     display:flex;
+
     gap:12px;
 }
 
 .action{
     flex:1;
+
     text-align:center;
+
     text-decoration:none;
+
     padding:15px;
+
     border-radius:11px;
+
     font-weight:800;
+
     transition:.2s;
 }
 
@@ -392,24 +571,31 @@ button:disabled{
 
 .receipt{
     background:#071b3a;
+
     color:white;
 }
 
 .whatsapp{
     background:#25D366;
+
     color:white;
 }
 
-/* ==============================
+/* =====================================================
    BACK HOME
-============================== */
+===================================================== */
 
 .back-home{
     display:block;
+
     text-align:center;
+
     margin-top:22px;
+
     color:#071b3a;
+
     text-decoration:none;
+
     font-weight:700;
 }
 
@@ -417,53 +603,55 @@ button:disabled{
     text-decoration:underline;
 }
 
-/* ==============================
-   LAST UPDATED
-============================== */
-
-.last-updated{
-    text-align:center;
-    margin-top:25px;
-    color:#7a8492;
-    font-size:13px;
-}
-
-/* ==============================
+/* =====================================================
    DIAGNOSTIC
-============================== */
+===================================================== */
 
 .diagnostic{
     margin-top:20px;
+
     background:#111827;
+
     color:#d1d5db;
+
     padding:15px;
+
     border-radius:10px;
+
     font-family:monospace;
+
     font-size:12px;
+
     white-space:pre-wrap;
+
     overflow:auto;
+
     display:none;
 }
 
-/* ==============================
+/* =====================================================
    FOOTER
-============================== */
+===================================================== */
 
 .footer{
     text-align:center;
+
     margin-top:30px;
+
     color:#7b8492;
+
     font-size:13px;
 }
 
-/* ==============================
+/* =====================================================
    MOBILE
-============================== */
+===================================================== */
 
 @media(max-width:650px){
 
     .container{
         width:94%;
+
         margin-top:20px;
     }
 
@@ -481,6 +669,7 @@ button:disabled{
 
     button{
         min-height:52px;
+
         width:100%;
     }
 
@@ -506,7 +695,13 @@ button:disabled{
 
 </head>
 
+
 <body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
 <header>
 
@@ -521,18 +716,32 @@ button:disabled{
 </header>
 
 
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
 <div class="container">
 
+
     <div class="track-card">
+
 
         <h1>
             Track Your Delivery
         </h1>
 
+
         <p class="subtitle">
-            Enter your delivery request number to see the latest update.
+
+            Enter your delivery request number
+            to see the latest update.
+
         </p>
 
+
+
+        <!-- SEARCH -->
 
         <div class="input-group">
 
@@ -543,15 +752,21 @@ button:disabled{
                 autocomplete="off"
             >
 
+
             <button
                 id="trackButton"
                 onclick="trackDelivery()"
             >
+
                 Track Delivery
+
             </button>
 
         </div>
 
+
+
+        <!-- MESSAGE -->
 
         <div
             id="message"
@@ -559,21 +774,30 @@ button:disabled{
         ></div>
 
 
+
+        <!-- DIAGNOSTIC -->
+
         <div
             id="diagnostic"
             class="diagnostic"
         ></div>
 
 
+
+        <!-- RESULT -->
+
         <div
             id="result"
             class="result"
         >
 
+
+            <!-- RESULT HEADER -->
+
             <div class="result-header">
 
                 <h2>
-                    Delivery Information
+                    Delivery Tracking
                 </h2>
 
                 <div
@@ -584,7 +808,9 @@ button:disabled{
             </div>
 
 
+
             <div class="status-box">
+
 
                 <!-- CURRENT STATUS -->
 
@@ -594,9 +820,11 @@ button:disabled{
                         Current Status
                     </div>
 
+
                     <span id="currentStatus">
                         Checking...
                     </span>
+
 
                     <div
                         id="statusMessage"
@@ -606,14 +834,20 @@ button:disabled{
                 </div>
 
 
-                <!-- TIMELINE -->
+
+                <!-- PROGRESS -->
 
                 <div class="section-title">
+
                     Delivery Progress
+
                 </div>
 
 
                 <div class="timeline">
+
+
+                    <!-- NEW -->
 
                     <div
                         id="timelineNew"
@@ -641,6 +875,9 @@ button:disabled{
                     </div>
 
 
+
+                    <!-- ACCEPTED -->
+
                     <div
                         id="timelineAccepted"
                         class="timeline-item"
@@ -655,7 +892,7 @@ button:disabled{
                         <div class="timeline-content">
 
                             <strong>
-                                Delivery Accepted
+                                Accepted
                             </strong>
 
                             <div>
@@ -666,6 +903,9 @@ button:disabled{
 
                     </div>
 
+
+
+                    <!-- IN PROGRESS -->
 
                     <div
                         id="timelineProgress"
@@ -681,7 +921,7 @@ button:disabled{
                         <div class="timeline-content">
 
                             <strong>
-                                Delivery In Progress
+                                In Progress
                             </strong>
 
                             <div>
@@ -692,6 +932,9 @@ button:disabled{
 
                     </div>
 
+
+
+                    <!-- COMPLETED -->
 
                     <div
                         id="timelineCompleted"
@@ -705,7 +948,7 @@ button:disabled{
                         <div class="timeline-content">
 
                             <strong>
-                                Delivery Completed
+                                Completed
                             </strong>
 
                             <div>
@@ -716,17 +959,22 @@ button:disabled{
 
                     </div>
 
+
                 </div>
+
 
 
                 <!-- DETAILS -->
 
                 <div class="section-title">
+
                     Delivery Details
+
                 </div>
 
 
                 <div class="details">
+
 
                     <div class="detail">
 
@@ -734,7 +982,9 @@ button:disabled{
                             Request Number
                         </small>
 
-                        <strong id="detailRequest">
+                        <strong
+                            id="detailRequest"
+                        >
                             —
                         </strong>
 
@@ -747,7 +997,9 @@ button:disabled{
                             Customer
                         </small>
 
-                        <strong id="customerName">
+                        <strong
+                            id="customerName"
+                        >
                             —
                         </strong>
 
@@ -757,10 +1009,12 @@ button:disabled{
                     <div class="detail">
 
                         <small>
-                            Pickup Location
+                            Pickup
                         </small>
 
-                        <strong id="pickupLocation">
+                        <strong
+                            id="pickupLocation"
+                        >
                             —
                         </strong>
 
@@ -773,7 +1027,9 @@ button:disabled{
                             Delivery Location
                         </small>
 
-                        <strong id="deliveryLocation">
+                        <strong
+                            id="deliveryLocation"
+                        >
                             —
                         </strong>
 
@@ -783,10 +1039,12 @@ button:disabled{
                     <div class="detail">
 
                         <small>
-                            Package Details
+                            Package
                         </small>
 
-                        <strong id="packageDetails">
+                        <strong
+                            id="packageDetails"
+                        >
                             —
                         </strong>
 
@@ -799,7 +1057,9 @@ button:disabled{
                             Preferred Time
                         </small>
 
-                        <strong id="preferredTime">
+                        <strong
+                            id="preferredTime"
+                        >
                             —
                         </strong>
 
@@ -812,13 +1072,17 @@ button:disabled{
                             Delivery Fee
                         </small>
 
-                        <strong id="deliveryFee">
+                        <strong
+                            id="deliveryFee"
+                        >
                             —
                         </strong>
 
                     </div>
 
+
                 </div>
+
 
 
                 <!-- LAST UPDATED -->
@@ -831,16 +1095,20 @@ button:disabled{
                 </div>
 
 
+
                 <!-- ACTIONS -->
 
                 <div class="actions">
+
 
                     <a
                         id="receiptLink"
                         class="action receipt"
                         href="#"
                     >
+
                         🧾 View Delivery Receipt
+
                     </a>
 
 
@@ -849,25 +1117,38 @@ button:disabled{
                         href="https://wa.me/2349150798901"
                         target="_blank"
                     >
+
                         💬 Contact Us on WhatsApp
+
                     </a>
+
 
                 </div>
 
+
+
+                <!-- HOME -->
 
                 <a
                     class="back-home"
                     href="index.html"
                 >
+
                     ← Back to NB Logistics Hub
+
                 </a>
+
 
             </div>
 
         </div>
 
+
     </div>
 
+
+
+    <!-- FOOTER -->
 
     <div class="footer">
 
@@ -875,25 +1156,24 @@ button:disabled{
 
     </div>
 
+
 </div>
+
 
 
 <script>
 
-/* =========================================================
-   SUPABASE CONFIGURATION
-========================================================= */
+/* =====================================================
+   SUPABASE
+===================================================== */
 
 const SUPABASE_URL =
     "https://kygkgcpuiwawatugkfne.supabase.co";
 
+
 const SUPABASE_KEY =
     "sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
 
-
-/* =========================================================
-   CREATE SUPABASE CLIENT
-========================================================= */
 
 const supabaseClient =
     window.supabase.createClient(
@@ -902,31 +1182,48 @@ const supabaseClient =
     );
 
 
-/* =========================================================
+/* =====================================================
    ELEMENTS
-========================================================= */
+===================================================== */
 
 const requestInput =
-    document.getElementById("requestCode");
+    document.getElementById(
+        "requestCode"
+    );
+
 
 const trackButton =
-    document.getElementById("trackButton");
+    document.getElementById(
+        "trackButton"
+    );
+
 
 const messageBox =
-    document.getElementById("message");
+    document.getElementById(
+        "message"
+    );
+
 
 const resultBox =
-    document.getElementById("result");
+    document.getElementById(
+        "result"
+    );
+
 
 const diagnosticBox =
-    document.getElementById("diagnostic");
+    document.getElementById(
+        "diagnostic"
+    );
 
 
-/* =========================================================
+/* =====================================================
    MESSAGE
-========================================================= */
+===================================================== */
 
-function showMessage(text,type){
+function showMessage(
+    text,
+    type
+){
 
     messageBox.className =
         "message " + type;
@@ -937,9 +1234,9 @@ function showMessage(text,type){
 }
 
 
-/* =========================================================
-   FORMAT MONEY
-========================================================= */
+/* =====================================================
+   MONEY
+===================================================== */
 
 function formatMoney(value){
 
@@ -948,44 +1245,60 @@ function formatMoney(value){
         value === undefined ||
         value === ""
     ){
+
         return "Not specified";
+
     }
+
 
     const number =
         Number(value);
 
+
     if(
         Number.isNaN(number)
     ){
+
         return value;
+
     }
 
+
     return "₦" +
-        number.toLocaleString("en-NG");
+        number.toLocaleString(
+            "en-NG"
+        );
 
 }
 
 
-/* =========================================================
-   FORMAT DATE
-========================================================= */
+/* =====================================================
+   DATE
+===================================================== */
 
 function formatDate(value){
 
     if(!value){
+
         return "Not available";
+
     }
+
 
     const date =
         new Date(value);
+
 
     if(
         Number.isNaN(
             date.getTime()
         )
     ){
+
         return value;
+
     }
+
 
     return date.toLocaleString(
         "en-NG",
@@ -998,9 +1311,9 @@ function formatDate(value){
 }
 
 
-/* =========================================================
+/* =====================================================
    STATUS MESSAGE
-========================================================= */
+===================================================== */
 
 function getStatusMessage(
     status,
@@ -1017,28 +1330,36 @@ function getStatusMessage(
     }
 
 
-    if(status === "New"){
+    if(
+        status === "New"
+    ){
 
         return "Your request has been received and is now being reviewed.";
 
     }
 
 
-    if(status === "Accepted"){
+    if(
+        status === "Accepted"
+    ){
 
         return "Your delivery request has been accepted. We are preparing your delivery.";
 
     }
 
 
-    if(status === "In Progress"){
+    if(
+        status === "In Progress"
+    ){
 
         return "Your delivery is currently in progress.";
 
     }
 
 
-    if(status === "Completed"){
+    if(
+        status === "Completed"
+    ){
 
         return "Your delivery has been completed successfully. Thank you for using NB Logistics Hub.";
 
@@ -1050,48 +1371,79 @@ function getStatusMessage(
 }
 
 
-/* =========================================================
+/* =====================================================
    STATUS LEVEL
-========================================================= */
+===================================================== */
 
-function getStatusLevel(status){
+function getStatusLevel(
+    status
+){
 
-    if(status === "New"){
+    if(
+        status === "New"
+    ){
+
         return 1;
+
     }
 
-    if(status === "Accepted"){
+
+    if(
+        status === "Accepted"
+    ){
+
         return 2;
+
     }
 
-    if(status === "In Progress"){
+
+    if(
+        status === "In Progress"
+    ){
+
         return 3;
+
     }
 
-    if(status === "Completed"){
+
+    if(
+        status === "Completed"
+    ){
+
         return 4;
+
     }
+
 
     return 1;
 
 }
 
 
-/* =========================================================
+/* =====================================================
    UPDATE TIMELINE
-========================================================= */
+===================================================== */
 
-function updateTimeline(status){
+function updateTimeline(
+    status
+){
 
     const current =
-        getStatusLevel(status);
+        getStatusLevel(
+            status
+        );
 
 
     const items = [
+
         ["timelineNew",1],
+
         ["timelineAccepted",2],
+
         ["timelineProgress",3],
+
         ["timelineCompleted",4]
+
     ];
 
 
@@ -1103,32 +1455,38 @@ function updateTimeline(status){
                     item[0]
                 );
 
+
             const level =
                 item[1];
 
 
             element.classList.remove(
-                "reached"
+                "completed"
             );
+
 
             element.classList.remove(
                 "current"
             );
 
 
-            if(level < current){
+            if(
+                level < current
+            ){
 
                 element.classList.add(
-                    "reached"
+                    "completed"
                 );
 
             }
 
 
-            if(level === current){
+            if(
+                level === current
+            ){
 
                 element.classList.add(
-                    "reached"
+                    "completed"
                 );
 
                 element.classList.add(
@@ -1143,11 +1501,13 @@ function updateTimeline(status){
 }
 
 
-/* =========================================================
+/* =====================================================
    DISPLAY DELIVERY
-========================================================= */
+===================================================== */
 
-function displayDelivery(data){
+function displayDelivery(
+    data
+){
 
     const status =
         data.status || "New";
@@ -1248,9 +1608,9 @@ function displayDelivery(data){
 }
 
 
-/* =========================================================
-   TRACK DELIVERY
-========================================================= */
+/* =====================================================
+   TRACK
+===================================================== */
 
 async function trackDelivery(){
 
@@ -1303,12 +1663,18 @@ async function trackDelivery(){
             error
         } =
         await supabaseClient
-            .from("delivery_requests")
+
+            .from(
+                "delivery_requests"
+            )
+
             .select("*")
+
             .ilike(
                 "request_code",
                 code
             )
+
             .maybeSingle();
 
 
@@ -1317,10 +1683,12 @@ async function trackDelivery(){
             code
         );
 
+
         console.log(
             "Supabase data:",
             data
         );
+
 
         console.log(
             "Supabase error:",
@@ -1331,7 +1699,7 @@ async function trackDelivery(){
         if(error){
 
             console.error(
-                "Supabase error details:",
+                "Supabase error:",
                 error
             );
 
@@ -1347,14 +1715,40 @@ async function trackDelivery(){
 
 
             diagnosticBox.textContent =
+
                 "Supabase error: " +
-                (error.message || "Unknown error") +
+
+                (
+                    error.message ||
+                    "Unknown error"
+                )
+
+                +
+
                 "\n\nCode: " +
-                (error.code || "No code") +
+
+                (
+                    error.code ||
+                    "No code"
+                )
+
+                +
+
                 "\n\nDetails: " +
-                (error.details || "None") +
+
+                (
+                    error.details ||
+                    "None"
+                )
+
+                +
+
                 "\n\nHint: " +
-                (error.hint || "None");
+
+                (
+                    error.hint ||
+                    "None"
+                );
 
 
             return;
@@ -1365,11 +1759,17 @@ async function trackDelivery(){
         if(!data){
 
             showMessage(
+
                 "We could not find a delivery with request number " +
+
                 code +
+
                 ". Please check the number and try again.",
+
                 "error"
+
             );
+
 
             return;
 
@@ -1377,8 +1777,11 @@ async function trackDelivery(){
 
 
         showMessage(
+
             "Your delivery information has been found successfully.",
+
             "success"
+
         );
 
 
@@ -1419,7 +1822,9 @@ async function trackDelivery(){
 
 
         diagnosticBox.textContent =
+
             "Unexpected error:\n\n" +
+
             error.message;
 
     }
@@ -1435,9 +1840,9 @@ async function trackDelivery(){
 }
 
 
-/* =========================================================
+/* =====================================================
    ENTER KEY
-========================================================= */
+===================================================== */
 
 requestInput.addEventListener(
     "keydown",
@@ -1455,9 +1860,9 @@ requestInput.addEventListener(
 );
 
 
-/* =========================================================
-   AUTOMATIC REQUEST FROM URL
-========================================================= */
+/* =====================================================
+   REQUEST FROM URL
+===================================================== */
 
 const urlParams =
     new URLSearchParams(
