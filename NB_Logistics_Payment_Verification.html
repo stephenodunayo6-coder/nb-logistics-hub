@@ -1,0 +1,1064 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>NB Logistics Hub — Payment Verification</title>
+
+<meta
+    name="description"
+    content="NB Logistics Hub admin payment verification."
+>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    padding:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+
+.header{
+    background:#123c69;
+    color:#fff;
+    padding:28px 20px;
+    text-align:center;
+}
+
+.header h1{
+    margin:0;
+    font-size:28px;
+    font-weight:800;
+}
+
+.header p{
+    margin:8px 0 0;
+    opacity:.9;
+}
+
+.container{
+    width:100%;
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:#fff;
+    margin-top:15px;
+    padding:24px;
+    border-radius:18px;
+    box-shadow:0 8px 30px rgba(0,0,0,.08);
+}
+
+.page-title{
+    margin:0;
+    color:#123c69;
+    font-size:25px;
+}
+
+.page-description{
+    color:#667085;
+    line-height:1.6;
+}
+
+.loading{
+    padding:30px;
+    text-align:center;
+    color:#123c69;
+    font-weight:700;
+}
+
+.error{
+    display:none;
+    margin-top:15px;
+    padding:16px;
+    border-radius:10px;
+    background:#fff1f1;
+    border:1px solid #f3b5b5;
+    color:#b42318;
+    line-height:1.5;
+}
+
+.empty{
+    display:none;
+    padding:30px;
+    text-align:center;
+    color:#667085;
+}
+
+.table-wrap{
+    width:100%;
+    overflow-x:auto;
+    margin-top:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:900px;
+}
+
+th{
+    background:#123c69;
+    color:#fff;
+    padding:13px;
+    text-align:left;
+    font-size:13px;
+}
+
+td{
+    padding:14px 13px;
+    border-bottom:1px solid #eaecf0;
+    vertical-align:top;
+    font-size:14px;
+}
+
+tr:hover td{
+    background:#f8fafc;
+}
+
+.request-code{
+    font-weight:800;
+    color:#123c69;
+}
+
+.customer{
+    font-weight:700;
+}
+
+.fee{
+    font-weight:800;
+    color:#15803d;
+}
+
+.status{
+    display:inline-block;
+    padding:6px 9px;
+    border-radius:20px;
+    background:#fff7ed;
+    color:#c2410c;
+    font-size:12px;
+    font-weight:800;
+}
+
+.confirm-btn{
+    border:0;
+    border-radius:8px;
+    padding:10px 13px;
+    background:#15803d;
+    color:#fff;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.confirm-btn:hover{
+    background:#166534;
+}
+
+.confirm-btn:disabled{
+    background:#94a3b8;
+    cursor:not-allowed;
+}
+
+.refresh-btn{
+    margin-top:15px;
+    border:0;
+    border-radius:9px;
+    padding:12px 18px;
+    background:#123c69;
+    color:#fff;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:20px;
+}
+
+.summary-box{
+    padding:20px;
+    border-radius:14px;
+    background:#f8fafc;
+    border:1px solid #eaecf0;
+}
+
+.summary-label{
+    color:#667085;
+    font-size:13px;
+}
+
+.summary-value{
+    margin-top:6px;
+    font-size:28px;
+    font-weight:900;
+    color:#123c69;
+}
+
+.notice{
+    margin-top:20px;
+    padding:16px;
+    border-radius:12px;
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+    color:#1e40af;
+    line-height:1.6;
+}
+
+.success{
+    display:none;
+    margin-top:15px;
+    padding:16px;
+    border-radius:10px;
+    background:#ecfdf3;
+    border:1px solid #bbf7d0;
+    color:#166534;
+    line-height:1.5;
+}
+
+.footer{
+    text-align:center;
+    padding:30px 15px;
+    color:#667085;
+    font-size:13px;
+}
+
+@media(max-width:700px){
+
+    .container{
+        padding:12px;
+    }
+
+    .card{
+        padding:17px;
+        border-radius:14px;
+    }
+
+    .summary{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header class="header">
+
+    <h1>
+        NB Logistics Hub
+    </h1>
+
+    <p>
+        Payment Verification — Admin Control
+    </p>
+
+</header>
+
+
+<div class="container">
+
+
+    <div class="card">
+
+        <h2 class="page-title">
+            Payment Verification
+        </h2>
+
+        <p class="page-description">
+            Review customer payment notifications and confirm
+            payments after verifying the actual OPay transfer.
+        </p>
+
+
+        <div class="summary">
+
+            <div class="summary-box">
+
+                <div class="summary-label">
+                    Awaiting Verification
+                </div>
+
+                <div
+                    class="summary-value"
+                    id="pendingCount"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="summary-box">
+
+                <div class="summary-label">
+                    Payment Method
+                </div>
+
+                <div class="summary-value">
+                    OPay
+                </div>
+
+            </div>
+
+
+            <div class="summary-box">
+
+                <div class="summary-label">
+                    Verification
+                </div>
+
+                <div class="summary-value">
+                    Manual
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="notice">
+
+            <strong>Important:</strong>
+
+            A customer clicking
+            <strong>I Have Made Payment</strong>
+            only submits a payment notification.
+
+            <br><br>
+
+            Confirm the actual OPay transaction before clicking
+            <strong>Confirm Payment</strong>.
+
+        </div>
+
+
+        <div
+            id="success"
+            class="success"
+        ></div>
+
+
+        <div
+            id="error"
+            class="error"
+        ></div>
+
+
+        <div
+            id="loading"
+            class="loading"
+        >
+            Loading payment notifications...
+        </div>
+
+
+        <div
+            id="empty"
+            class="empty"
+        >
+            No payment notifications are currently awaiting verification.
+        </div>
+
+
+        <div
+            id="tableWrap"
+            class="table-wrap"
+            style="display:none;"
+        >
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Request
+                        </th>
+
+                        <th>
+                            Customer
+                        </th>
+
+                        <th>
+                            Delivery
+                        </th>
+
+                        <th>
+                            Fee
+                        </th>
+
+                        <th>
+                            Payment Method
+                        </th>
+
+                        <th>
+                            Paid At
+                        </th>
+
+                        <th>
+                            Submitted At
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="paymentTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <button
+            class="refresh-btn"
+            onclick="loadPayments()"
+        >
+            ↻ Refresh Payments
+        </button>
+
+    </div>
+
+
+</div>
+
+
+<div class="footer">
+
+    NB Logistics Hub — Ilorin, Kwara State, Nigeria
+
+    <br><br>
+
+    © 2026 NB Logistics Hub. All rights reserved.
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+    "https://kygkgcpuiwawatugkfne.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const loading =
+    document.getElementById(
+        "loading"
+    );
+
+const errorBox =
+    document.getElementById(
+        "error"
+    );
+
+const successBox =
+    document.getElementById(
+        "success"
+    );
+
+const emptyBox =
+    document.getElementById(
+        "empty"
+    );
+
+const tableWrap =
+    document.getElementById(
+        "tableWrap"
+    );
+
+const paymentTable =
+    document.getElementById(
+        "paymentTable"
+    );
+
+const pendingCount =
+    document.getElementById(
+        "pendingCount"
+    );
+
+
+/* =====================================================
+   MONEY
+===================================================== */
+
+function formatMoney(value){
+
+    return "₦" +
+        Number(value || 0)
+        .toLocaleString("en-NG");
+
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+function formatDateTime(value){
+
+    if(!value){
+
+        return "—";
+
+    }
+
+    const date =
+        new Date(value);
+
+    if(
+        isNaN(
+            date.getTime()
+        )
+    ){
+
+        return "—";
+
+    }
+
+    return date.toLocaleString(
+        "en-NG",
+        {
+            dateStyle:"medium",
+            timeStyle:"short"
+        }
+    );
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value){
+
+    if(
+        value === null ||
+        value === undefined
+    ){
+
+        return "";
+
+    }
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =====================================================
+   LOAD PAYMENT NOTIFICATIONS
+===================================================== */
+
+async function loadPayments(){
+
+    loading.style.display =
+        "block";
+
+    errorBox.style.display =
+        "none";
+
+    successBox.style.display =
+        "none";
+
+    emptyBox.style.display =
+        "none";
+
+    tableWrap.style.display =
+        "none";
+
+    paymentTable.innerHTML =
+        "";
+
+
+    try{
+
+        /*
+         * A payment is awaiting verification when:
+         *
+         * payment_submitted_at exists
+         *
+         * AND
+         *
+         * payment_confirmed_at is still empty.
+         */
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+
+            .from("delivery_requests")
+
+            .select("*")
+
+            .not(
+                "payment_submitted_at",
+                "is",
+                null
+            )
+
+            .is(
+                "payment_confirmed_at",
+                null
+            )
+
+            .order(
+                "payment_submitted_at",
+                {
+                    ascending:false
+                }
+            );
+
+
+        if(error){
+
+            console.error(
+                error
+            );
+
+            throw error;
+
+        }
+
+
+        loading.style.display =
+            "none";
+
+
+        const payments =
+            data || [];
+
+
+        pendingCount.textContent =
+            payments.length;
+
+
+        if(payments.length === 0){
+
+            emptyBox.style.display =
+                "block";
+
+            return;
+
+        }
+
+
+        tableWrap.style.display =
+            "block";
+
+
+        payments.forEach(
+            function(payment){
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                row.innerHTML = `
+
+                    <td>
+
+                        <div class="request-code">
+
+                            ${escapeHTML(
+                                payment.request_code ||
+                                "—"
+                            )}
+
+                        </div>
+
+                        <span class="status">
+
+                            Awaiting Verification
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="customer">
+
+                            ${escapeHTML(
+                                payment.customer_name ||
+                                "—"
+                            )}
+
+                        </div>
+
+                        <div>
+
+                            ${escapeHTML(
+                                payment.phone ||
+                                payment.phone_number ||
+                                payment.whatsapp ||
+                                ""
+                            )}
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        ${escapeHTML(
+                            payment.pickup_location ||
+                            "—"
+                        )}
+
+                        <br>
+
+                        ↓
+
+                        <br>
+
+                        ${escapeHTML(
+                            payment.delivery_location ||
+                            "—"
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        <span class="fee">
+
+                            ${formatMoney(
+                                payment.delivery_fee
+                            )}
+
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        ${escapeHTML(
+                            payment.payment_method ||
+                            "—"
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${formatDateTime(
+                            payment.paid_at
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${formatDateTime(
+                            payment.payment_submitted_at
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        <button
+                            class="confirm-btn"
+                            onclick="confirmPayment('${escapeHTML(
+                                payment.request_code
+                            )}', this)"
+                        >
+                            ✓ Confirm Payment
+                        </button>
+
+                    </td>
+
+                `;
+
+
+                paymentTable.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+    catch(errorObject){
+
+        console.error(
+            errorObject
+        );
+
+        loading.style.display =
+            "none";
+
+        errorBox.textContent =
+            "Unable to load payment notifications. Please check your Supabase connection and RLS permissions.";
+
+        errorBox.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* =====================================================
+   CONFIRM PAYMENT
+===================================================== */
+
+async function confirmPayment(
+    requestCode,
+    button
+){
+
+    if(!requestCode){
+
+        alert(
+            "Request number is missing."
+        );
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+
+            "Have you personally verified the OPay transfer for " +
+
+            requestCode +
+
+            "?\n\n" +
+
+            "Click OK only after confirming the actual payment."
+
+        );
+
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "Confirming...";
+
+
+    try{
+
+        const confirmedAt =
+            new Date().toISOString();
+
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+
+            .from("delivery_requests")
+
+            .update({
+
+                payment_confirmed_at:
+                    confirmedAt
+
+            })
+
+            .eq(
+                "request_code",
+                requestCode
+            )
+
+            .select()
+            .single();
+
+
+        if(error){
+
+            console.error(
+                error
+            );
+
+            throw error;
+
+        }
+
+
+        if(!data){
+
+            throw new Error(
+                "Payment confirmation was not saved."
+            );
+
+        }
+
+
+        successBox.innerHTML = `
+
+            <strong>
+                ✓ Payment Confirmed
+            </strong>
+
+            <br><br>
+
+            Payment for
+
+            <strong>
+                ${escapeHTML(
+                    requestCode
+                )}
+            </strong>
+
+            has been confirmed successfully.
+
+            <br><br>
+
+            Confirmed at:
+
+            <strong>
+                ${formatDateTime(
+                    data.payment_confirmed_at
+                )}
+            </strong>
+
+        `;
+
+
+        successBox.style.display =
+            "block";
+
+
+        successBox.scrollIntoView({
+
+            behavior:"smooth",
+
+            block:"center"
+
+        });
+
+
+        await loadPayments();
+
+    }
+    catch(errorObject){
+
+        console.error(
+            errorObject
+        );
+
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "✓ Confirm Payment";
+
+
+        errorBox.textContent =
+            "Payment confirmation could not be saved. Check your Supabase RLS/update permissions.";
+
+        errorBox.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+window.addEventListener(
+    "DOMContentLoaded",
+    loadPayments
+);
+
+</script>
+
+</body>
+
+</html>
+```
