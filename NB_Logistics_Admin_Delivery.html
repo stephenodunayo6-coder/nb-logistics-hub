@@ -329,9 +329,9 @@ button,
     color:white;
 }
 
-.action:disabled{
-    opacity:.45;
-    cursor:not-allowed;
+.action:hover{
+    opacity:.9;
+    transform:translateY(-1px);
 }
 
 .empty,
@@ -439,51 +439,23 @@ button,
     <div class="stats">
 
         <div class="stat">
-            <div
-                class="stat-number"
-                id="totalCount">
-                0
-            </div>
-
-            <div class="stat-label">
-                Total Deliveries
-            </div>
+            <div class="stat-number" id="totalCount">0</div>
+            <div class="stat-label">Total Deliveries</div>
         </div>
 
         <div class="stat">
-            <div
-                class="stat-number"
-                id="acceptedCount">
-                0
-            </div>
-
-            <div class="stat-label">
-                Accepted
-            </div>
+            <div class="stat-number" id="acceptedCount">0</div>
+            <div class="stat-label">Accepted</div>
         </div>
 
         <div class="stat">
-            <div
-                class="stat-number"
-                id="progressCount">
-                0
-            </div>
-
-            <div class="stat-label">
-                In Progress
-            </div>
+            <div class="stat-number" id="progressCount">0</div>
+            <div class="stat-label">In Progress</div>
         </div>
 
         <div class="stat">
-            <div
-                class="stat-number"
-                id="completedCount">
-                0
-            </div>
-
-            <div class="stat-label">
-                Completed
-            </div>
+            <div class="stat-number" id="completedCount">0</div>
+            <div class="stat-label">Completed</div>
         </div>
 
     </div>
@@ -512,12 +484,18 @@ supabase.createClient(
 
 let deliveries = {};
 
+
+/* =========================
+   BASIC HELPERS
+========================= */
+
 function normalize(value){
 
     return String(value || "")
         .trim()
         .toLowerCase();
 }
+
 
 function escapeHtml(value){
 
@@ -528,6 +506,7 @@ function escapeHtml(value){
         .replace(/"/g,"&quot;")
         .replace(/'/g,"&#039;");
 }
+
 
 function formatMoney(value){
 
@@ -548,6 +527,7 @@ function formatMoney(value){
     return "₦" +
         amount.toLocaleString("en-NG");
 }
+
 
 function formatDate(value){
 
@@ -570,6 +550,11 @@ function formatDate(value){
     });
 }
 
+
+/* =========================
+   PAYMENT CHECK
+========================= */
+
 function isPaymentConfirmed(row){
 
     const paymentStatus =
@@ -581,6 +566,11 @@ function isPaymentConfirmed(row){
         !!row.paid_at
     );
 }
+
+
+/* =========================
+   PAYMENT BADGE
+========================= */
 
 function paymentBadge(row){
 
@@ -608,6 +598,11 @@ function paymentBadge(row){
         ⚪ Payment Not Submitted
     </span>`;
 }
+
+
+/* =========================
+   STATUS BADGE
+========================= */
 
 function statusBadge(status){
 
@@ -644,6 +639,11 @@ function statusBadge(status){
     </span>`;
 }
 
+
+/* =========================
+   APPROVAL BADGE
+========================= */
+
 function approvalBadge(row){
 
     const value =
@@ -670,6 +670,11 @@ function approvalBadge(row){
         🟠 Approval Pending
     </span>`;
 }
+
+
+/* =========================
+   LOAD DELIVERIES
+========================= */
 
 async function loadDeliveries(){
 
@@ -720,6 +725,11 @@ async function loadDeliveries(){
     renderDeliveries(data || []);
 }
 
+
+/* =========================
+   STATS
+========================= */
+
 function updateStats(rows){
 
     document.getElementById(
@@ -749,6 +759,11 @@ function updateStats(rows){
         ).length;
 }
 
+
+/* =========================
+   RENDER
+========================= */
+
 function renderDeliveries(rows){
 
     const list =
@@ -770,6 +785,11 @@ function renderDeliveries(rows){
         ).join("");
 }
 
+
+/* =========================
+   CREATE DELIVERY CARD
+========================= */
+
 function createCard(row){
 
     const code =
@@ -782,8 +802,7 @@ function createCard(row){
         isPaymentConfirmed(row);
 
     const fee =
-        row.delivery_fee ??
-        "";
+        row.delivery_fee ?? "";
 
     const customerPhone =
         row.phone ||
@@ -959,61 +978,32 @@ function createCard(row){
         ${warning}
 
 
+        <!-- STATUS CONTROLS -->
+
         <div class="actions">
 
-            <!-- ACCEPTED -->
-
             <button
+                type="button"
                 class="action status-accepted"
-                onclick="changeStatus(
-                    '${encodeURIComponent(code)}',
-                    'Accepted'
-                )"
-                ${
-                    status === "accepted" ||
-                    status === "in progress" ||
-                    status === "completed"
-                    ? "disabled"
-                    : ""
-                }
+                onclick="changeStatus('${encodeURIComponent(code)}','Accepted')"
             >
                 🔵 Accept Request
             </button>
 
 
-            <!-- IN PROGRESS -->
-
             <button
+                type="button"
                 class="action status-progress"
-                onclick="changeStatus(
-                    '${encodeURIComponent(code)}',
-                    'In Progress'
-                )"
-                ${
-                    status !== "accepted" ||
-                    !paymentConfirmed
-                    ? "disabled"
-                    : ""
-                }
+                onclick="changeStatus('${encodeURIComponent(code)}','In Progress')"
             >
                 🟡 In Progress
             </button>
 
 
-            <!-- COMPLETED -->
-
             <button
+                type="button"
                 class="action status-completed"
-                onclick="changeStatus(
-                    '${encodeURIComponent(code)}',
-                    'Completed'
-                )"
-                ${
-                    status !== "in progress" ||
-                    !paymentConfirmed
-                    ? "disabled"
-                    : ""
-                }
+                onclick="changeStatus('${encodeURIComponent(code)}','Completed')"
             >
                 🟢 Completed
             </button>
@@ -1021,22 +1011,22 @@ function createCard(row){
         </div>
 
 
+        <!-- OTHER CONTROLS -->
+
         <div class="actions">
 
             <button
+                type="button"
                 class="action whatsapp"
-                onclick="sendFeeWhatsApp(
-                    '${encodeURIComponent(code)}'
-                )"
+                onclick="sendFeeWhatsApp('${encodeURIComponent(code)}')"
             >
                 💬 Send Fee for Approval
             </button>
 
             <button
+                type="button"
                 class="action call"
-                onclick="callCustomer(
-                    '${encodeURIComponent(code)}'
-                )"
+                onclick="callCustomer('${encodeURIComponent(code)}')"
             >
                 📞 Call Customer
             </button>
@@ -1068,6 +1058,10 @@ function createCard(row){
 }
 
 
+/* =========================
+   SAVE FEE
+========================= */
+
 async function saveFee(encodedCode){
 
     const code =
@@ -1078,7 +1072,9 @@ async function saveFee(encodedCode){
 
     if(!row){
 
-        alert("Delivery request not found.");
+        alert(
+            "Delivery request not found."
+        );
 
         return;
     }
@@ -1090,7 +1086,9 @@ async function saveFee(encodedCode){
 
     if(!input){
 
-        alert("Fee field not found.");
+        alert(
+            "Fee field not found."
+        );
 
         return;
     }
@@ -1149,6 +1147,10 @@ async function saveFee(encodedCode){
 }
 
 
+/* =========================
+   CHANGE DELIVERY STATUS
+========================= */
+
 async function changeStatus(
     encodedCode,
     newStatus
@@ -1169,12 +1171,39 @@ async function changeStatus(
         return;
     }
 
+    const currentStatus =
+        normalize(row.status);
 
-    /*
-       ACCEPTED DOES NOT REQUIRE PAYMENT
-    */
+
+    /* =====================
+       ACCEPT REQUEST
+    ===================== */
 
     if(newStatus === "Accepted"){
+
+        if(
+            currentStatus === "accepted"
+        ){
+
+            alert(
+                "This delivery is already Accepted."
+            );
+
+            return;
+        }
+
+        if(
+            currentStatus === "in progress" ||
+            currentStatus === "completed"
+        ){
+
+            alert(
+                "This delivery has already moved beyond Accepted."
+            );
+
+            return;
+        }
+
 
         const {error} =
             await supabaseClient
@@ -1195,6 +1224,7 @@ async function changeStatus(
                 code
             );
 
+
         if(error){
 
             console.error(error);
@@ -1207,13 +1237,16 @@ async function changeStatus(
             return;
         }
 
+
         await loadDeliveries();
+
 
         const send =
             confirm(
-                "Delivery request accepted.\n\n" +
+                "Delivery request accepted successfully.\n\n" +
                 "Would you like to send the customer the delivery fee and approval link on WhatsApp now?"
             );
+
 
         if(send){
 
@@ -1226,21 +1259,38 @@ async function changeStatus(
     }
 
 
-    /*
-       IN PROGRESS REQUIRES PAYMENT
-    */
+    /* =====================
+       IN PROGRESS
+    ===================== */
 
     if(newStatus === "In Progress"){
 
-        if(!isPaymentConfirmed(row)){
+        if(
+            currentStatus !== "accepted"
+        ){
 
             alert(
-                "Payment has not been confirmed.\n\n" +
-                "Please verify the customer's payment first."
+                "The delivery must first be Accepted.\n\n" +
+                "Current status: " +
+                (row.status || "New Request")
             );
 
             return;
         }
+
+
+        if(
+            !isPaymentConfirmed(row)
+        ){
+
+            alert(
+                "Payment has not been confirmed yet.\n\n" +
+                "Please open Payment Verification from the Control Center and confirm the customer's payment first."
+            );
+
+            return;
+        }
+
 
         const {error} =
             await supabaseClient
@@ -1261,6 +1311,7 @@ async function changeStatus(
                 code
             );
 
+
         if(error){
 
             console.error(error);
@@ -1273,7 +1324,9 @@ async function changeStatus(
             return;
         }
 
+
         await loadDeliveries();
+
 
         alert(
             "Delivery is now In Progress."
@@ -1283,33 +1336,37 @@ async function changeStatus(
     }
 
 
-    /*
-       COMPLETED REQUIRES PAYMENT
-       AND DELIVERY MUST BE IN PROGRESS
-    */
+    /* =====================
+       COMPLETED
+    ===================== */
 
     if(newStatus === "Completed"){
 
         if(
-            normalize(row.status) !==
-            "in progress"
+            currentStatus !== "in progress"
         ){
 
             alert(
-                "The delivery must be In Progress before it can be Completed."
+                "The delivery must be In Progress before it can be Completed.\n\n" +
+                "Current status: " +
+                (row.status || "New Request")
             );
 
             return;
         }
 
-        if(!isPaymentConfirmed(row)){
+
+        if(
+            !isPaymentConfirmed(row)
+        ){
 
             alert(
-                "Payment has not been confirmed."
+                "Payment has not been confirmed yet."
             );
 
             return;
         }
+
 
         const {error} =
             await supabaseClient
@@ -1330,6 +1387,7 @@ async function changeStatus(
                 code
             );
 
+
         if(error){
 
             console.error(error);
@@ -1342,13 +1400,16 @@ async function changeStatus(
             return;
         }
 
+
         await loadDeliveries();
+
 
         const send =
             confirm(
-                "Delivery marked Completed.\n\n" +
+                "Delivery marked Completed successfully.\n\n" +
                 "Would you like to send the customer a WhatsApp completion message?"
             );
+
 
         if(send){
 
@@ -1357,9 +1418,16 @@ async function changeStatus(
                 "Completed"
             );
         }
+
+        return;
     }
+
 }
 
+
+/* =========================
+   NIGERIAN PHONE
+========================= */
 
 function normalizeNigeriaNumber(phone){
 
@@ -1386,6 +1454,10 @@ function normalizeNigeriaNumber(phone){
     return number;
 }
 
+
+/* =========================
+   FEE WHATSAPP
+========================= */
 
 function sendFeeWhatsApp(
     encodedCode
@@ -1509,6 +1581,10 @@ Fast • Simple • Reliable`;
 }
 
 
+/* =========================
+   STATUS WHATSAPP
+========================= */
+
 function sendStatusWhatsApp(
     code,
     status
@@ -1608,6 +1684,10 @@ Fast • Simple • Reliable`;
 }
 
 
+/* =========================
+   CALL CUSTOMER
+========================= */
+
 function callCustomer(
     encodedCode
 ){
@@ -1646,7 +1726,9 @@ function callCustomer(
 }
 
 
-/* Start */
+/* =========================
+   START
+========================= */
 
 loadDeliveries();
 
