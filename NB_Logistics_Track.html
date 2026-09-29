@@ -136,6 +136,7 @@ button:disabled{
     border-radius:10px;
     line-height:1.5;
     font-weight:600;
+    word-break:break-word;
 }
 
 .error{
@@ -782,24 +783,29 @@ function clearMessage(){
 
 
 /* =========================================
-   LOADING STATE
+   LOADING
 ========================================= */
 
 function setLoading(loading){
 
-    trackButton.disabled = loading;
+    trackButton.disabled =
+        loading;
 
     if(loading){
 
-        buttonText.style.display = "none";
+        buttonText.style.display =
+            "none";
 
-        loader.style.display = "block";
+        loader.style.display =
+            "block";
 
     }else{
 
-        buttonText.style.display = "inline";
+        buttonText.style.display =
+            "inline";
 
-        loader.style.display = "none";
+        loader.style.display =
+            "none";
 
     }
 
@@ -813,14 +819,18 @@ function setLoading(loading){
 function formatDate(value){
 
     if(!value){
+
         return "Not available";
+
     }
 
     const date =
         new Date(value);
 
     if(isNaN(date.getTime())){
+
         return value;
+
     }
 
     return date.toLocaleString(
@@ -854,7 +864,9 @@ function formatMoney(value){
         Number(value);
 
     if(isNaN(number)){
+
         return value;
+
     }
 
     return "₦" +
@@ -869,16 +881,12 @@ function formatMoney(value){
 
 function resetTimeline(){
 
-    const items = [
-
+    [
         "timelineNew",
         "timelineAccepted",
         "timelineProgress",
         "timelineCompleted"
-
-    ];
-
-    items.forEach(function(id){
+    ].forEach(function(id){
 
         const item =
             document.getElementById(id);
@@ -903,11 +911,8 @@ function updateTimeline(status){
     const order = {
 
         "New":0,
-
         "Accepted":1,
-
         "In Progress":2,
-
         "Completed":3
 
     };
@@ -916,7 +921,9 @@ function updateTimeline(status){
         order[status];
 
     if(current === undefined){
+
         return;
+
     }
 
     const ids = [
@@ -949,7 +956,7 @@ function updateTimeline(status){
 
 
 /* =========================================
-   GET STATUS MESSAGE
+   STATUS MESSAGE
 ========================================= */
 
 function getStatusMessage(data){
@@ -1070,6 +1077,7 @@ function displayDelivery(data){
             data.request_code
         );
 
+
     document.getElementById(
         "receiptButton"
     ).href =
@@ -1120,7 +1128,6 @@ async function trackDelivery(){
     resultBox.style.display =
         "none";
 
-
     const code =
         requestInput.value
         .trim()
@@ -1147,8 +1154,20 @@ async function trackDelivery(){
     try{
 
         console.log(
-            "Checking delivery:",
+            "Tracking request:",
             code
+        );
+
+
+        console.log(
+            "Supabase URL:",
+            SUPABASE_URL
+        );
+
+
+        console.log(
+            "Supabase client:",
+            supabaseClient
         );
 
 
@@ -1157,35 +1176,66 @@ async function trackDelivery(){
             error
         } =
         await supabaseClient
-        .from("delivery_requests")
-        .select("*")
-        .ilike(
-            "request_code",
-            code
-        )
-        .maybeSingle();
+            .from("delivery_requests")
+            .select("*")
+            .ilike(
+                "request_code",
+                code
+            )
+            .maybeSingle();
 
 
         console.log(
-            "Supabase response:",
-            {
-                data:data,
-                error:error
-            }
+            "SUPABASE DATA:",
+            data
+        );
+
+
+        console.log(
+            "SUPABASE ERROR:",
+            error
         );
 
 
         if(error){
 
+            const errorMessage =
+                error.message ||
+                "Unknown Supabase error";
+
+
+            const errorCode =
+                error.code ||
+                "No error code";
+
+
+            const errorStatus =
+                error.status ||
+                "No HTTP status";
+
+
             console.error(
-                "Supabase error:",
-                error
+                "SUPABASE ERROR DETAILS:",
+                {
+                    message:errorMessage,
+                    code:errorCode,
+                    status:errorStatus,
+                    details:error.details,
+                    hint:error.hint
+                }
             );
 
+
             showMessage(
-                "Unable to check your delivery right now. Please try again.",
+                "Supabase error: " +
+                errorMessage +
+                " | Code: " +
+                errorCode +
+                " | Status: " +
+                errorStatus,
                 "error"
             );
+
 
             return;
 
@@ -1195,9 +1245,9 @@ async function trackDelivery(){
         if(!data){
 
             showMessage(
-                "We could not find a delivery with request number " +
+                "We could not find delivery request " +
                 code +
-                ". Please check the number and try again.",
+                ". Please check the request number.",
                 "error"
             );
 
@@ -1218,13 +1268,17 @@ async function trackDelivery(){
     }catch(error){
 
         console.error(
-            "Unexpected tracking error:",
+            "TRACKING EXCEPTION:",
             error
         );
 
 
         showMessage(
-            "Unable to check your delivery right now. Please try again.",
+            "Tracking error: " +
+            (
+                error.message ||
+                String(error)
+            ),
             "error"
         );
 
@@ -1239,7 +1293,7 @@ async function trackDelivery(){
 
 
 /* =========================================
-   ENTER KEY SUPPORT
+   ENTER KEY
 ========================================= */
 
 requestInput.addEventListener(
