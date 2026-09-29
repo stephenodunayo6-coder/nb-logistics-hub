@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>NB Logistics Hub — Payment Verification</title>
+
+<meta
+    name="description"
+    content="NB Logistics Hub admin payment verification."
+>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+        linear-gradient(rgba(0,0,0,.68), rgba(0,0,0,.68)),
+        url("https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1600&q=80")
+        center/cover fixed no-repeat;
+    min-height: 100vh;
+    color: #1f2937;
+}
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: auto;
+    padding: 25px 15px 50px;
+}
+
+.header {
+    text-align: center;
+    color: white;
+    margin-bottom: 25px;
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.subtitle {
+    margin-top: 7px;
+    opacity: .95;
+}
+
+.dashboard {
+    background: rgba(255,255,255,.97);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.3);
+}
+
+h1 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 15px;
+    margin: 20px 0 25px;
+}
+
+.stat {
+    padding: 18px;
+    border-radius: 14px;
+    background: #f1f5f9;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 30px;
+    font-weight: 800;
+    margin-top: 5px;
+}
+
+.pending {
+    background: #fff7ed;
+}
+
+.confirmed {
+    background: #ecfdf5;
+}
+
+.rejected {
+    background: #fef2f2;
+}
+
+.section {
+    margin-top: 25px;
+}
+
+.section-title {
+    font-size: 21px;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.payment-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    background: white;
+}
+
+.payment-card.pending-card {
+    border-left: 6px solid #f59e0b;
+}
+
+.payment-card.confirmed-card {
+    border-left: 6px solid #16a34a;
+}
+
+.payment-card.rejected-card {
+    border-left: 6px solid #dc2626;
+}
+
+.request-code {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 10px;
+}
+
+.info {
+    background: #f8fafc;
+    padding: 11px;
+    border-radius: 9px;
+}
+
+.info strong {
+    display: block;
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.info span {
+    word-break: break-word;
+}
+
+.status {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 800;
+    margin-top: 12px;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-confirmed {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.confirm-btn {
+    background: #16a34a;
+    color: white;
+}
+
+.reject-btn {
+    background: #dc2626;
+    color: white;
+}
+
+.refresh-btn {
+    background: #334155;
+    color: white;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.empty {
+    padding: 30px;
+    text-align: center;
+    background: #f8fafc;
+    border-radius: 12px;
+    color: #64748b;
+}
+
+.loading {
+    text-align: center;
+    padding: 30px;
+}
+
+.error {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.notice {
+    background: #eff6ff;
+    border-left: 5px solid #2563eb;
+    padding: 14px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.footer {
+    text-align: center;
+    color: white;
+    font-size: 13px;
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 700px) {
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .actions {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard {
+        padding: 18px;
+    }
+
+    .logo {
+        font-size: 26px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <div class="logo">
+            🏍️ NB Logistics Hub
+        </div>
+
+        <div class="subtitle">
+            Admin Payment Verification
+        </div>
+
+    </div>
+
+
+    <div class="dashboard">
+
+        <h1>
+            Payment Verification
+        </h1>
+
+
+        <div class="notice">
+
+            <strong>Admin Notice:</strong>
+
+            This page displays payment notifications submitted by
+            customers. A payment should only be confirmed after
+            the actual OPay transfer has been verified.
+
+        </div>
+
+
+        <button
+            class="refresh-btn"
+            onclick="loadPayments()"
+        >
+            🔄 Refresh Payment Notifications
+        </button>
+
+
+        <div
+            id="errorBox"
+            class="error hidden"
+        ></div>
+
+
+        <!-- STATS -->
+
+        <div class="stats">
+
+            <div class="stat pending">
+
+                <div>
+                    🟠 Pending
+                </div>
+
+                <div
+                    id="pendingCount"
+                    class="stat-number"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat confirmed">
+
+                <div>
+                    🟢 Confirmed
+                </div>
+
+                <div
+                    id="confirmedCount"
+                    class="stat-number"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat rejected">
+
+                <div>
+                    🔴 Rejected
+                </div>
+
+                <div
+                    id="rejectedCount"
+                    class="stat-number"
+                >
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PENDING -->
+
+        <div class="section">
+
+            <div class="section-title">
+                🟠 Payment Notifications Awaiting Verification
+            </div>
+
+            <div id="pendingPayments">
+
+                <div class="loading">
+                    Loading...
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONFIRMED -->
+
+        <div class="section">
+
+            <div class="section-title">
+                🟢 Confirmed Payments
+            </div>
+
+            <div id="confirmedPayments">
+
+                <div class="loading">
+                    Loading...
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- REJECTED -->
+
+        <div class="section">
+
+            <div class="section-title">
+                🔴 Rejected Payments
+            </div>
+
+            <div id="rejectedPayments">
+
+                <div class="loading">
+                    Loading...
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+
+        © 2026 NB Logistics Hub — Ilorin, Kwara State
+
+    </div>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+    "https://kygkgcpuiwawatugkfne.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =====================================================
+   FORMAT CURRENCY
+===================================================== */
+
+function formatCurrency(value) {
+
+    return "₦" +
+        Number(value || 0)
+        .toLocaleString("en-NG");
+
+}
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatDate(value) {
+
+    if (!value) {
+        return "Not available";
+    }
+
+    try {
+
+        return new Date(value)
+            .toLocaleString(
+                "en-NG",
+                {
+                    dateStyle: "medium",
+                    timeStyle: "short"
+                }
+            );
+
+    } catch {
+
+        return value;
+
+    }
+
+}
+
+
+/* =====================================================
+   GET PAYMENT STATE
+===================================================== */
+
+function getPaymentState(row) {
+
+    /*
+       Confirmed:
+       payment_confirmed_at OR paid_at
+
+       Rejected:
+       payment_status = rejected
+
+       Pending:
+       payment_submitted_at exists
+       but payment has not been confirmed/rejected
+    */
+
+    if (
+        row.payment_confirmed_at ||
+        row.paid_at ||
+        String(row.payment_status || "")
+            .toLowerCase() === "confirmed"
+    ) {
+
+        return "confirmed";
+
+    }
+
+
+    if (
+        String(row.payment_status || "")
+            .toLowerCase() === "rejected"
+    ) {
+
+        return "rejected";
+
+    }
+
+
+    if (
+        row.payment_submitted_at
+    ) {
+
+        return "pending";
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =====================================================
+   LOAD PAYMENTS
+===================================================== */
+
+async function loadPayments() {
+
+    hideError();
+
+
+    document.getElementById(
+        "pendingPayments"
+    ).innerHTML =
+        '<div class="loading">Loading...</div>';
+
+
+    document.getElementById(
+        "confirmedPayments"
+    ).innerHTML =
+        '<div class="loading">Loading...</div>';
+
+
+    document.getElementById(
+        "rejectedPayments"
+    ).innerHTML =
+        '<div class="loading">Loading...</div>';
+
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("delivery_requests")
+            .select("*")
+            .not(
+                "payment_submitted_at",
+                "is",
+                null
+            )
+            .order(
+                "payment_submitted_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+        if (error) {
+
+            console.error(error);
+
+            showError(
+                "Unable to load payment notifications: " +
+                error.message
+            );
+
+            return;
+
+        }
+
+
+        const rows =
+            data || [];
+
+
+        const pending =
+            rows.filter(
+                row =>
+                    getPaymentState(row)
+                    === "pending"
+            );
+
+
+        const confirmed =
+            rows.filter(
+                row =>
+                    getPaymentState(row)
+                    === "confirmed"
+            );
+
+
+        const rejected =
+            rows.filter(
+                row =>
+                    getPaymentState(row)
+                    === "rejected"
+            );
+
+
+        document.getElementById(
+            "pendingCount"
+        ).textContent =
+            pending.length;
+
+
+        document.getElementById(
+            "confirmedCount"
+        ).textContent =
+            confirmed.length;
+
+
+        document.getElementById(
+            "rejectedCount"
+        ).textContent =
+            rejected.length;
+
+
+        renderPayments(
+            pending,
+            "pendingPayments",
+            "pending"
+        );
+
+
+        renderPayments(
+            confirmed,
+            "confirmedPayments",
+            "confirmed"
+        );
+
+
+        renderPayments(
+            rejected,
+            "rejectedPayments",
+            "rejected"
+        );
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        showError(
+            "An unexpected error occurred."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   RENDER PAYMENT CARDS
+===================================================== */
+
+function renderPayments(
+    payments,
+    elementId,
+    state
+) {
+
+    const container =
+        document.getElementById(
+            elementId
+        );
+
+
+    if (!payments.length) {
+
+        container.innerHTML =
+            '<div class="empty">No payments in this section.</div>';
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        payments
+            .map(
+                row =>
+                    createPaymentCard(
+                        row,
+                        state
+                    )
+            )
+            .join("");
+
+}
+
+
+/* =====================================================
+   CREATE PAYMENT CARD
+===================================================== */
+
+function createPaymentCard(
+    row,
+    state
+) {
+
+    const customer =
+        row.customer_name ||
+        "Not provided";
+
+
+    const phone =
+        row.phone ||
+        row.phone_number ||
+        row.whatsapp ||
+        "Not provided";
+
+
+    const packageDetails =
+        row.package_details ||
+        row.package ||
+        row.goods ||
+        row.package_description ||
+        "Not provided";
+
+
+    let statusHTML = "";
+
+
+    if (state === "pending") {
+
+        statusHTML =
+            '<span class="status status-pending">' +
+            'PAYMENT NOTIFICATION PENDING' +
+            '</span>';
+
+    }
+
+
+    if (state === "confirmed") {
+
+        statusHTML =
+            '<span class="status status-confirmed">' +
+            'PAYMENT CONFIRMED' +
+            '</span>';
+
+    }
+
+
+    if (state === "rejected") {
+
+        statusHTML =
+            '<span class="status status-rejected">' +
+            'PAYMENT REJECTED' +
+            '</span>';
+
+    }
+
+
+    let actions = "";
+
+
+    if (state === "pending") {
+
+        actions = `
+
+            <div class="actions">
+
+                <button
+                    class="confirm-btn"
+                    onclick="confirmPayment('${row.request_code}')"
+                >
+                    ✓ Confirm Payment
+                </button>
+
+                <button
+                    class="reject-btn"
+                    onclick="rejectPayment('${row.request_code}')"
+                >
+                    ✕ Reject Payment
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+
+    return `
+
+        <div class="payment-card ${state}-card">
+
+            <div class="request-code">
+
+                ${escapeHTML(
+                    row.request_code || "No request number"
+                )}
+
+            </div>
+
+
+            <div class="info-grid">
+
+                <div class="info">
+
+                    <strong>Customer</strong>
+
+                    <span>
+                        ${escapeHTML(customer)}
+                    </span>
+
+                </div>
+
+
+                <div class="info">
+
+                    <strong>Phone</strong>
+
+                    <span>
+                        ${escapeHTML(phone)}
+                    </span>
+
+                </div>
+
+
+                <div class="info">
+
+                    <strong>Pickup</strong>
+
+                    <span>
+                        ${escapeHTML(
+                            row.pickup_location ||
+                            "Not provided"
+                        )}
+                    </span>
+
+                </div>
+
+
+                <div class="info">
+
+                    <strong>Destination</strong>
+
+                    <span>
+                        ${escapeHTML(
+                            row.delivery_location ||
+                            "Not provided"
+                        )}
+                    </span>
+
+                </div>
+
+
+                <div class="info">
+
+                    <strong>Package</strong>
+
+                    <span>
+                        ${escapeHTML(packageDetails)}
+                    </span>
+
+                </div>
+
+
+                <div class="info">
+
+                    <strong>Delivery Fee</strong>
+
+                    <span>
+                        ${formatCurrency(
+                            row.delivery_fee
+                        )}
+                    </span>
+
+                </div>
+
+
+                <div class="info">
+
+                    <strong>Payment Method</strong>
+
+                    <span>
+                        ${escapeHTML(
+                            row.payment_method ||
+                            "Not provided"
+                        )}
+                    </span>
+
+                </div>
+
+
+                <div class="info">
+
+                    <strong>Payment Submitted</strong>
+
+                    <span>
+                        ${formatDate(
+                            row.payment_submitted_at
+                        )}
+                    </span>
+
+                </div>
+
+
+                ${
+                    row.payment_confirmed_at
+                    ?
+                    `
+
+                    <div class="info">
+
+                        <strong>Payment Confirmed</strong>
+
+                        <span>
+                            ${formatDate(
+                                row.payment_confirmed_at
+                            )}
+                        </span>
+
+                    </div>
+
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+
+
+            ${statusHTML}
+
+            ${actions}
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   CONFIRM PAYMENT
+===================================================== */
+
+async function confirmPayment(
+    requestCode
+) {
+
+    const confirmed =
+        confirm(
+            "Have you verified the actual OPay transfer for " +
+            requestCode +
+            "?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const now =
+            new Date().toISOString();
+
+
+        const {
+            error
+        } = await supabaseClient
+            .from("delivery_requests")
+            .update({
+
+                payment_status:
+                    "confirmed",
+
+                payment_confirmed_at:
+                    now,
+
+                paid_at:
+                    now
+
+            })
+            .eq(
+                "request_code",
+                requestCode
+            );
+
+
+        if (error) {
+
+            console.error(error);
+
+            alert(
+                "Payment confirmation failed:\n\n" +
+                error.message
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            "Payment confirmed successfully."
+        );
+
+
+        await loadPayments();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "An unexpected error occurred."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   REJECT PAYMENT
+===================================================== */
+
+async function rejectPayment(
+    requestCode
+) {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to reject the payment notification for " +
+            requestCode +
+            "?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const {
+            error
+        } = await supabaseClient
+            .from("delivery_requests")
+            .update({
+
+                payment_status:
+                    "rejected"
+
+            })
+            .eq(
+                "request_code",
+                requestCode
+            );
+
+
+        if (error) {
+
+            console.error(error);
+
+            alert(
+                "Payment rejection failed:\n\n" +
+                error.message
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            "Payment notification rejected."
+        );
+
+
+        await loadPayments();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "An unexpected error occurred."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+function showError(message) {
+
+    const box =
+        document.getElementById(
+            "errorBox"
+        );
+
+    box.textContent =
+        message;
+
+    box.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+function hideError() {
+
+    document.getElementById(
+        "errorBox"
+    ).classList.add(
+        "hidden"
+    );
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    loadPayments
+);
+
+</script>
+
+</body>
+
+</html>
