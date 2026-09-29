@@ -10,12 +10,18 @@
 
 <title>NB Logistics Hub — Customer Approval</title>
 
-<meta name="description"
-      content="Review and approve your NB Logistics Hub delivery request.">
+<meta
+    name="description"
+    content="Review and approve your NB Logistics Hub delivery request."
+>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
+/* =====================================================
+   GLOBAL
+===================================================== */
 
 *{
     box-sizing:border-box;
@@ -23,8 +29,9 @@
 
 body{
     margin:0;
+    padding:0;
     font-family:Arial,Helvetica,sans-serif;
-    background:linear-gradient(135deg,#f4f7fb,#e8eef7);
+    background:#f4f7fb;
     color:#172033;
 }
 
@@ -32,239 +39,322 @@ body{
     width:100%;
     max-width:760px;
     margin:0 auto;
-    padding:25px 16px 50px;
+    padding:20px;
 }
 
-/* HEADER */
+/* =====================================================
+   HEADER
+===================================================== */
 
 .header{
+    background:#123c69;
+    color:#ffffff;
+    padding:28px 20px;
+    text-align:center;
+}
+
+.header h1{
+    margin:0;
+    font-size:28px;
+    font-weight:800;
+}
+
+.header p{
+    margin:8px 0 0;
+    font-size:15px;
+    opacity:.9;
+}
+
+/* =====================================================
+   MAIN CARD
+===================================================== */
+
+.main-card{
+    background:#ffffff;
+    margin-top:25px;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 8px 30px rgba(0,0,0,.08);
+}
+
+.page-title{
     text-align:center;
     margin-bottom:25px;
 }
 
-.logo{
-    font-size:28px;
-    font-weight:800;
-    color:#123c69;
-}
-
-.location{
-    color:#667085;
-    margin-top:5px;
-}
-
-.title{
-    margin-top:20px;
+.page-title h2{
+    margin:0;
     font-size:25px;
-    font-weight:800;
-}
-
-/* CARD */
-
-.card{
-    background:#fff;
-    border-radius:18px;
-    padding:25px;
-    margin-bottom:20px;
-    box-shadow:0 8px 30px rgba(0,0,0,.08);
-}
-
-.card h2{
-    margin-top:0;
     color:#123c69;
-    font-size:20px;
 }
 
-/* SEARCH */
+.page-title p{
+    margin:8px 0 0;
+    color:#667085;
+}
+
+/* =====================================================
+   SEARCH
+===================================================== */
 
 .search-box{
-    display:flex;
-    gap:10px;
-    margin-top:15px;
+    margin-bottom:20px;
 }
 
-.search-box input{
+.search-box label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:700;
+}
+
+.search-row{
+    display:flex;
+    gap:10px;
+}
+
+.search-row input{
     flex:1;
+    min-width:0;
     padding:15px;
     border:1px solid #d0d5dd;
     border-radius:10px;
     font-size:16px;
-    text-transform:uppercase;
     outline:none;
 }
 
-.search-box input:focus{
+.search-row input:focus{
     border-color:#123c69;
-}
-
-button{
-    border:0;
-    cursor:pointer;
-    border-radius:10px;
-    font-size:16px;
-    font-weight:700;
-    padding:14px 20px;
-}
-
-button:disabled{
-    opacity:.6;
-    cursor:not-allowed;
+    box-shadow:0 0 0 3px rgba(18,60,105,.10);
 }
 
 .search-btn{
+    border:none;
     background:#123c69;
-    color:#fff;
+    color:#ffffff;
+    padding:0 22px;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
 }
 
 .search-btn:hover{
     background:#0d2e51;
 }
 
-/* DETAILS */
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading{
+    display:none;
+    text-align:center;
+    padding:20px;
+    color:#123c69;
+    font-weight:700;
+}
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.error-box{
+    display:none;
+    background:#fff1f1;
+    color:#b42318;
+    border:1px solid #f3b5b5;
+    padding:15px;
+    border-radius:10px;
+    margin-top:15px;
+    line-height:1.5;
+}
+
+/* =====================================================
+   REQUEST CARD
+===================================================== */
+
+.request-card{
+    display:none;
+    margin-top:25px;
+}
 
 .request-number{
     background:#eef5ff;
-    color:#123c69;
-    padding:14px;
-    border-radius:10px;
-    font-size:18px;
-    font-weight:800;
+    border:1px solid #d7e7ff;
+    padding:18px;
+    border-radius:12px;
     text-align:center;
     margin-bottom:20px;
 }
 
-.detail{
-    display:flex;
-    justify-content:space-between;
-    gap:20px;
-    padding:13px 0;
-    border-bottom:1px solid #edf0f4;
-}
-
-.detail:last-child{
-    border-bottom:none;
-}
-
-.label{
+.request-number span{
+    display:block;
+    font-size:13px;
     color:#667085;
+    margin-bottom:6px;
 }
 
-.value{
+.request-number strong{
+    font-size:22px;
+    color:#123c69;
+}
+
+/* =====================================================
+   DELIVERY INFORMATION
+===================================================== */
+
+.section-title{
+    font-size:19px;
+    color:#123c69;
+    font-weight:800;
+    margin:25px 0 12px;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.info-box{
+    background:#f8fafc;
+    border:1px solid #eaecf0;
+    padding:15px;
+    border-radius:10px;
+}
+
+.info-box.full{
+    grid-column:1 / -1;
+}
+
+.info-label{
+    display:block;
+    color:#667085;
+    font-size:13px;
+    margin-bottom:6px;
+}
+
+.info-value{
     font-weight:700;
-    text-align:right;
+    color:#172033;
+    word-break:break-word;
 }
 
-/* FEE */
+/* =====================================================
+   DELIVERY FEE
+===================================================== */
 
 .fee-box{
-    background:#f0fff5;
-    border:1px solid #b7ebc6;
-    border-radius:14px;
+    margin-top:20px;
     padding:20px;
+    border-radius:14px;
+    background:#f0fdf4;
+    border:1px solid #bbf7d0;
     text-align:center;
-    margin:20px 0;
 }
 
 .fee-label{
-    color:#667085;
-    font-size:15px;
-}
-
-.fee{
-    font-size:32px;
-    font-weight:900;
-    color:#138a43;
-    margin-top:5px;
-}
-
-/* APPROVAL */
-
-.approval-box{
-    text-align:center;
-    background:#fffaf0;
-    border:1px solid #f3d99a;
-    border-radius:15px;
-    padding:22px;
-    margin-top:20px;
-}
-
-.approval-box h3{
-    margin-top:0;
-    font-size:21px;
-}
-
-.approval-box p{
-    color:#667085;
-    line-height:1.6;
-}
-
-.actions{
-    display:flex;
-    gap:12px;
-    margin-top:20px;
-}
-
-.approve-btn{
-    flex:1;
-    background:#138a43;
-    color:#fff;
-}
-
-.decline-btn{
-    flex:1;
-    background:#fff;
-    color:#b42318;
-    border:1px solid #f0b5b0;
-}
-
-.approve-btn:hover{
-    background:#0e7036;
-}
-
-.decline-btn:hover{
-    background:#fff5f4;
-}
-
-/* STATUS */
-
-.status-box{
-    padding:18px;
-    border-radius:12px;
-    margin-top:20px;
-    text-align:center;
+    color:#166534;
+    font-size:14px;
     font-weight:700;
 }
 
+.fee-value{
+    margin-top:7px;
+    color:#15803d;
+    font-size:30px;
+    font-weight:900;
+}
+
+/* =====================================================
+   ACTION AREA
+===================================================== */
+
+.action-area{
+    margin-top:25px;
+}
+
+.approve-btn,
+.decline-btn{
+    width:100%;
+    border:none;
+    padding:17px;
+    border-radius:12px;
+    font-size:17px;
+    font-weight:800;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+.approve-btn{
+    background:#15803d;
+    color:#ffffff;
+}
+
+.approve-btn:hover{
+    background:#166534;
+}
+
+.decline-btn{
+    background:#ffffff;
+    color:#b42318;
+    border:1px solid #efb2b2;
+}
+
+.decline-btn:hover{
+    background:#fff5f5;
+}
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status-box{
+    margin-top:20px;
+    padding:16px;
+    border-radius:12px;
+    text-align:center;
+    font-weight:800;
+    font-size:16px;
+}
+
 .status-pending{
-    background:#fff8e6;
-    color:#8a5a00;
+    background:#fff7ed;
+    color:#c2410c;
+    border:1px solid #fed7aa;
 }
 
 .status-approved{
     background:#ecfdf3;
-    color:#087443;
+    color:#15803d;
+    border:1px solid #bbf7d0;
 }
 
 .status-declined{
-    background:#fff1f0;
-    color:#b42318;
+    background:#fff1f2;
+    color:#be123c;
+    border:1px solid #fecdd3;
 }
 
-/* SUCCESS */
+/* =====================================================
+   SUCCESS
+===================================================== */
 
-.success{
+.success-box{
     display:none;
-    background:#ecfdf3;
-    color:#087443;
-    border:1px solid #a6e5bf;
-    border-radius:12px;
-    padding:18px;
-    text-align:center;
     margin-top:20px;
+    padding:18px;
+    border-radius:12px;
+    background:#ecfdf3;
+    border:1px solid #bbf7d0;
+    color:#166534;
     line-height:1.6;
+    text-align:center;
 }
 
-/* PAYMENT AREA */
+/* =====================================================
+   PAYMENT AREA
+===================================================== */
 
 .payment-area{
     margin-top:20px;
@@ -273,13 +363,13 @@ button:disabled{
 .payment-btn{
     display:block;
     width:100%;
-    padding:18px 20px;
+    padding:19px 20px;
     background:#123c69;
     color:#ffffff;
     text-align:center;
     text-decoration:none;
     border-radius:12px;
-    font-size:18px;
+    font-size:19px;
     font-weight:800;
     box-shadow:0 8px 20px rgba(18,60,105,.22);
     transition:all .2s ease;
@@ -295,123 +385,90 @@ button:disabled{
     color:#667085;
     font-size:14px;
     margin-top:10px;
+    line-height:1.5;
 }
 
-/* LOADING */
+/* =====================================================
+   WHATSAPP
+===================================================== */
 
-.loading{
-    display:none;
+.whatsapp-box{
+    margin-top:25px;
     text-align:center;
-    padding:30px;
-}
-
-.spinner{
-    width:38px;
-    height:38px;
-    border:4px solid #dbe4ef;
-    border-top:4px solid #123c69;
-    border-radius:50%;
-    animation:spin 1s linear infinite;
-    margin:0 auto 12px;
-}
-
-@keyframes spin{
-
-    to{
-        transform:rotate(360deg);
-    }
-
-}
-
-/* ERROR */
-
-.error{
-    display:none;
-    background:#fff1f0;
-    color:#b42318;
-    border:1px solid #f3b8b3;
+    padding:18px;
+    background:#f8fafc;
     border-radius:12px;
-    padding:16px;
-    text-align:center;
-    margin-top:20px;
 }
 
-/* WHATSAPP */
-
-.whatsapp{
-    display:block;
-    text-align:center;
-    text-decoration:none;
+.whatsapp-btn{
+    display:inline-block;
+    margin-top:10px;
+    padding:13px 20px;
     background:#25D366;
-    color:#fff;
-    padding:15px;
+    color:#ffffff;
+    text-decoration:none;
     border-radius:10px;
-    font-weight:700;
-    margin-top:20px;
+    font-weight:800;
 }
 
-.whatsapp:hover{
-    background:#1ebe5d;
-}
-
-/* FOOTER */
+/* =====================================================
+   FOOTER
+===================================================== */
 
 .footer{
     text-align:center;
+    padding:30px 15px;
     color:#667085;
-    font-size:14px;
-    line-height:1.7;
-    margin-top:25px;
+    font-size:13px;
+    line-height:1.6;
 }
 
-/* MOBILE */
+/* =====================================================
+   MOBILE
+===================================================== */
 
 @media(max-width:600px){
 
     .container{
-        padding:18px 12px 40px;
+        padding:12px;
     }
 
-    .logo{
-        font-size:24px;
+    .header{
+        padding:24px 15px;
     }
 
-    .title{
+    .header h1{
+        font-size:23px;
+    }
+
+    .main-card{
+        padding:18px;
+        border-radius:14px;
+    }
+
+    .page-title h2{
         font-size:22px;
     }
 
-    .card{
-        padding:18px;
-    }
-
-    .search-box{
+    .search-row{
         flex-direction:column;
     }
 
     .search-btn{
         width:100%;
+        padding:15px;
     }
 
-    .detail{
-        flex-direction:column;
-        gap:5px;
+    .info-grid{
+        grid-template-columns:1fr;
     }
 
-    .value{
-        text-align:left;
+    .info-box.full{
+        grid-column:auto;
     }
 
-    .actions{
-        flex-direction:column;
-    }
-
-    .fee{
-        font-size:28px;
-    }
-
-    .payment-btn{
-        font-size:17px;
-        padding:17px;
+    .fee-value{
+        font-size:27px;
     }
 
 }
@@ -423,65 +480,69 @@ button:disabled{
 
 <body>
 
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <h1>NB Logistics Hub</h1>
+
+    <p>
+        Ilorin, Kwara State, Nigeria
+    </p>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
 <div class="container">
 
+<div class="main-card">
 
-    <!-- HEADER -->
 
-    <div class="header">
+    <!-- PAGE TITLE -->
 
-        <div class="logo">
-            NB Logistics Hub
-        </div>
+    <div class="page-title">
 
-        <div class="location">
-            Ilorin, Kwara State, Nigeria
-        </div>
+        <h2>Customer Approval</h2>
 
-        <div class="title">
-            Customer Approval
-        </div>
+        <p>
+            Review your delivery request and approve the delivery fee.
+        </p>
 
     </div>
 
 
-    <!-- SEARCH CARD -->
+    <!-- SEARCH -->
 
-    <div class="card">
+    <div class="search-box">
 
-        <h2>
-            Review Your Delivery Request
-        </h2>
+        <label for="requestInput">
+            Delivery Request Number
+        </label>
 
-        <p>
-            Enter your delivery request number below to review
-            the delivery details and approve the delivery fee.
-        </p>
-
-
-        <div class="search-box">
+        <div class="search-row">
 
             <input
-                id="requestInput"
                 type="text"
-                placeholder="NB-20260929-9340"
+                id="requestInput"
+                placeholder="Example: NB-20260929-9340"
                 autocomplete="off"
             >
 
             <button
                 class="search-btn"
-                id="searchBtn"
                 onclick="loadRequest()"
+                id="searchButton"
             >
                 Check Request
             </button>
 
-        </div>
-
-
-        <div
-            class="error"
-            id="errorBox">
         </div>
 
     </div>
@@ -490,135 +551,154 @@ button:disabled{
     <!-- LOADING -->
 
     <div
+        id="loading"
         class="loading"
-        id="loading">
-
-        <div class="spinner"></div>
-
-        <div>
-            Checking your delivery request...
-        </div>
-
+    >
+        Checking your delivery request...
     </div>
+
+
+    <!-- ERROR -->
+
+    <div
+        id="errorBox"
+        class="error-box"
+    ></div>
 
 
     <!-- REQUEST CARD -->
 
     <div
-        class="card"
         id="requestCard"
-        style="display:none;"
+        class="request-card"
     >
 
 
-        <div
-            class="request-number"
-            id="requestNumber">
+        <!-- REQUEST NUMBER -->
+
+        <div class="request-number">
+
+            <span>
+                Delivery Request Number
+            </span>
+
+            <strong id="requestNumber">
+                —
+            </strong>
+
         </div>
 
 
-        <h2>
+        <!-- DELIVERY INFORMATION -->
+
+        <div class="section-title">
             Delivery Information
-        </h2>
+        </div>
 
 
-        <!-- CUSTOMER -->
+        <div class="info-grid">
 
-        <div class="detail">
 
-            <span class="label">
-                Customer
-            </span>
+            <div class="info-box">
 
-            <span
-                class="value"
-                id="customerName">
-            </span>
+                <span class="info-label">
+                    Customer
+                </span>
+
+                <div
+                    class="info-value"
+                    id="customerName"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <span class="info-label">
+                    Phone
+                </span>
+
+                <div
+                    class="info-value"
+                    id="phone"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <span class="info-label">
+                    Pickup Location
+                </span>
+
+                <div
+                    class="info-value"
+                    id="pickup"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <span class="info-label">
+                    Delivery Location
+                </span>
+
+                <div
+                    class="info-value"
+                    id="destination"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="info-box full">
+
+                <span class="info-label">
+                    Package / Goods
+                </span>
+
+                <div
+                    class="info-value"
+                    id="package"
+                >
+                    —
+                </div>
+
+            </div>
+
+
+            <div class="info-box full">
+
+                <span class="info-label">
+                    Preferred Time
+                </span>
+
+                <div
+                    class="info-value"
+                    id="preferredTime"
+                >
+                    —
+                </div>
+
+            </div>
+
 
         </div>
 
 
-        <!-- PHONE -->
-
-        <div class="detail">
-
-            <span class="label">
-                Phone
-            </span>
-
-            <span
-                class="value"
-                id="phone">
-            </span>
-
-        </div>
-
-
-        <!-- PICKUP -->
-
-        <div class="detail">
-
-            <span class="label">
-                Pickup Location
-            </span>
-
-            <span
-                class="value"
-                id="pickup">
-            </span>
-
-        </div>
-
-
-        <!-- DESTINATION -->
-
-        <div class="detail">
-
-            <span class="label">
-                Delivery Location
-            </span>
-
-            <span
-                class="value"
-                id="destination">
-            </span>
-
-        </div>
-
-
-        <!-- PACKAGE -->
-
-        <div class="detail">
-
-            <span class="label">
-                Package / Goods
-            </span>
-
-            <span
-                class="value"
-                id="package">
-            </span>
-
-        </div>
-
-
-        <!-- TIME -->
-
-        <div class="detail">
-
-            <span class="label">
-                Preferred Time
-            </span>
-
-            <span
-                class="value"
-                id="preferredTime">
-            </span>
-
-        </div>
-
-
-        <!-- FEE -->
+        <!-- DELIVERY FEE -->
 
         <div class="fee-box">
 
@@ -627,119 +707,101 @@ button:disabled{
             </div>
 
             <div
-                class="fee"
-                id="deliveryFee">
+                class="fee-value"
+                id="deliveryFee"
+            >
+                ₦0
             </div>
 
         </div>
 
 
-        <!-- APPROVAL BOX -->
+        <!-- APPROVAL ACTIONS -->
 
-        <div class="approval-box">
-
-            <h3>
-                Do you approve this delivery?
-            </h3>
-
-            <p>
-                Please review the delivery information and
-                delivery fee above before confirming.
-            </p>
-
-
-            <div id="actionArea">
-
-                <div class="actions">
-
-                    <button
-                        class="approve-btn"
-                        onclick="approveRequest()"
-                    >
-                        ✓ Accept & Proceed
-                    </button>
-
-
-                    <button
-                        class="decline-btn"
-                        onclick="declineRequest()"
-                    >
-                        Decline
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
+        <div
+            id="actionArea"
+            class="action-area"
+        ></div>
 
 
         <!-- SUCCESS MESSAGE -->
 
         <div
-            class="success"
-            id="successBox">
-        </div>
+            id="successBox"
+            class="success-box"
+        ></div>
 
 
-        <!-- APPROVAL STATUS -->
+        <!-- STATUS -->
 
         <div
-            class="status-box status-pending"
             id="statusBox"
+            class="status-box status-pending"
         >
             Approval Status: Pending
         </div>
 
 
-        <!-- PAYMENT BUTTON -->
+        <!-- =================================================
+             PAYMENT BUTTON AREA
+        ================================================== -->
 
         <div
+            id="paymentArea"
             class="payment-area"
-            id="paymentArea">
-        </div>
+        ></div>
 
 
         <!-- WHATSAPP -->
 
-        <a
-            class="whatsapp"
-            href="https://wa.me/2349150798901"
-            target="_blank"
-        >
-            💬 Need Help? Contact NB Logistics Hub
-        </a>
+        <div class="whatsapp-box">
 
-    </div>
+            Need help with your delivery?
 
+            <br>
 
-    <!-- FOOTER -->
+            <a
+                class="whatsapp-btn"
+                href="https://wa.me/2349150798901"
+                target="_blank"
+            >
+                💬 Contact NB Logistics Hub on WhatsApp
+            </a>
 
-    <div class="footer">
+        </div>
 
-        Thank you for choosing
-        <strong>NB Logistics Hub.</strong>
-
-        <br>
-
-        For enquiries or support:
-        <strong>09150798901</strong>
-
-        <br><br>
-
-        © 2026 NB Logistics Hub —
-        Ilorin, Kwara State, Nigeria
 
     </div>
 
 </div>
 
 
+<!-- FOOTER -->
+
+<div class="footer">
+
+    NB Logistics Hub — Ilorin, Kwara State, Nigeria
+
+    <br>
+
+    WhatsApp Support:
+    <strong>09150798901</strong>
+
+    <br><br>
+
+    © 2026 NB Logistics Hub. All rights reserved.
+
+</div>
+
+
+</div>
+
+
 <script>
 
-/* ==========================================
+/* =====================================================
    SUPABASE
-========================================== */
+===================================================== */
 
 const SUPABASE_URL =
     "https://kygkgcpuiwawatugkfne.supabase.co";
@@ -754,59 +816,16 @@ const supabaseClient =
     );
 
 
-/* ==========================================
-   CURRENT REQUEST
-========================================== */
+/* =====================================================
+   GLOBAL CURRENT REQUEST
+===================================================== */
 
 let currentRequest = null;
 
 
-/* ==========================================
-   FORMAT MONEY
-========================================== */
-
-function formatMoney(value){
-
-    const number =
-        Number(value || 0);
-
-    return "₦" +
-        number.toLocaleString("en-NG");
-
-}
-
-
-/* ==========================================
-   FORMAT TIME
-========================================== */
-
-function formatPreferredTime(value){
-
-    if(!value){
-        return "—";
-    }
-
-    const date =
-        new Date(value);
-
-    if(isNaN(date.getTime())){
-        return value;
-    }
-
-    return date.toLocaleString(
-        "en-NG",
-        {
-            dateStyle:"medium",
-            timeStyle:"short"
-        }
-    );
-
-}
-
-
-/* ==========================================
+/* =====================================================
    GET REQUEST NUMBER FROM URL
-========================================== */
+===================================================== */
 
 function getRequestFromURL(){
 
@@ -816,17 +835,11 @@ function getRequestFromURL(){
         );
 
     return (
-
         params.get("request") ||
-
         params.get("request_number") ||
-
         params.get("requestCode") ||
-
         params.get("id") ||
-
         ""
-
     )
     .trim()
     .toUpperCase();
@@ -834,47 +847,79 @@ function getRequestFromURL(){
 }
 
 
-/* ==========================================
+/* =====================================================
+   FORMAT MONEY
+===================================================== */
+
+function formatMoney(value){
+
+    const number =
+        Number(value || 0);
+
+    return "₦" +
+        number.toLocaleString(
+            "en-NG"
+        );
+
+}
+
+
+/* =====================================================
    LOAD REQUEST
-========================================== */
+===================================================== */
 
 async function loadRequest(){
 
-    const input =
+    const requestInput =
         document.getElementById(
             "requestInput"
         );
-
-    const requestCode =
-        input.value
-        .trim()
-        .toUpperCase();
-
-
-    const errorBox =
-        document.getElementById(
-            "errorBox"
-        );
-
-
-    const loading =
-        document.getElementById(
-            "loading"
-        );
-
 
     const requestCard =
         document.getElementById(
             "requestCard"
         );
 
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+    const errorBox =
+        document.getElementById(
+            "errorBox"
+        );
+
+    const searchButton =
+        document.getElementById(
+            "searchButton"
+        );
+
+    const requestCode =
+        requestInput.value
+            .trim()
+            .toUpperCase();
+
+
+    /* RESET */
 
     errorBox.style.display =
         "none";
 
+    errorBox.textContent =
+        "";
 
     requestCard.style.display =
         "none";
+
+    loading.style.display =
+        "block";
+
+    searchButton.disabled =
+        true;
+
+    searchButton.textContent =
+        "Checking...";
 
 
     if(!requestCode){
@@ -883,27 +928,25 @@ async function loadRequest(){
             "Please enter your delivery request number."
         );
 
+        loading.style.display =
+            "none";
+
+        searchButton.disabled =
+            false;
+
+        searchButton.textContent =
+            "Check Request";
+
         return;
 
     }
 
 
-    loading.style.display =
-        "block";
-
-
-    document.getElementById(
-        "searchBtn"
-    ).disabled = true;
-
-
     try{
 
         const {
-
             data,
             error
-
         } = await supabaseClient
 
             .from("delivery_requests")
@@ -919,6 +962,11 @@ async function loadRequest(){
 
 
         if(error){
+
+            console.error(
+                "Supabase error:",
+                error
+            );
 
             throw error;
 
@@ -936,197 +984,146 @@ async function loadRequest(){
         }
 
 
+        /* SAVE REQUEST */
+
         currentRequest =
             data;
 
 
-        displayRequest(
-            data
+        /* DISPLAY DATA */
+
+        document.getElementById(
+            "requestNumber"
+        ).textContent =
+            data.request_code || "—";
+
+
+        document.getElementById(
+            "customerName"
+        ).textContent =
+            data.customer_name || "—";
+
+
+        document.getElementById(
+            "phone"
+        ).textContent =
+            data.phone ||
+            data.phone_number ||
+            data.whatsapp ||
+            "—";
+
+
+        document.getElementById(
+            "pickup"
+        ).textContent =
+            data.pickup_location || "—";
+
+
+        document.getElementById(
+            "destination"
+        ).textContent =
+            data.delivery_location || "—";
+
+
+        document.getElementById(
+            "package"
+        ).textContent =
+            data.package_details || "—";
+
+
+        document.getElementById(
+            "preferredTime"
+        ).textContent =
+            data.preferred_time || "—";
+
+
+        document.getElementById(
+            "deliveryFee"
+        ).textContent =
+            formatMoney(
+                data.delivery_fee
+            );
+
+
+        /* SHOW REQUEST */
+
+        requestCard.style.display =
+            "block";
+
+
+        /* UPDATE APPROVAL */
+
+        updateApprovalDisplay(
+            data.customer_approval_status
         );
 
 
-    }catch(error){
+    }
+    catch(error){
 
-        console.error(
-            error
-        );
-
+        console.error(error);
 
         showError(
-            "Unable to check your delivery request right now. Please try again."
+            "Unable to check your delivery right now. Please try again."
         );
 
-
-    }finally{
+    }
+    finally{
 
         loading.style.display =
             "none";
 
+        searchButton.disabled =
+            false;
 
-        document.getElementById(
-            "searchBtn"
-        ).disabled = false;
+        searchButton.textContent =
+            "Check Request";
 
     }
 
 }
 
 
-/* ==========================================
-   DISPLAY REQUEST
-========================================== */
+/* =====================================================
+   SHOW ERROR
+===================================================== */
 
-function displayRequest(data){
+function showError(message){
 
-    document.getElementById(
-        "requestCard"
-    ).style.display =
+    const errorBox =
+        document.getElementById(
+            "errorBox"
+        );
+
+    errorBox.textContent =
+        message;
+
+    errorBox.style.display =
         "block";
 
-
-    document.getElementById(
-        "requestNumber"
-    ).textContent =
-        data.request_code || "—";
-
-
-    document.getElementById(
-        "customerName"
-    ).textContent =
-        data.customer_name || "—";
-
-
-    document.getElementById(
-        "phone"
-    ).textContent =
-        data.phone ||
-        data.phone_number ||
-        data.whatsapp ||
-        "—";
-
-
-    document.getElementById(
-        "pickup"
-    ).textContent =
-        data.pickup_location ||
-        "—";
-
-
-    document.getElementById(
-        "destination"
-    ).textContent =
-        data.delivery_location ||
-        "—";
-
-
-    document.getElementById(
-        "package"
-    ).textContent =
-        data.package_details ||
-        "—";
-
-
-    document.getElementById(
-        "preferredTime"
-    ).textContent =
-        formatPreferredTime(
-            data.preferred_time
-        );
-
-
-    document.getElementById(
-        "deliveryFee"
-    ).textContent =
-        formatMoney(
-            data.delivery_fee
-        );
-
-
-    updateApprovalDisplay(
-        data.customer_approval_status
-    );
-
 }
 
 
-/* ==========================================
-   SHOW PAYMENT BUTTON
-========================================== */
-
-function showPaymentButton(){
-
-    const paymentArea =
-        document.getElementById(
-            "paymentArea"
-        );
-
-
-    if(!currentRequest){
-
-        return;
-
-    }
-
-
-    const requestCode =
-        currentRequest.request_code;
-
-
-    if(!requestCode){
-
-        return;
-
-    }
-
-
-    paymentArea.innerHTML = `
-
-        <a
-            class="payment-btn"
-            href="payment.html?request=${encodeURIComponent(requestCode)}"
-        >
-
-            💳 Proceed to Payment
-
-        </a>
-
-        <div class="payment-note">
-
-            Your request has been approved.
-            Click above to continue to payment.
-
-        </div>
-
-    `;
-
-}
-
-
-/* ==========================================
+/* =====================================================
    UPDATE APPROVAL DISPLAY
-========================================== */
+===================================================== */
 
-function updateApprovalDisplay(
-    status
-){
+function updateApprovalDisplay(status){
 
     const statusBox =
         document.getElementById(
             "statusBox"
         );
 
-
     const actionArea =
         document.getElementById(
             "actionArea"
         );
 
-
     const successBox =
         document.getElementById(
             "successBox"
         );
-
 
     const paymentArea =
         document.getElementById(
@@ -1139,29 +1136,35 @@ function updateApprovalDisplay(
             status ||
             "Pending"
         )
+        .toString()
+        .trim()
         .toLowerCase();
 
+
+    /* RESET */
 
     statusBox.className =
         "status-box";
 
-
     successBox.style.display =
         "none";
 
+    successBox.innerHTML =
+        "";
 
     paymentArea.innerHTML =
         "";
 
 
-    /* APPROVED */
+    /* =================================================
+       APPROVED
+    ================================================= */
 
     if(status === "approved"){
 
         statusBox.classList.add(
             "status-approved"
         );
-
 
         statusBox.textContent =
             "✓ Approval Status: Approved";
@@ -1176,33 +1179,29 @@ function updateApprovalDisplay(
 
 
         successBox.innerHTML =
-
-            "Your delivery request has been approved successfully." +
-
-            "<br><br>" +
-
-            "<strong>Next step: Payment</strong>" +
-
-            "<br>" +
-
+            "Your delivery request has been approved successfully.<br><br>" +
+            "<strong>Next step: Payment</strong><br>" +
             "Please proceed to payment to continue your delivery.";
 
+
+        /* VERY IMPORTANT:
+           SHOW PAYMENT BUTTON
+        */
 
         showPaymentButton();
 
     }
 
 
-    /* DECLINED */
+    /* =================================================
+       DECLINED
+    ================================================= */
 
-    else if(
-        status === "declined"
-    ){
+    else if(status === "declined"){
 
         statusBox.classList.add(
             "status-declined"
         );
-
 
         statusBox.textContent =
             "Approval Status: Declined";
@@ -1217,17 +1216,19 @@ function updateApprovalDisplay(
 
 
         successBox.innerHTML =
-
-            "You have declined this delivery request." +
-
-            "<br>" +
-
+            "You have declined this delivery request.<br>" +
             "Please contact NB Logistics Hub if you would like to discuss the delivery.";
+
+
+        paymentArea.innerHTML =
+            "";
 
     }
 
 
-    /* PENDING */
+    /* =================================================
+       PENDING
+    ================================================= */
 
     else{
 
@@ -1235,18 +1236,107 @@ function updateApprovalDisplay(
             "status-pending"
         );
 
-
         statusBox.textContent =
             "Approval Status: Pending";
+
+
+        actionArea.innerHTML = `
+
+            <button
+                class="approve-btn"
+                onclick="approveRequest()"
+            >
+                ✓ Accept & Proceed
+            </button>
+
+            <button
+                class="decline-btn"
+                onclick="declineRequest()"
+            >
+                Decline Delivery
+            </button>
+
+        `;
 
     }
 
 }
 
 
-/* ==========================================
+/* =====================================================
+   SHOW PAYMENT BUTTON
+===================================================== */
+
+function showPaymentButton(){
+
+    const paymentArea =
+        document.getElementById(
+            "paymentArea"
+        );
+
+
+    if(!currentRequest){
+
+        console.error(
+            "No current request available."
+        );
+
+        return;
+
+    }
+
+
+    const requestCode =
+        currentRequest.request_code;
+
+
+    if(!requestCode){
+
+        console.error(
+            "Request code is missing."
+        );
+
+        return;
+
+    }
+
+
+    /*
+       THIS IS THE PAYMENT PAGE LINK
+    */
+
+    const paymentURL =
+        "payment.html?request=" +
+        encodeURIComponent(
+            requestCode
+        );
+
+
+    paymentArea.innerHTML = `
+
+        <a
+            class="payment-btn"
+            href="${paymentURL}"
+        >
+            💳 Proceed to Payment
+        </a>
+
+        <div class="payment-note">
+
+            Your approval has been received.
+            <br>
+            Click the button above to continue to payment.
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
    APPROVE REQUEST
-========================================== */
+===================================================== */
 
 async function approveRequest(){
 
@@ -1257,50 +1347,32 @@ async function approveRequest(){
     }
 
 
-    const confirmed =
-        confirm(
-
-            "Do you approve the delivery fee of " +
-
-            formatMoney(
-                currentRequest.delivery_fee
-            ) +
-
-            " for this delivery?"
-
+    const actionArea =
+        document.getElementById(
+            "actionArea"
         );
 
-
-    if(!confirmed){
-
-        return;
-
-    }
+    const originalHTML =
+        actionArea.innerHTML;
 
 
-    const buttons =
-        document.querySelectorAll(
-            ".actions button"
-        );
+    actionArea.innerHTML = `
 
+        <button
+            class="approve-btn"
+            disabled
+        >
+            Processing approval...
+        </button>
 
-    buttons.forEach(
-        button => {
-
-            button.disabled =
-                true;
-
-        }
-    );
+    `;
 
 
     try{
 
         const {
-
             data,
             error
-
         } = await supabaseClient
 
             .from("delivery_requests")
@@ -1326,39 +1398,43 @@ async function approveRequest(){
 
         if(error){
 
+            console.error(
+                "Approval error:",
+                error
+            );
+
             throw error;
 
         }
 
 
+        /*
+           UPDATE LOCAL REQUEST
+        */
+
         currentRequest =
             data;
 
+
+        /*
+           SHOW APPROVED STATE
+        */
 
         updateApprovalDisplay(
             "Approved"
         );
 
 
-    }catch(error){
+    }
+    catch(error){
 
-        console.error(
-            error
-        );
+        console.error(error);
 
+        actionArea.innerHTML =
+            originalHTML;
 
-        alert(
-            "We could not save your approval. Please try again."
-        );
-
-
-        buttons.forEach(
-            button => {
-
-                button.disabled =
-                    false;
-
-            }
+        showError(
+            "We could not save your approval right now. Please try again."
         );
 
     }
@@ -1366,9 +1442,9 @@ async function approveRequest(){
 }
 
 
-/* ==========================================
+/* =====================================================
    DECLINE REQUEST
-========================================== */
+===================================================== */
 
 async function declineRequest(){
 
@@ -1392,29 +1468,29 @@ async function declineRequest(){
     }
 
 
-    const buttons =
-        document.querySelectorAll(
-            ".actions button"
+    const actionArea =
+        document.getElementById(
+            "actionArea"
         );
 
 
-    buttons.forEach(
-        button => {
+    actionArea.innerHTML = `
 
-            button.disabled =
-                true;
+        <button
+            class="decline-btn"
+            disabled
+        >
+            Processing...
+        </button>
 
-        }
-    );
+    `;
 
 
     try{
 
         const {
-
             data,
             error
-
         } = await supabaseClient
 
             .from("delivery_requests")
@@ -1440,6 +1516,11 @@ async function declineRequest(){
 
         if(error){
 
+            console.error(
+                "Decline error:",
+                error
+            );
+
             throw error;
 
         }
@@ -1454,25 +1535,18 @@ async function declineRequest(){
         );
 
 
-    }catch(error){
+    }
+    catch(error){
 
-        console.error(
-            error
+        console.error(error);
+
+        showError(
+            "We could not save your response right now. Please try again."
         );
 
 
-        alert(
-            "We could not save your response. Please try again."
-        );
-
-
-        buttons.forEach(
-            button => {
-
-                button.disabled =
-                    false;
-
-            }
+        updateApprovalDisplay(
+            currentRequest.customer_approval_status
         );
 
     }
@@ -1480,46 +1554,44 @@ async function declineRequest(){
 }
 
 
-/* ==========================================
-   ERROR MESSAGE
-========================================== */
+/* =====================================================
+   ENTER KEY SEARCH
+===================================================== */
 
-function showError(message){
+document
+    .getElementById("requestInput")
+    .addEventListener(
+        "keydown",
+        function(event){
 
-    const errorBox =
-        document.getElementById(
-            "errorBox"
-        );
+            if(event.key === "Enter"){
 
+                loadRequest();
 
-    errorBox.textContent =
-        message;
+            }
 
-
-    errorBox.style.display =
-        "block";
-
-}
+        }
+    );
 
 
-/* ==========================================
-   AUTO LOAD FROM URL
-========================================== */
+/* =====================================================
+   AUTOMATIC REQUEST FROM URL
+===================================================== */
 
 window.addEventListener(
     "DOMContentLoaded",
     function(){
 
-        const requestCode =
+        const requestFromURL =
             getRequestFromURL();
 
 
-        if(requestCode){
+        if(requestFromURL){
 
             document.getElementById(
                 "requestInput"
             ).value =
-                requestCode;
+                requestFromURL;
 
 
             loadRequest();
