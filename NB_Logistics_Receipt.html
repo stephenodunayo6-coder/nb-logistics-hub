@@ -1,6 +1,7 @@
 ```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -11,7 +12,9 @@
 <title>NB Logistics Hub — Delivery Receipt</title>
 
 <meta name="description"
-      content="NB Logistics Hub delivery receipt for Ilorin, Kwara State.">
+      content="View and print your NB Logistics Hub delivery receipt.">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
@@ -34,25 +37,24 @@ body{
 }
 
 .receipt{
-    background:#ffffff;
+    background:#fff;
     border-radius:18px;
     overflow:hidden;
-    box-shadow:0 10px 35px rgba(0,0,0,0.10);
+    box-shadow:0 10px 35px rgba(0,0,0,.10);
 }
 
 /* HEADER */
 
 .header{
     background:linear-gradient(135deg,#071f3d,#0b4f8a);
-    color:white;
-    padding:32px 28px;
+    color:#fff;
+    padding:32px 25px;
     text-align:center;
 }
 
 .logo{
     font-size:30px;
     font-weight:800;
-    letter-spacing:.5px;
 }
 
 .subtitle{
@@ -66,6 +68,49 @@ body{
     font-size:25px;
     font-weight:800;
     letter-spacing:1px;
+}
+
+/* LOADING */
+
+.loading{
+    text-align:center;
+    padding:60px 20px;
+    font-size:16px;
+    color:#687386;
+}
+
+.spinner{
+    width:38px;
+    height:38px;
+    border:4px solid #dce4ed;
+    border-top-color:#0b72c9;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin:0 auto 15px;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+/* ERROR */
+
+.error{
+    display:none;
+    margin:25px;
+    padding:20px;
+    border-radius:12px;
+    background:#fff1f1;
+    border:1px solid #f1b7b7;
+    color:#9b2020;
+    text-align:center;
+}
+
+.error strong{
+    display:block;
+    margin-bottom:8px;
 }
 
 /* CONTENT */
@@ -133,17 +178,40 @@ body{
     font-size:38px;
     font-weight:900;
     color:#0b4f8a;
-    margin:8px 0;
+    margin:8px 0 12px;
 }
 
 .status{
     display:inline-block;
     padding:8px 18px;
     border-radius:30px;
-    background:#fff3cd;
-    color:#856404;
     font-weight:800;
     font-size:13px;
+}
+
+.status.accepted{
+    background:#fff3cd;
+    color:#856404;
+}
+
+.status.in-progress{
+    background:#dff1ff;
+    color:#075985;
+}
+
+.status.completed{
+    background:#dff7e8;
+    color:#08763b;
+}
+
+.status.cancelled{
+    background:#ffe2e2;
+    color:#a61b1b;
+}
+
+.status.new{
+    background:#e8edf3;
+    color:#526071;
 }
 
 .status-message{
@@ -197,16 +265,12 @@ body{
 
 .timeline-item.completed .circle{
     background:#0b72c9;
-    color:white;
+    color:#fff;
 }
 
 .timeline-item.active .circle{
     background:#f0a500;
-    color:white;
-}
-
-.timeline-content{
-    padding-top:2px;
+    color:#fff;
 }
 
 .timeline-title{
@@ -221,7 +285,7 @@ body{
     line-height:1.5;
 }
 
-/* BUTTONS */
+/* ACTIONS */
 
 .actions{
     display:flex;
@@ -245,17 +309,17 @@ body{
 
 .print-btn{
     background:#172033;
-    color:white;
+    color:#fff;
 }
 
 .track-btn{
     background:#0b72c9;
-    color:white;
+    color:#fff;
 }
 
 .whatsapp-btn{
     background:#168c4b;
-    color:white;
+    color:#fff;
 }
 
 /* FOOTER */
@@ -325,7 +389,7 @@ body{
 @media print{
 
     body{
-        background:white;
+        background:#fff;
     }
 
     .page{
@@ -343,11 +407,7 @@ body{
         display:none;
     }
 
-    .header{
-        -webkit-print-color-adjust:exact;
-        print-color-adjust:exact;
-    }
-
+    .header,
     .fee-box{
         -webkit-print-color-adjust:exact;
         print-color-adjust:exact;
@@ -364,8 +424,6 @@ body{
 <div class="page">
 
 <div class="receipt">
-
-    <!-- HEADER -->
 
     <div class="header">
 
@@ -384,9 +442,34 @@ body{
     </div>
 
 
-    <!-- CONTENT -->
+    <!-- LOADING -->
 
-    <div class="content">
+    <div id="loading" class="loading">
+
+        <div class="spinner"></div>
+
+        Loading your delivery receipt...
+
+    </div>
+
+
+    <!-- ERROR -->
+
+    <div id="error" class="error">
+
+        <strong>Receipt Not Found</strong>
+
+        We could not find this delivery receipt.
+        Please check your request number and try again.
+
+    </div>
+
+
+    <!-- RECEIPT CONTENT -->
+
+    <div id="receiptContent"
+         class="content"
+         style="display:none;">
 
         <div class="section-title">
             Delivery Details
@@ -396,90 +479,114 @@ body{
         <div class="details">
 
             <div class="detail-box">
+
                 <span class="label">
                     Request Number
                 </span>
 
-                <span class="value">
-                    NB-20260929-9340
+                <span id="requestNumber"
+                      class="value">
+                    —
                 </span>
+
             </div>
 
 
             <div class="detail-box">
+
                 <span class="label">
                     Customer
                 </span>
 
-                <span class="value">
-                    Stephen iyanuoluwa Grace
+                <span id="customerName"
+                      class="value">
+                    —
                 </span>
+
             </div>
 
 
             <div class="detail-box">
+
                 <span class="label">
                     Phone
                 </span>
 
-                <span class="value">
-                    08162010979
+                <span id="phone"
+                      class="value">
+                    —
                 </span>
+
             </div>
 
 
             <div class="detail-box">
+
                 <span class="label">
                     Pickup Location
                 </span>
 
-                <span class="value">
-                    Gaa Akanbi
+                <span id="pickup"
+                      class="value">
+                    —
                 </span>
+
             </div>
 
 
             <div class="detail-box">
+
                 <span class="label">
                     Delivery Destination
                 </span>
 
-                <span class="value">
-                    Danialu
+                <span id="destination"
+                      class="value">
+                    —
                 </span>
+
             </div>
 
 
             <div class="detail-box">
+
                 <span class="label">
                     Package / Goods
                 </span>
 
-                <span class="value">
-                    Food stuff
+                <span id="package"
+                      class="value">
+                    —
                 </span>
+
             </div>
 
 
             <div class="detail-box">
+
                 <span class="label">
                     Preferred Time
                 </span>
 
-                <span class="value">
-                    29 September 2026, 12:00 PM
+                <span id="preferredTime"
+                      class="value">
+                    —
                 </span>
+
             </div>
 
 
             <div class="detail-box">
+
                 <span class="label">
                     Request Date
                 </span>
 
-                <span class="value">
-                    29 September 2026, 04:36 AM
+                <span id="requestDate"
+                      class="value">
+                    —
                 </span>
+
             </div>
 
         </div>
@@ -493,23 +600,25 @@ body{
                 Delivery Fee
             </div>
 
-            <div class="fee">
-                ₦2,000
+            <div id="deliveryFee"
+                 class="fee">
+                ₦0
             </div>
 
-            <div class="status">
-                ACCEPTED
+            <div id="status"
+                 class="status new">
+                NEW
             </div>
 
-            <div class="status-message">
-                Your delivery request has been accepted.
-                We are preparing your delivery.
+            <div id="statusMessage"
+                 class="status-message">
+                Your delivery request has been received.
             </div>
 
         </div>
 
 
-        <!-- TIMELINE -->
+        <!-- PROGRESS -->
 
         <div class="timeline-section">
 
@@ -520,13 +629,14 @@ body{
             <div class="timeline">
 
 
-                <div class="timeline-item completed">
+                <div id="stepReceived"
+                     class="timeline-item">
 
                     <div class="circle">
-                        ✓
+                        1
                     </div>
 
-                    <div class="timeline-content">
+                    <div>
 
                         <div class="timeline-title">
                             Request Received
@@ -541,21 +651,21 @@ body{
                 </div>
 
 
-                <div class="timeline-item active">
+                <div id="stepAccepted"
+                     class="timeline-item">
 
                     <div class="circle">
-                        ✓
+                        2
                     </div>
 
-                    <div class="timeline-content">
+                    <div>
 
                         <div class="timeline-title">
                             Accepted
                         </div>
 
                         <div class="timeline-text">
-                            Your delivery request has been accepted
-                            and is being prepared.
+                            Your delivery request has been accepted.
                         </div>
 
                     </div>
@@ -563,20 +673,21 @@ body{
                 </div>
 
 
-                <div class="timeline-item">
+                <div id="stepAssigned"
+                     class="timeline-item">
 
                     <div class="circle">
                         3
                     </div>
 
-                    <div class="timeline-content">
+                    <div>
 
                         <div class="timeline-title">
                             Driver Assigned
                         </div>
 
                         <div class="timeline-text">
-                            A delivery rider will be assigned to your request.
+                            A delivery rider will be assigned.
                         </div>
 
                     </div>
@@ -584,13 +695,14 @@ body{
                 </div>
 
 
-                <div class="timeline-item">
+                <div id="stepOut"
+                     class="timeline-item">
 
                     <div class="circle">
                         4
                     </div>
 
-                    <div class="timeline-content">
+                    <div>
 
                         <div class="timeline-title">
                             Out for Delivery
@@ -605,20 +717,21 @@ body{
                 </div>
 
 
-                <div class="timeline-item">
+                <div id="stepCompleted"
+                     class="timeline-item">
 
                     <div class="circle">
                         5
                     </div>
 
-                    <div class="timeline-content">
+                    <div>
 
                         <div class="timeline-title">
                             Delivered
                         </div>
 
                         <div class="timeline-text">
-                            Delivery will be marked completed after successful delivery.
+                            Delivery has been completed.
                         </div>
 
                     </div>
@@ -631,7 +744,7 @@ body{
         </div>
 
 
-        <!-- ACTION BUTTONS -->
+        <!-- BUTTONS -->
 
         <div class="actions">
 
@@ -645,8 +758,9 @@ body{
 
 
             <a
+                id="trackButton"
                 class="button track-btn"
-                href="https://stephenodunayo6-coder.github.io/nb-logistics-hub/NB_Logistics_Track.html">
+                href="#">
 
                 📍 Track Delivery
 
@@ -655,7 +769,7 @@ body{
 
             <a
                 class="button whatsapp-btn"
-                href="https://wa.me/2349150798901?text=Hello%20NB%20Logistics%20Hub,%20I%20need%20help%20with%20my%20delivery%20request%20NB-20260929-9340.">
+                href="https://wa.me/2349150798901">
 
                 💬 WhatsApp Support
 
@@ -688,6 +802,608 @@ body{
 
 </div>
 
+
+<script>
+
+/* =========================================================
+   SUPABASE CONNECTION
+   ========================================================= */
+
+const SUPABASE_URL =
+    "https://pcgamgrhrtgxpnicukfm.supabase.co";
+
+/*
+   IMPORTANT:
+   Put your existing Supabase ANON/PUBLIC key here.
+   Do NOT use your service_role key.
+*/
+
+const SUPABASE_ANON_KEY =
+    "YOUR_SUPABASE_ANON_KEY";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
+
+
+/* =========================================================
+   GET REQUEST NUMBER FROM URL
+   Example:
+   NB_Logistics_Receipt.html?request=NB-20260929-9340
+   ========================================================= */
+
+const params =
+    new URLSearchParams(window.location.search);
+
+const requestCode =
+    params.get("request");
+
+
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
+
+const loading =
+    document.getElementById("loading");
+
+const errorBox =
+    document.getElementById("error");
+
+const receiptContent =
+    document.getElementById("receiptContent");
+
+
+/* =========================================================
+   FORMAT DATE
+   ========================================================= */
+
+function formatDate(value){
+
+    if(!value){
+        return "—";
+    }
+
+    const date =
+        new Date(value);
+
+    if(isNaN(date.getTime())){
+        return value;
+    }
+
+    return date.toLocaleString(
+        "en-NG",
+        {
+            day:"2-digit",
+            month:"long",
+            year:"numeric",
+            hour:"2-digit",
+            minute:"2-digit"
+        }
+    );
+
+}
+
+
+/* =========================================================
+   FORMAT PREFERRED TIME
+   ========================================================= */
+
+function formatPreferredTime(value){
+
+    if(!value){
+        return "—";
+    }
+
+    const date =
+        new Date(value);
+
+    if(isNaN(date.getTime())){
+        return value;
+    }
+
+    return date.toLocaleString(
+        "en-NG",
+        {
+            day:"2-digit",
+            month:"long",
+            year:"numeric",
+            hour:"2-digit",
+            minute:"2-digit"
+        }
+    );
+
+}
+
+
+/* =========================================================
+   FORMAT MONEY
+   ========================================================= */
+
+function formatMoney(value){
+
+    const number =
+        Number(value || 0);
+
+    return "₦" +
+        number.toLocaleString("en-NG");
+
+}
+
+
+/* =========================================================
+   UPDATE STATUS
+   ========================================================= */
+
+function updateStatus(status){
+
+    const statusElement =
+        document.getElementById("status");
+
+    const messageElement =
+        document.getElementById("statusMessage");
+
+    const normalized =
+        String(status || "New")
+        .trim()
+        .toLowerCase();
+
+
+    statusElement.className =
+        "status";
+
+
+    let message =
+        "Your delivery request has been received.";
+
+
+    if(
+        normalized === "accepted"
+    ){
+
+        statusElement.classList.add("accepted");
+
+        statusElement.textContent =
+            "ACCEPTED";
+
+        message =
+            "Your delivery request has been accepted. We are preparing your delivery.";
+
+    }
+
+
+    else if(
+        normalized === "in progress" ||
+        normalized === "in_progress" ||
+        normalized === "out for delivery"
+    ){
+
+        statusElement.classList.add("in-progress");
+
+        statusElement.textContent =
+            "IN PROGRESS";
+
+        message =
+            "Your delivery is currently being processed.";
+
+    }
+
+
+    else if(
+        normalized === "completed" ||
+        normalized === "delivered"
+    ){
+
+        statusElement.classList.add("completed");
+
+        statusElement.textContent =
+            "COMPLETED";
+
+        message =
+            "Your delivery has been completed successfully.";
+
+    }
+
+
+    else if(
+        normalized === "cancelled" ||
+        normalized === "canceled"
+    ){
+
+        statusElement.classList.add("cancelled");
+
+        statusElement.textContent =
+            "CANCELLED";
+
+        message =
+            "This delivery request has been cancelled.";
+
+    }
+
+
+    else{
+
+        statusElement.classList.add("new");
+
+        statusElement.textContent =
+            "NEW";
+
+        message =
+            "Your delivery request has been received.";
+
+    }
+
+
+    messageElement.textContent =
+        message;
+
+
+    updateTimeline(normalized);
+
+}
+
+
+/* =========================================================
+   UPDATE TIMELINE
+   ========================================================= */
+
+function updateTimeline(status){
+
+    const steps = {
+
+        received:
+            document.getElementById("stepReceived"),
+
+        accepted:
+            document.getElementById("stepAccepted"),
+
+        assigned:
+            document.getElementById("stepAssigned"),
+
+        out:
+            document.getElementById("stepOut"),
+
+        completed:
+            document.getElementById("stepCompleted")
+
+    };
+
+
+    Object.values(steps)
+        .forEach(step => {
+
+            step.classList.remove(
+                "completed",
+                "active"
+            );
+
+        });
+
+
+    /* Every existing request reaches Received */
+
+    steps.received.classList.add(
+        "completed"
+    );
+
+
+    if(
+        status === "new" ||
+        status === "pending"
+    ){
+
+        steps.received.classList.remove(
+            "completed"
+        );
+
+        steps.received.classList.add(
+            "active"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        status === "accepted"
+    ){
+
+        steps.accepted.classList.add(
+            "active"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        status === "assigned"
+    ){
+
+        steps.accepted.classList.add(
+            "completed"
+        );
+
+        steps.assigned.classList.add(
+            "active"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        status === "in progress" ||
+        status === "in_progress" ||
+        status === "out for delivery"
+    ){
+
+        steps.accepted.classList.add(
+            "completed"
+        );
+
+        steps.assigned.classList.add(
+            "completed"
+        );
+
+        steps.out.classList.add(
+            "active"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        status === "completed" ||
+        status === "delivered"
+    ){
+
+        steps.accepted.classList.add(
+            "completed"
+        );
+
+        steps.assigned.classList.add(
+            "completed"
+        );
+
+        steps.out.classList.add(
+            "completed"
+        );
+
+        steps.completed.classList.add(
+            "completed"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD RECEIPT
+   ========================================================= */
+
+async function loadReceipt(){
+
+    if(!requestCode){
+
+        loading.style.display =
+            "none";
+
+        errorBox.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    try{
+
+        const { data, error } =
+            await supabaseClient
+
+            .from("customer_requests")
+
+            .select("*")
+
+            .eq(
+                "request_code",
+                requestCode
+            )
+
+            .maybeSingle();
+
+
+        if(error){
+
+            console.error(
+                "Supabase error:",
+                error
+            );
+
+            throw error;
+
+        }
+
+
+        if(!data){
+
+            loading.style.display =
+                "none";
+
+            errorBox.style.display =
+                "block";
+
+            return;
+
+        }
+
+
+        console.log(
+            "Delivery receipt:",
+            data
+        );
+
+
+        /* =================================================
+           DISPLAY DATA
+           ================================================= */
+
+        document.getElementById(
+            "requestNumber"
+        ).textContent =
+            data.request_code ||
+            requestCode;
+
+
+        document.getElementById(
+            "customerName"
+        ).textContent =
+            data.customer_name ||
+            data.name ||
+            "—";
+
+
+        document.getElementById(
+            "phone"
+        ).textContent =
+            data.phone ||
+            data.whatsapp ||
+            "—";
+
+
+        document.getElementById(
+            "pickup"
+        ).textContent =
+            data.pickup_location ||
+            data.area ||
+            "—";
+
+
+        document.getElementById(
+            "destination"
+        ).textContent =
+            data.delivery_destination ||
+            data.destination ||
+            data.city ||
+            "—";
+
+
+        document.getElementById(
+            "package"
+        ).textContent =
+            data.package_goods ||
+            data.needs ||
+            data.additional_requirement ||
+            "—";
+
+
+        document.getElementById(
+            "preferredTime"
+        ).textContent =
+            formatPreferredTime(
+                data.preferred_time ||
+                data.deadline
+            );
+
+
+        document.getElementById(
+            "requestDate"
+        ).textContent =
+            formatDate(
+                data.created_at
+            );
+
+
+        /* =================================================
+           DELIVERY FEE
+           ================================================= */
+
+        const fee =
+            data.delivery_fee ??
+            data.fee ??
+            data.amount ??
+            0;
+
+
+        document.getElementById(
+            "deliveryFee"
+        ).textContent =
+            formatMoney(fee);
+
+
+        /* =================================================
+           STATUS
+           ================================================= */
+
+        updateStatus(
+            data.status
+        );
+
+
+        /* =================================================
+           TRACKING BUTTON
+           ================================================= */
+
+        document.getElementById(
+            "trackButton"
+        ).href =
+            "https://stephenodunayo6-coder.github.io/nb-logistics-hub/NB_Logistics_Track.html?request="
+            +
+            encodeURIComponent(
+                data.request_code ||
+                requestCode
+            );
+
+
+        /* =================================================
+           SHOW RECEIPT
+           ================================================= */
+
+        loading.style.display =
+            "none";
+
+        receiptContent.style.display =
+            "block";
+
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Receipt loading failed:",
+            error
+        );
+
+        loading.style.display =
+            "none";
+
+        errorBox.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+loadReceipt();
+
+</script>
+
 </body>
+
 </html>
 ```
