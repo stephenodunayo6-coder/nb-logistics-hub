@@ -230,23 +230,30 @@ body{
     background:#cbd5e1;
 }
 
+/* COMPLETED PREVIOUS STEPS */
+
 .timeline-item.completed .timeline-icon{
     background:#ffc107;
     color:#071b3a;
-}
-
-.timeline-item.current .timeline-icon{
-    background:#071b3a;
-    color:#ffc107;
 }
 
 .timeline-item.completed .timeline-line{
     background:#ffc107;
 }
 
-.timeline-text{
-    margin-left:14px;
+/* CURRENT STEP */
+
+.timeline-item.current .timeline-icon{
+    background:#071b3a;
+    color:#ffc107;
+    box-shadow:0 0 0 4px rgba(7,27,58,.10);
 }
+
+.timeline-item.current .timeline-title{
+    color:#071b3a;
+}
+
+/* TITLE */
 
 .timeline-title{
     font-weight:800;
@@ -254,8 +261,7 @@ body{
     color:#8b95a3;
 }
 
-.timeline-item.completed .timeline-title,
-.timeline-item.current .timeline-title{
+.timeline-item.completed .timeline-title{
     color:#071b3a;
 }
 
@@ -264,6 +270,10 @@ body{
     color:#64748b;
     font-size:13px;
     line-height:1.5;
+}
+
+.timeline-text{
+    margin-left:14px;
 }
 
 /* BUTTONS */
@@ -871,10 +881,8 @@ body{
 const SUPABASE_URL =
     "https://kygkgcpuiwawatugkfne.supabase.co";
 
-
 const SUPABASE_KEY =
     "sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
-
 
 const supabaseClient =
     window.supabase.createClient(
@@ -891,7 +899,6 @@ const params =
     new URLSearchParams(
         window.location.search
     );
-
 
 const requestCode =
     (
@@ -916,15 +923,16 @@ function clean(value){
         value === undefined ||
         value === ""
     ){
-
         return "—";
-
     }
 
     return String(value);
-
 }
 
+
+/* =====================================================
+   MONEY
+===================================================== */
 
 function formatMoney(value){
 
@@ -933,52 +941,41 @@ function formatMoney(value){
         value === undefined ||
         value === ""
     ){
-
         return "₦2,000";
-
     }
-
 
     const number =
         Number(value);
 
-
     if(Number.isNaN(number)){
-
         return String(value);
-
     }
-
 
     return "₦" +
         number.toLocaleString("en-NG");
-
 }
 
+
+/* =====================================================
+   DATE / TIME
+===================================================== */
 
 function formatDate(value){
 
     if(!value){
-
         return "—";
-
     }
-
 
     const date =
         new Date(value);
-
 
     if(
         Number.isNaN(
             date.getTime()
         )
     ){
-
         return String(value);
-
     }
-
 
     return date.toLocaleString(
         "en-NG",
@@ -987,7 +984,37 @@ function formatDate(value){
             timeStyle:"short"
         }
     );
+}
 
+
+/* =====================================================
+   PREFERRED TIME
+===================================================== */
+
+function formatPreferredTime(value){
+
+    if(!value){
+        return "—";
+    }
+
+    const date =
+        new Date(value);
+
+    if(
+        Number.isNaN(
+            date.getTime()
+        )
+    ){
+        return String(value);
+    }
+
+    return date.toLocaleString(
+        "en-NG",
+        {
+            dateStyle:"medium",
+            timeStyle:"short"
+        }
+    );
 }
 
 
@@ -1001,21 +1028,17 @@ function showError(message){
         "loading"
     ).style.display = "none";
 
-
     document.getElementById(
         "receiptContent"
     ).style.display = "none";
-
 
     document.getElementById(
         "error"
     ).style.display = "block";
 
-
     document.getElementById(
         "errorMessage"
     ).textContent = message;
-
 }
 
 
@@ -1029,16 +1052,13 @@ function showReceipt(){
         "loading"
     ).style.display = "none";
 
-
     document.getElementById(
         "error"
     ).style.display = "none";
 
-
     document.getElementById(
         "receiptContent"
     ).style.display = "block";
-
 }
 
 
@@ -1055,52 +1075,32 @@ function getStatusMessage(
         databaseMessage &&
         String(databaseMessage).trim()
     ){
-
         return databaseMessage;
-
     }
-
 
     const normalized =
         String(status || "")
             .toLowerCase()
-            .replace(/_/g," ");
-
+            .replace(/_/g," ")
+            .trim();
 
     if(normalized === "new"){
-
         return "Your delivery request has been received and is now being reviewed.";
-
     }
-
 
     if(normalized === "accepted"){
-
         return "Your delivery request has been accepted. We are preparing your delivery.";
-
     }
 
-
-    if(
-        normalized === "in progress"
-    ){
-
+    if(normalized === "in progress"){
         return "Your delivery is currently in progress.";
-
     }
 
-
-    if(
-        normalized === "completed"
-    ){
-
+    if(normalized === "completed"){
         return "Your delivery has been completed successfully. Thank you for using NB Logistics Hub.";
-
     }
-
 
     return "Your delivery information has been updated.";
-
 }
 
 
@@ -1113,8 +1113,8 @@ function updateTimeline(statusValue){
     const status =
         String(statusValue || "New")
             .toLowerCase()
-            .replace(/_/g," ");
-
+            .replace(/_/g," ")
+            .trim();
 
     const steps = [
 
@@ -1137,6 +1137,10 @@ function updateTimeline(statusValue){
     ];
 
 
+    /* -----------------------------------------------
+       RESET EVERYTHING
+    ----------------------------------------------- */
+
     steps.forEach(
         step => {
 
@@ -1152,31 +1156,32 @@ function updateTimeline(statusValue){
     );
 
 
+    /* -----------------------------------------------
+       DETERMINE CURRENT LEVEL
+    ----------------------------------------------- */
+
     let level = 1;
 
-
     if(status === "accepted"){
-
         level = 2;
-
     }
 
-    else if(
-        status === "in progress"
-    ){
-
+    else if(status === "in progress"){
         level = 3;
-
     }
 
-    else if(
-        status === "completed"
-    ){
-
+    else if(status === "completed"){
         level = 4;
-
     }
 
+
+    /* -----------------------------------------------
+       APPLY TIMELINE STATE
+
+       Previous steps = completed
+       Current step  = current
+       Future steps  = untouched
+    ----------------------------------------------- */
 
     steps.forEach(
         (step,index) => {
@@ -1185,9 +1190,7 @@ function updateTimeline(statusValue){
                 index + 1;
 
 
-            if(
-                stepLevel < level
-            ){
+            if(stepLevel < level){
 
                 step.classList.add(
                     "completed"
@@ -1196,17 +1199,56 @@ function updateTimeline(statusValue){
             }
 
 
-            if(
-                stepLevel === level
-            ){
-
-                step.classList.add(
-                    "completed"
-                );
+            else if(stepLevel === level){
 
                 step.classList.add(
                     "current"
                 );
+
+            }
+
+        }
+    );
+
+
+    /* -----------------------------------------------
+       CHANGE CURRENT ICON
+
+       Current step gets a bullet instead of ✓
+       Previous completed steps keep ✓
+    ----------------------------------------------- */
+
+    steps.forEach(
+        (step,index) => {
+
+            const icon =
+                step.querySelector(
+                    ".timeline-icon"
+                );
+
+            if(!icon){
+                return;
+            }
+
+            const stepLevel =
+                index + 1;
+
+
+            if(stepLevel < level){
+
+                icon.textContent = "✓";
+
+            }
+
+            else if(stepLevel === level){
+
+                icon.textContent = "●";
+
+            }
+
+            else{
+
+                icon.textContent = "○";
 
             }
 
@@ -1229,17 +1271,10 @@ async function loadReceipt(){
         );
 
         return;
-
     }
 
 
     try{
-
-        /*
-         IMPORTANT:
-         This is the SAME table and column
-         used by the working Track Delivery page.
-        */
 
         const {
             data,
@@ -1266,12 +1301,10 @@ async function loadReceipt(){
             requestCode
         );
 
-
         console.log(
             "Receipt data:",
             data
         );
-
 
         console.log(
             "Receipt error:",
@@ -1286,7 +1319,6 @@ async function loadReceipt(){
             );
 
             return;
-
         }
 
 
@@ -1299,7 +1331,6 @@ async function loadReceipt(){
             );
 
             return;
-
         }
 
 
@@ -1323,12 +1354,6 @@ async function loadReceipt(){
                 data.customer_name
             );
 
-
-        /*
-         The Track page does not currently display
-         phone, but if the database has it,
-         this will display it.
-        */
 
         document.getElementById(
             "customerPhone"
@@ -1367,7 +1392,7 @@ async function loadReceipt(){
         document.getElementById(
             "preferredTime"
         ).textContent =
-            clean(
+            formatPreferredTime(
                 data.preferred_time
             );
 
@@ -1415,6 +1440,10 @@ async function loadReceipt(){
                 data.status_message
             );
 
+
+        /* =================================================
+           UPDATE TIMELINE
+        ================================================= */
 
         updateTimeline(
             status
@@ -1484,3 +1513,4 @@ loadReceipt();
 </body>
 
 </html>
+```
