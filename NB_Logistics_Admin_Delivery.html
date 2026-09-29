@@ -1,504 +1,515 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>NB Logistics Hub — Admin Delivery Control</title>
-
-<meta
-    name="description"
-    content="NB Logistics Hub Admin Delivery Control"
-/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NB Logistics Hub — Delivery Management</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
-*{
-    box-sizing:border-box;
-}
-
-body{
-    margin:0;
-    font-family:Arial,Helvetica,sans-serif;
-    background:#f4f7fb;
-    color:#172033;
-}
-
-header{
-    background:linear-gradient(135deg,#071a33,#0d5c63);
-    color:white;
-    padding:30px 20px;
-}
-
-.header-inner{
-    max-width:1200px;
-    margin:auto;
-}
-
-header h1{
-    margin:0 0 8px;
-    font-size:30px;
-}
-
-header p{
-    margin:0;
-    opacity:.9;
-}
-
-.container{
-    max-width:1200px;
-    margin:30px auto;
-    padding:0 18px;
-}
-
-.notice{
-    background:#fff;
-    border-left:5px solid #0d5c63;
-    padding:18px;
-    border-radius:10px;
-    margin-bottom:25px;
-    box-shadow:0 3px 12px rgba(0,0,0,.06);
-}
-
-.notice strong{
-    display:block;
-    margin-bottom:6px;
-}
-
-.controls{
-    display:flex;
-    gap:12px;
-    flex-wrap:wrap;
-    margin-bottom:25px;
-}
-
-button{
-    border:none;
-    border-radius:9px;
-    padding:12px 18px;
-    cursor:pointer;
-    font-weight:bold;
-    font-size:14px;
-}
-
-.refresh-btn{
-    background:#0d5c63;
-    color:white;
-}
-
-.refresh-btn:hover{
-    opacity:.9;
-}
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:15px;
-    margin-bottom:25px;
-}
-
-.stat{
-    background:white;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 3px 12px rgba(0,0,0,.06);
-}
-
-.stat-label{
-    font-size:13px;
-    color:#667085;
-    margin-bottom:8px;
-}
-
-.stat-value{
-    font-size:28px;
-    font-weight:bold;
-}
-
-.delivery-list{
-    display:grid;
-    gap:20px;
-}
-
-.delivery-card{
-    background:white;
-    border-radius:14px;
-    padding:22px;
-    box-shadow:0 4px 15px rgba(0,0,0,.07);
-}
-
-.delivery-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    gap:15px;
-    flex-wrap:wrap;
-    margin-bottom:18px;
-}
-
-.request-code{
-    font-size:20px;
-    font-weight:bold;
-    color:#0d5c63;
-}
-
-.customer{
-    margin-top:5px;
-    color:#475467;
-}
-
-.badges{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-}
-
-.badge{
-    display:inline-block;
-    padding:7px 11px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:bold;
-}
-
-.badge-accepted{
-    background:#fff4cc;
-    color:#8a5a00;
-}
-
-.badge-progress{
-    background:#dbeafe;
-    color:#1d4ed8;
-}
-
-.badge-completed{
-    background:#dcfce7;
-    color:#166534;
-}
-
-.badge-payment{
-    background:#dcfce7;
-    color:#166534;
-}
-
-.badge-pending{
-    background:#fff4cc;
-    color:#8a5a00;
-}
-
-.badge-not-paid{
-    background:#f1f5f9;
-    color:#475569;
-}
-
-.details{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:14px;
-    margin-bottom:20px;
-}
-
-.detail{
-    background:#f8fafc;
-    border-radius:9px;
-    padding:13px;
-}
-
-.detail-label{
-    font-size:12px;
-    color:#667085;
-    margin-bottom:5px;
-}
-
-.detail-value{
-    font-weight:600;
-    word-break:break-word;
-}
-
-.actions{
-    border-top:1px solid #eaecf0;
-    padding-top:18px;
-}
-
-.actions-title{
-    font-weight:bold;
-    margin-bottom:12px;
-}
-
-.status-buttons{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-}
-
-.status-btn{
-    color:white;
-}
-
-.accepted-btn{
-    background:#8a5a00;
-}
-
-.progress-btn{
-    background:#2563eb;
-}
-
-.completed-btn{
-    background:#16803c;
-}
-
-.status-btn:disabled{
-    opacity:.45;
-    cursor:not-allowed;
-}
-
-.message{
-    padding:14px;
-    border-radius:9px;
-    margin-bottom:20px;
-    display:none;
-}
-
-.success{
-    background:#dcfce7;
-    color:#166534;
-}
-
-.error{
-    background:#fee2e2;
-    color:#991b1b;
-}
-
-.loading{
-    text-align:center;
-    background:white;
-    padding:35px;
-    border-radius:12px;
-}
-
-.empty{
-    text-align:center;
-    background:white;
-    padding:40px;
-    border-radius:12px;
-    color:#667085;
-}
-
-.footer{
-    text-align:center;
-    padding:30px 20px;
-    color:#667085;
-    font-size:13px;
-}
-
-@media(max-width:800px){
-
-    .stats{
-        grid-template-columns:repeat(2,1fr);
+    *{
+        box-sizing:border-box;
     }
 
-    .details{
-        grid-template-columns:1fr;
+    body{
+        margin:0;
+        font-family:Arial,Helvetica,sans-serif;
+        background:#f4f7fb;
+        color:#172033;
     }
 
-}
-
-@media(max-width:500px){
+    header{
+        background:linear-gradient(135deg,#071d3a,#0b5ed7);
+        color:white;
+        padding:22px 16px;
+        text-align:center;
+    }
 
     header h1{
-        font-size:24px;
+        margin:0;
+        font-size:25px;
+    }
+
+    header p{
+        margin:7px 0 0;
+        opacity:.9;
+        font-size:14px;
+    }
+
+    .container{
+        max-width:1150px;
+        margin:auto;
+        padding:18px;
+    }
+
+    .top-actions{
+        display:flex;
+        gap:10px;
+        flex-wrap:wrap;
+        margin-bottom:18px;
+    }
+
+    button,
+    .link-btn{
+        border:0;
+        border-radius:9px;
+        padding:11px 15px;
+        font-weight:bold;
+        cursor:pointer;
+        text-decoration:none;
+        display:inline-block;
+        font-size:14px;
+    }
+
+    .refresh{
+        background:#0b5ed7;
+        color:white;
+    }
+
+    .control{
+        background:#172033;
+        color:white;
     }
 
     .stats{
-        grid-template-columns:1fr;
+        display:grid;
+        grid-template-columns:repeat(4,1fr);
+        gap:12px;
+        margin-bottom:20px;
+    }
+
+    .stat{
+        background:white;
+        border-radius:14px;
+        padding:18px;
+        box-shadow:0 4px 15px rgba(0,0,0,.07);
+        text-align:center;
+    }
+
+    .stat-number{
+        font-size:30px;
+        font-weight:bold;
+        margin-bottom:5px;
+    }
+
+    .stat-label{
+        color:#657084;
+        font-size:13px;
     }
 
     .delivery-card{
-        padding:17px;
+        background:white;
+        border-radius:16px;
+        padding:18px;
+        margin-bottom:18px;
+        box-shadow:0 5px 20px rgba(0,0,0,.08);
+        border-left:5px solid #0b5ed7;
     }
 
-    .status-buttons button{
-        width:100%;
+    .card-top{
+        display:flex;
+        justify-content:space-between;
+        gap:10px;
+        flex-wrap:wrap;
+        align-items:center;
     }
 
-}
+    .request-code{
+        font-size:19px;
+        font-weight:bold;
+        color:#0b5ed7;
+    }
 
+    .customer-name{
+        font-weight:bold;
+        font-size:17px;
+    }
+
+    .badges{
+        display:flex;
+        flex-wrap:wrap;
+        gap:7px;
+        margin:12px 0;
+    }
+
+    .badge{
+        padding:6px 10px;
+        border-radius:20px;
+        font-size:12px;
+        font-weight:bold;
+    }
+
+    .accepted{
+        background:#e8f1ff;
+        color:#0b5ed7;
+    }
+
+    .progress{
+        background:#fff4d6;
+        color:#936600;
+    }
+
+    .completed{
+        background:#e4f8ec;
+        color:#16723d;
+    }
+
+    .payment-confirmed{
+        background:#e4f8ec;
+        color:#16723d;
+    }
+
+    .payment-pending{
+        background:#fff4d6;
+        color:#936600;
+    }
+
+    .payment-none{
+        background:#f0f2f5;
+        color:#5f6978;
+    }
+
+    .approval{
+        background:#e8f1ff;
+        color:#0b5ed7;
+    }
+
+    .not-approved{
+        background:#ffe8e8;
+        color:#a52626;
+    }
+
+    .details{
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:10px;
+        margin-top:12px;
+    }
+
+    .detail{
+        background:#f7f9fc;
+        border-radius:9px;
+        padding:10px;
+        font-size:14px;
+    }
+
+    .detail strong{
+        display:block;
+        color:#657084;
+        font-size:11px;
+        text-transform:uppercase;
+        margin-bottom:4px;
+    }
+
+    .fee-box{
+        margin-top:15px;
+        background:#eef6ff;
+        border:1px solid #cfe3ff;
+        border-radius:12px;
+        padding:15px;
+    }
+
+    .fee-title{
+        font-size:12px;
+        color:#526174;
+        text-transform:uppercase;
+        font-weight:bold;
+        margin-bottom:7px;
+    }
+
+    .fee-row{
+        display:flex;
+        gap:10px;
+        align-items:center;
+        flex-wrap:wrap;
+    }
+
+    .fee-input{
+        flex:1;
+        min-width:180px;
+        padding:12px;
+        border:1px solid #c7d1df;
+        border-radius:8px;
+        font-size:16px;
+    }
+
+    .save-fee{
+        background:#198754;
+        color:white;
+    }
+
+    .saved-message{
+        color:#198754;
+        font-size:12px;
+        font-weight:bold;
+        margin-top:7px;
+        display:none;
+    }
+
+    .warning{
+        background:#fff4d6;
+        color:#795b00;
+        border-radius:9px;
+        padding:10px;
+        margin-top:12px;
+        font-size:13px;
+    }
+
+    .actions{
+        display:flex;
+        flex-wrap:wrap;
+        gap:8px;
+        margin-top:15px;
+        padding-top:15px;
+        border-top:1px solid #e7ebf0;
+    }
+
+    .action{
+        padding:10px 12px;
+        border-radius:8px;
+        border:0;
+        font-weight:bold;
+        cursor:pointer;
+        text-decoration:none;
+        font-size:13px;
+        display:inline-block;
+    }
+
+    .whatsapp{
+        background:#25D366;
+        color:white;
+    }
+
+    .call{
+        background:#172033;
+        color:white;
+    }
+
+    .track{
+        background:#0b5ed7;
+        color:white;
+    }
+
+    .approval-btn{
+        background:#6f42c1;
+        color:white;
+    }
+
+    .receipt{
+        background:#495057;
+        color:white;
+    }
+
+    .status-btn{
+        background:#0b5ed7;
+        color:white;
+    }
+
+    .status-btn.in-progress{
+        background:#f0ad00;
+        color:#111;
+    }
+
+    .status-btn.complete{
+        background:#198754;
+        color:white;
+    }
+
+    .status-btn:disabled{
+        opacity:.45;
+        cursor:not-allowed;
+    }
+
+    .empty{
+        background:white;
+        padding:30px;
+        border-radius:14px;
+        text-align:center;
+        color:#697586;
+    }
+
+    .loading{
+        text-align:center;
+        padding:30px;
+    }
+
+    .notice{
+        background:#e8f1ff;
+        color:#124c9b;
+        padding:13px;
+        border-radius:10px;
+        margin-bottom:18px;
+        font-size:14px;
+    }
+
+    @media(max-width:750px){
+        .stats{
+            grid-template-columns:repeat(2,1fr);
+        }
+
+        .details{
+            grid-template-columns:1fr;
+        }
+
+        .fee-row{
+            flex-direction:column;
+            align-items:stretch;
+        }
+
+        .fee-input{
+            width:100%;
+        }
+
+        .save-fee{
+            width:100%;
+        }
+    }
+
+    @media(max-width:430px){
+        .container{
+            padding:12px;
+        }
+
+        .stats{
+            gap:8px;
+        }
+
+        .stat{
+            padding:13px 8px;
+        }
+
+        .stat-number{
+            font-size:24px;
+        }
+
+        .delivery-card{
+            padding:14px;
+        }
+
+        .action{
+            width:100%;
+            text-align:center;
+        }
+    }
 </style>
-
 </head>
 
 <body>
 
 <header>
-
-<div class="header-inner">
-
-<h1>🏍️ NB Logistics Hub</h1>
-
-<p>Admin Delivery Control</p>
-
-</div>
-
+    <h1>🏍️ NB Logistics Hub</h1>
+    <p>Delivery Management & Customer Communication</p>
 </header>
-
 
 <div class="container">
 
-<div class="notice">
+    <div class="top-actions">
+        <button class="refresh" onclick="loadDeliveries()">🔄 Refresh Deliveries</button>
 
-<strong>⚙️ Delivery Management</strong>
+        <a class="link-btn control"
+           href="NB_Logistics_Control_Center.html">
+            ⚙️ Control Center
+        </a>
 
-Use this page to move customer deliveries through the delivery process.
+        <a class="link-btn control"
+           href="NB_Logistics_Admin_Payments.html">
+            💳 Payment Verification
+        </a>
+    </div>
 
-<br><br>
+    <div class="notice">
+        <strong>Admin workflow:</strong>
+        Set or correct the delivery fee → Save Fee → send the customer the WhatsApp approval message → customer approves the fee → customer proceeds to payment.
+    </div>
 
-<strong>Delivery flow:</strong>
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-number" id="totalCount">0</div>
+            <div class="stat-label">Total Deliveries</div>
+        </div>
 
-Accepted → In Progress → Completed
+        <div class="stat">
+            <div class="stat-number" id="acceptedCount">0</div>
+            <div class="stat-label">Accepted</div>
+        </div>
 
-<br><br>
+        <div class="stat">
+            <div class="stat-number" id="progressCount">0</div>
+            <div class="stat-label">In Progress</div>
+        </div>
 
-Payment confirmation is displayed separately. This page does not change payment records.
+        <div class="stat">
+            <div class="stat-number" id="completedCount">0</div>
+            <div class="stat-label">Completed</div>
+        </div>
+    </div>
 
-</div>
+    <div id="message"></div>
 
-
-<div id="message"
-     class="message">
-</div>
-
-
-<div class="controls">
-
-<button
-    class="refresh-btn"
-    onclick="loadDeliveries()">
-    🔄 Refresh Deliveries
-</button>
-
-</div>
-
-
-<div class="stats">
-
-<div class="stat">
-
-<div class="stat-label">
-Total Deliveries
-</div>
-
-<div
-    id="totalCount"
-    class="stat-value">
-    0
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div class="stat-label">
-Accepted
-</div>
-
-<div
-    id="acceptedCount"
-    class="stat-value">
-    0
-</div>
+    <div id="deliveryList">
+        <div class="loading">
+            Loading deliveries...
+        </div>
+    </div>
 
 </div>
-
-
-<div class="stat">
-
-<div class="stat-label">
-In Progress
-</div>
-
-<div
-    id="progressCount"
-    class="stat-value">
-    0
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div class="stat-label">
-Completed
-</div>
-
-<div
-    id="completedCount"
-    class="stat-value">
-    0
-</div>
-
-</div>
-
-</div>
-
-
-<div id="deliveryList">
-
-<div class="loading">
-
-Loading deliveries...
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="footer">
-
-NB Logistics Hub • Ilorin, Kwara State, Nigeria
-
-</div>
-
 
 <script>
 
-/* =====================================================
-   SUPABASE
-===================================================== */
-
-const SUPABASE_URL =
-    "https://kygkgcpuiwawatugkfne.supabase.co";
+const SUPABASE_URL = "https://kygkgcpuiwawatugkfne.supabase.co";
 
 const SUPABASE_KEY =
-    "sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
+"sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
 
 const supabaseClient =
-    window.supabase.createClient(
+    supabase.createClient(
         SUPABASE_URL,
         SUPABASE_KEY
     );
 
+let deliveries = {};
 
-/* =====================================================
-   HELPERS
-===================================================== */
+function normalize(value){
+    return String(value || "").trim().toLowerCase();
+}
 
-function escapeHTML(value){
+function formatMoney(value){
 
-    if(value === null || value === undefined){
-        return "";
+    if(
+        value === null ||
+        value === undefined ||
+        value === "" ||
+        Number(value) === 0
+    ){
+        return "Not specified";
     }
 
-    return String(value)
+    return "₦" + Number(value).toLocaleString("en-NG");
+}
+
+function formatDate(value){
+
+    if(!value) return "Not available";
+
+    const date = new Date(value);
+
+    if(isNaN(date.getTime())){
+        return value;
+    }
+
+    return date.toLocaleString("en-NG", {
+        day:"2-digit",
+        month:"short",
+        year:"numeric",
+        hour:"2-digit",
+        minute:"2-digit"
+    });
+}
+
+function escapeHtml(value){
+
+    return String(value ?? "")
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
         .replace(/>/g,"&gt;")
@@ -506,692 +517,762 @@ function escapeHTML(value){
         .replace(/'/g,"&#039;");
 }
 
+function normalizeNigeriaNumber(phone){
 
-function formatMoney(value){
+    let number = String(phone || "")
+        .replace(/\s+/g,"")
+        .replace(/-/g,"")
+        .replace(/\(/g,"")
+        .replace(/\)/g,"");
 
-    if(value === null || value === undefined || value === ""){
-        return "Not specified";
+    if(number.startsWith("+")){
+        number = number.substring(1);
     }
 
-    const number = Number(value);
-
-    if(Number.isNaN(number)){
-        return escapeHTML(value);
+    if(number.startsWith("0")){
+        number = "234" + number.substring(1);
     }
 
-    return "₦" + number.toLocaleString("en-NG");
+    return number;
 }
 
+function isPaymentConfirmed(row){
 
-function formatDate(value){
+    const paymentStatus =
+        normalize(row.payment_status);
 
-    if(!value){
-        return "Not available";
-    }
-
-    const date = new Date(value);
-
-    if(Number.isNaN(date.getTime())){
-        return escapeHTML(value);
-    }
-
-    return date.toLocaleString(
-        "en-NG",
-        {
-            year:"numeric",
-            month:"short",
-            day:"numeric",
-            hour:"numeric",
-            minute:"2-digit"
-        }
+    return (
+        paymentStatus === "confirmed" ||
+        !!row.payment_confirmed_at ||
+        !!row.paid_at
     );
 }
 
+function paymentBadge(row){
 
-function normalizeStatus(status){
-
-    return String(status || "")
-        .trim()
-        .toLowerCase();
-}
-
-
-function showMessage(text,type){
-
-    const box =
-        document.getElementById("message");
-
-    box.textContent = text;
-
-    box.className =
-        "message " +
-        (type === "success"
-            ? "success"
-            : "error");
-
-    box.style.display = "block";
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-}
-
-
-function hideMessage(){
-
-    const box =
-        document.getElementById("message");
-
-    box.style.display = "none";
-
-}
-
-
-/* =====================================================
-   PAYMENT STATUS
-===================================================== */
-
-function getPaymentInfo(row){
-
-    const paymentStatus =
-        normalizeStatus(row.payment_status);
-
-    const confirmed =
-        paymentStatus === "confirmed" ||
-        !!row.payment_confirmed_at ||
-        !!row.paid_at;
-
-    const submitted =
-        !!row.payment_submitted_at ||
-        paymentStatus === "submitted" ||
-        paymentStatus === "pending";
-
-    if(confirmed){
-
-        return {
-            text:"🟢 Payment Confirmed",
-            className:"badge-payment"
-        };
-
-    }
-
-    if(submitted){
-
-        return {
-            text:"🟡 Awaiting Verification",
-            className:"badge-pending"
-        };
-
-    }
-
-    return {
-        text:"⚪ Payment Not Submitted",
-        className:"badge-not-paid"
-    };
-
-}
-
-
-/* =====================================================
-   DELIVERY STATUS
-===================================================== */
-
-function getStatusInfo(status){
-
-    const normalized =
-        normalizeStatus(status);
+    const status =
+        normalize(row.payment_status);
 
     if(
-        normalized === "completed" ||
-        normalized === "delivered"
+        status === "confirmed" ||
+        row.payment_confirmed_at ||
+        row.paid_at
     ){
-
-        return {
-            text:"Completed",
-            className:"badge-completed"
-        };
-
+        return `
+            <span class="badge payment-confirmed">
+                🟢 Payment Confirmed
+            </span>
+        `;
     }
 
     if(
-        normalized === "in progress" ||
-        normalized === "in_progress" ||
-        normalized === "out for delivery" ||
-        normalized === "out_for_delivery"
+        row.payment_submitted_at ||
+        status === "pending"
     ){
-
-        return {
-            text:"In Progress",
-            className:"badge-progress"
-        };
-
+        return `
+            <span class="badge payment-pending">
+                🟡 Awaiting Verification
+            </span>
+        `;
     }
 
-    return {
-        text:"Accepted",
-        className:"badge-accepted"
-    };
-
+    return `
+        <span class="badge payment-none">
+            ⚪ Payment Not Submitted
+        </span>
+    `;
 }
 
+function statusBadge(status){
 
-/* =====================================================
-   LOAD DELIVERIES
-===================================================== */
+    const value = normalize(status);
+
+    if(value === "completed"){
+        return `
+            <span class="badge completed">
+                🟢 Completed
+            </span>
+        `;
+    }
+
+    if(value === "in progress"){
+        return `
+            <span class="badge progress">
+                🟡 In Progress
+            </span>
+        `;
+    }
+
+    return `
+        <span class="badge accepted">
+            🔵 ${escapeHtml(status || "Accepted")}
+        </span>
+    `;
+}
+
+function approvalBadge(row){
+
+    const approval =
+        normalize(row.customer_approval_status);
+
+    if(approval === "approved"){
+        return `
+            <span class="badge approval">
+                🟢 Customer Approved
+            </span>
+        `;
+    }
+
+    if(approval === "declined"){
+        return `
+            <span class="badge not-approved">
+                🔴 Customer Declined
+            </span>
+        `;
+    }
+
+    return `
+        <span class="badge not-approved">
+            🟠 Customer Approval Pending
+        </span>
+    `;
+}
 
 async function loadDeliveries(){
-
-    hideMessage();
 
     const list =
         document.getElementById("deliveryList");
 
     list.innerHTML =
-        '<div class="loading">Loading deliveries...</div>';
+        `<div class="loading">Loading deliveries...</div>`;
 
-    const {
-        data,
-        error
-    } = await supabaseClient
-        .from("delivery_requests")
-        .select("*")
-        .order("created_at",{ascending:false});
-
+    const { data, error } =
+        await supabaseClient
+            .from("delivery_requests")
+            .select("*")
+            .order("created_at", {
+                ascending:false
+            });
 
     if(error){
 
         console.error(error);
 
-        list.innerHTML =
-            '<div class="empty">Unable to load deliveries.</div>';
-
-        showMessage(
-            "Could not load delivery requests. Please check your Supabase connection.",
-            "error"
-        );
-
-        return;
-    }
-
-
-    const deliveries =
-        Array.isArray(data)
-            ? data
-            : [];
-
-
-    updateStats(deliveries);
-
-
-    if(deliveries.length === 0){
-
-        list.innerHTML =
-            '<div class="empty">No delivery requests found.</div>';
+        list.innerHTML = `
+            <div class="empty">
+                ❌ Unable to load deliveries.<br><br>
+                ${escapeHtml(error.message)}
+            </div>
+        `;
 
         return;
     }
 
+    deliveries = {};
 
-    list.innerHTML =
-        deliveries
-            .map(renderDelivery)
-            .join("");
+    (data || []).forEach(row => {
 
-}
+        if(row.request_code){
 
-
-/* =====================================================
-   UPDATE STATS
-===================================================== */
-
-function updateStats(deliveries){
-
-    let accepted = 0;
-    let progress = 0;
-    let completed = 0;
-
-
-    deliveries.forEach(row => {
-
-        const status =
-            normalizeStatus(row.status);
-
-
-        if(
-            status === "completed" ||
-            status === "delivered"
-        ){
-
-            completed++;
-
-        }
-
-        else if(
-            status === "in progress" ||
-            status === "in_progress" ||
-            status === "out for delivery" ||
-            status === "out_for_delivery"
-        ){
-
-            progress++;
-
-        }
-
-        else {
-
-            accepted++;
-
+            deliveries[row.request_code] = row;
         }
 
     });
 
+    updateStats(data || []);
 
-    document.getElementById("totalCount")
-        .textContent = deliveries.length;
-
-    document.getElementById("acceptedCount")
-        .textContent = accepted;
-
-    document.getElementById("progressCount")
-        .textContent = progress;
-
-    document.getElementById("completedCount")
-        .textContent = completed;
-
+    renderDeliveries(data || []);
 }
 
+function updateStats(rows){
 
-/* =====================================================
-   RENDER DELIVERY
-===================================================== */
+    const total = rows.length;
 
-function renderDelivery(row){
+    const accepted =
+        rows.filter(row =>
+            normalize(row.status) === "accepted"
+        ).length;
 
-    const statusInfo =
-        getStatusInfo(row.status);
+    const progress =
+        rows.filter(row =>
+            normalize(row.status) === "in progress"
+        ).length;
 
-    const paymentInfo =
-        getPaymentInfo(row);
+    const completed =
+        rows.filter(row =>
+            normalize(row.status) === "completed"
+        ).length;
 
+    document.getElementById("totalCount").textContent =
+        total;
 
-    const currentStatus =
-        normalizeStatus(row.status);
+    document.getElementById("acceptedCount").textContent =
+        accepted;
 
+    document.getElementById("progressCount").textContent =
+        progress;
 
-    const isCompleted =
-        currentStatus === "completed" ||
-        currentStatus === "delivered";
+    document.getElementById("completedCount").textContent =
+        completed;
+}
 
+function renderDeliveries(rows){
 
-    const isProgress =
-        currentStatus === "in progress" ||
-        currentStatus === "in_progress" ||
-        currentStatus === "out for delivery" ||
-        currentStatus === "out_for_delivery";
+    const list =
+        document.getElementById("deliveryList");
 
+    if(!rows.length){
 
-    const isAccepted =
-        !isCompleted && !isProgress;
+        list.innerHTML = `
+            <div class="empty">
+                No delivery requests found.
+            </div>
+        `;
 
+        return;
+    }
 
-    /*
-       Payment must be confirmed before
-       moving the delivery into In Progress.
-    */
+    list.innerHTML =
+        rows.map(row => createDeliveryCard(row)).join("");
+}
+
+function createDeliveryCard(row){
+
+    const code =
+        row.request_code || row.id;
+
+    const status =
+        normalize(row.status);
 
     const paymentConfirmed =
-        paymentInfo.className === "badge-payment";
+        isPaymentConfirmed(row);
 
+    const feeValue =
+        row.delivery_fee !== null &&
+        row.delivery_fee !== undefined
+            ? row.delivery_fee
+            : "";
+
+    let warning = "";
+
+    if(!paymentConfirmed){
+
+        warning = `
+            <div class="warning">
+                ⚠️ Payment has not been confirmed.
+                The delivery should not be moved to
+                <strong>In Progress</strong> until the actual
+                payment has been verified.
+            </div>
+        `;
+    }
 
     return `
-
-<div class="delivery-card">
-
-<div class="delivery-header">
-
-<div>
-
-<div class="request-code">
-
-${escapeHTML(
-    row.request_code || "No Request Number"
-)}
-
-</div>
-
-<div class="customer">
-
-Customer:
-<strong>
-${escapeHTML(
-    row.customer_name || "Not provided"
-)}
-</strong>
-
-</div>
-
-</div>
-
-
-<div class="badges">
-
-<span class="badge ${statusInfo.className}">
-
-${statusInfo.text}
-
-</span>
-
-
-<span class="badge ${paymentInfo.className}">
-
-${paymentInfo.text}
-
-</span>
-
-</div>
-
-</div>
-
-
-<div class="details">
-
-
-<div class="detail">
-
-<div class="detail-label">
-Phone
-</div>
-
-<div class="detail-value">
-
-${escapeHTML(
-    row.phone ||
-    row.phone_number ||
-    row.whatsapp ||
-    "Not provided"
-)}
-
-</div>
-
-</div>
-
-
-<div class="detail">
-
-<div class="detail-label">
-Pickup Location
-</div>
-
-<div class="detail-value">
-
-${escapeHTML(
-    row.pickup_location ||
-    "Not provided"
-)}
-
-</div>
-
-</div>
-
-
-<div class="detail">
-
-<div class="detail-label">
-Delivery Location
-</div>
-
-<div class="detail-value">
-
-${escapeHTML(
-    row.delivery_location ||
-    "Not provided"
-)}
-
-</div>
-
-</div>
-
-
-<div class="detail">
-
-<div class="detail-label">
-Package
-</div>
-
-<div class="detail-value">
-
-${escapeHTML(
-    row.package_details ||
-    "Not provided"
-)}
-
-</div>
-
-</div>
-
-
-<div class="detail">
-
-<div class="detail-label">
-Delivery Fee
-</div>
-
-<div class="detail-value">
-
-${formatMoney(row.delivery_fee)}
-
-</div>
-
-</div>
-
-
-<div class="detail">
-
-<div class="detail-label">
-Customer Approval
-</div>
-
-<div class="detail-value">
-
-${escapeHTML(
-    row.customer_approval_status ||
-    "Not recorded"
-)}
-
-</div>
-
-</div>
-
-
-<div class="detail">
-
-<div class="detail-label">
-Payment Method
-</div>
-
-<div class="detail-value">
-
-${escapeHTML(
-    row.payment_method ||
-    "Not submitted"
-)}
-
-</div>
-
-</div>
-
-
-<div class="detail">
-
-<div class="detail-label">
-Last Updated
-</div>
-
-<div class="detail-value">
-
-${formatDate(
-    row.updated_at ||
-    row.created_at
-)}
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="actions">
-
-<div class="actions-title">
-
-Change Delivery Status
-
-</div>
-
-
-<div class="status-buttons">
-
-
-<button
-    class="status-btn accepted-btn"
-    ${isAccepted ? "disabled" : ""}
-    onclick="changeStatus(
-        '${escapeHTML(row.request_code)}',
-        'Accepted'
-    )">
-
-    1️⃣ Accepted
-
-</button>
-
-
-<button
-    class="status-btn progress-btn"
-    ${
-        isProgress || isCompleted || !paymentConfirmed
-            ? (isProgress || isCompleted ? "" : "disabled")
-            : ""
+        <div class="delivery-card">
+
+            <div class="card-top">
+
+                <div>
+                    <div class="request-code">
+                        ${escapeHtml(code)}
+                    </div>
+
+                    <div class="customer-name">
+                        ${escapeHtml(
+                            row.customer_name ||
+                            "Customer"
+                        )}
+                    </div>
+                </div>
+
+                <div class="badges">
+
+                    ${statusBadge(row.status)}
+
+                    ${paymentBadge(row)}
+
+                    ${approvalBadge(row)}
+
+                </div>
+
+            </div>
+
+            <div class="details">
+
+                <div class="detail">
+                    <strong>Phone</strong>
+                    ${escapeHtml(
+                        row.phone ||
+                        row.phone_number ||
+                        row.whatsapp ||
+                        "Not provided"
+                    )}
+                </div>
+
+                <div class="detail">
+                    <strong>Pickup</strong>
+                    ${escapeHtml(
+                        row.pickup_location ||
+                        "Not provided"
+                    )}
+                </div>
+
+                <div class="detail">
+                    <strong>Destination</strong>
+                    ${escapeHtml(
+                        row.delivery_location ||
+                        "Not provided"
+                    )}
+                </div>
+
+                <div class="detail">
+                    <strong>Package</strong>
+                    ${escapeHtml(
+                        row.package_details ||
+                        "Not specified"
+                    )}
+                </div>
+
+                <div class="detail">
+                    <strong>Preferred Time</strong>
+                    ${escapeHtml(
+                        row.preferred_time ||
+                        "Not specified"
+                    )}
+                </div>
+
+                <div class="detail">
+                    <strong>Payment Method</strong>
+                    ${escapeHtml(
+                        row.payment_method ||
+                        "Not submitted"
+                    )}
+                </div>
+
+                <div class="detail">
+                    <strong>Customer Approval</strong>
+                    ${escapeHtml(
+                        row.customer_approval_status ||
+                        "Pending"
+                    )}
+                </div>
+
+                <div class="detail">
+                    <strong>Last Updated</strong>
+                    ${formatDate(
+                        row.updated_at ||
+                        row.created_at
+                    )}
+                </div>
+
+            </div>
+
+            <!-- DELIVERY FEE CONTROL -->
+
+            <div class="fee-box">
+
+                <div class="fee-title">
+                    💰 Delivery Fee
+                </div>
+
+                <div class="fee-row">
+
+                    <input
+                        class="fee-input"
+                        type="number"
+                        min="0"
+                        step="50"
+                        id="fee-${escapeHtml(code)}"
+                        value="${escapeHtml(feeValue)}"
+                        placeholder="Enter delivery fee"
+                    >
+
+                    <button
+                        class="action save-fee"
+                        onclick="saveDeliveryFee('${encodeURIComponent(code)}')"
+                    >
+                        💾 Save Fee
+                    </button>
+
+                </div>
+
+                <div
+                    class="saved-message"
+                    id="saved-${escapeHtml(code)}"
+                >
+                    ✓ Delivery fee saved successfully.
+                </div>
+
+                <div style="margin-top:9px;font-weight:bold;">
+                    Current Fee:
+                    ${formatMoney(row.delivery_fee)}
+                </div>
+
+            </div>
+
+            ${warning}
+
+            <!-- DELIVERY STATUS -->
+
+            <div class="actions">
+
+                <button
+                    class="action status-btn"
+                    onclick="changeStatus('${encodeURIComponent(code)}','Accepted')"
+                    ${status === "accepted" ? "disabled" : ""}
+                >
+                    🔵 Accepted
+                </button>
+
+                <button
+                    class="action status-btn in-progress"
+                    onclick="changeStatus('${encodeURIComponent(code)}','In Progress')"
+                    ${
+                        status === "in progress" ||
+                        status === "completed" ||
+                        !paymentConfirmed
+                            ? "disabled"
+                            : ""
+                    }
+                >
+                    🟡 In Progress
+                </button>
+
+                <button
+                    class="action status-btn complete"
+                    onclick="changeStatus('${encodeURIComponent(code)}','Completed')"
+                    ${
+                        status === "completed" ||
+                        !paymentConfirmed
+                            ? "disabled"
+                            : ""
+                    }
+                >
+                    🟢 Completed
+                </button>
+
+            </div>
+
+            <!-- CUSTOMER COMMUNICATION -->
+
+            <div class="actions">
+
+                <button
+                    class="action whatsapp"
+                    onclick="sendWhatsApp('${encodeURIComponent(code)}')"
+                >
+                    💬 Send Fee for Approval
+                </button>
+
+                <button
+                    class="action call"
+                    onclick="callCustomer('${encodeURIComponent(code)}')"
+                >
+                    📞 Call Customer
+                </button>
+
+                <a
+                    class="action track"
+                    href="NB_Logistics_Track.html?request=${encodeURIComponent(code)}"
+                >
+                    📍 Track
+                </a>
+
+                <a
+                    class="action approval-btn"
+                    href="NB_Logistics_Approval.html?request=${encodeURIComponent(code)}"
+                >
+                    👤 Customer Approval
+                </a>
+
+                <a
+                    class="action receipt"
+                    href="NB_Logistics_Receipt.html?request=${encodeURIComponent(code)}"
+                >
+                    🧾 Receipt
+                </a>
+
+            </div>
+
+        </div>
+    `;
+}
+
+async function saveDeliveryFee(encodedCode){
+
+    const code =
+        decodeURIComponent(encodedCode);
+
+    const row =
+        deliveries[code];
+
+    if(!row){
+
+        alert("Delivery request not found.");
+
+        return;
     }
-    onclick="changeStatus(
-        '${escapeHTML(row.request_code)}',
-        'In Progress'
-    )">
 
-    2️⃣ In Progress
+    const input =
+        document.getElementById(
+            "fee-" + code
+        );
 
-</button>
+    if(!input){
 
+        alert("Fee input not found.");
 
-<button
-    class="status-btn completed-btn"
-    ${isCompleted ? "disabled" : ""}
-    onclick="changeStatus(
-        '${escapeHTML(row.request_code)}',
-        'Completed'
-    )">
+        return;
+    }
 
-    3️⃣ Completed
+    const fee =
+        Number(input.value);
 
-</button>
+    if(
+        !Number.isFinite(fee) ||
+        fee < 0
+    ){
 
-</div>
+        alert("Please enter a valid delivery fee.");
 
+        return;
+    }
 
-${
-    !paymentConfirmed && !isCompleted
-    ? `
-    <div style="
-        margin-top:12px;
-        padding:12px;
-        background:#fff7ed;
-        color:#9a3412;
-        border-radius:8px;
-        font-size:13px;
-    ">
+    const { error } =
+        await supabaseClient
+            .from("delivery_requests")
+            .update({
+                delivery_fee: fee,
+                updated_at: new Date().toISOString()
+            })
+            .eq("request_code", code);
 
-    ⚠️ Payment has not been confirmed yet.
-    The delivery should only be moved to
-    <strong>In Progress</strong> after payment is verified.
+    if(error){
 
-    </div>
-    `
-    : ""
-}
+        console.error(error);
 
-
-</div>
-
-</div>
-
-`;
-
-}
-
-
-/* =====================================================
-   CHANGE DELIVERY STATUS
-===================================================== */
-
-async function changeStatus(
-    requestCode,
-    newStatus
-){
-
-    hideMessage();
-
-
-    if(!requestCode){
-
-        showMessage(
-            "Missing delivery request number.",
-            "error"
+        alert(
+            "Unable to save delivery fee.\n\n" +
+            error.message
         );
 
         return;
     }
 
+    row.delivery_fee = fee;
 
-    /*
-       Confirm action
-    */
+    const saved =
+        document.getElementById(
+            "saved-" + code
+        );
 
-    let confirmationText =
-        "Change delivery status to " +
-        newStatus +
-        "?";
+    if(saved){
 
+        saved.style.display = "block";
 
-    if(newStatus === "In Progress"){
-
-        confirmationText =
-            "Move this delivery to In Progress?\n\n" +
-            "The customer will see that the delivery is now being carried out.";
-
+        setTimeout(() => {
+            saved.style.display = "none";
+        },3000);
     }
 
+    await loadDeliveries();
 
-    if(newStatus === "Completed"){
+    alert(
+        "Delivery fee saved successfully.\n\n" +
+        "Request: " + code +
+        "\nFee: " + formatMoney(fee)
+    );
+}
 
-        confirmationText =
-            "Mark this delivery as Completed?\n\n" +
-            "The customer will see the delivery as completed.";
+function sendWhatsApp(encodedCode){
 
-    }
+    const code =
+        decodeURIComponent(encodedCode);
 
+    const row =
+        deliveries[code];
 
-    if(!window.confirm(confirmationText)){
+    if(!row){
+
+        alert("Delivery request not found.");
 
         return;
-
     }
 
+    const phone =
+        row.phone ||
+        row.phone_number ||
+        row.whatsapp;
 
-    let statusMessage =
-        "Your delivery request has been accepted. We are preparing your delivery.";
+    if(!phone){
 
+        alert(
+            "This customer does not have a phone or WhatsApp number."
+        );
+
+        return;
+    }
+
+    const number =
+        normalizeNigeriaNumber(phone);
+
+    const fee =
+        row.delivery_fee;
+
+    if(
+        fee === null ||
+        fee === undefined ||
+        fee === "" ||
+        Number(fee) < 0
+    ){
+
+        alert(
+            "Please set and save the delivery fee first."
+        );
+
+        return;
+    }
+
+    const customer =
+        row.customer_name ||
+        "Customer";
+
+    const trackingUrl =
+        window.location.origin +
+        window.location.pathname
+            .replace(
+                "NB_Logistics_Admin_Delivery.html",
+                "NB_Logistics_Track.html"
+            ) +
+        "?request=" +
+        encodeURIComponent(code);
+
+    const approvalUrl =
+        window.location.origin +
+        window.location.pathname
+            .replace(
+                "NB_Logistics_Admin_Delivery.html",
+                "NB_Logistics_Approval.html"
+            ) +
+        "?request=" +
+        encodeURIComponent(code);
+
+    const message =
+`Hello ${customer},
+
+This is NB Logistics Hub.
+
+Your delivery request has been reviewed.
+
+📦 Request Number: ${code}
+
+📍 Pickup: ${row.pickup_location || "Not specified"}
+
+📍 Delivery: ${row.delivery_location || "Not specified"}
+
+💰 Delivery Fee: ${formatMoney(fee)}
+
+Please review the delivery details and approve the delivery fee using the link below:
+
+${approvalUrl}
+
+After you approve the delivery, you will be able to proceed to payment.
+
+You can also track your delivery here:
+
+${trackingUrl}
+
+Thank you for choosing NB Logistics Hub.
+
+Fast • Simple • Reliable`;
+
+    const whatsappUrl =
+        "https://wa.me/" +
+        number +
+        "?text=" +
+        encodeURIComponent(message);
+
+    window.open(
+        whatsappUrl,
+        "_blank"
+    );
+}
+
+function callCustomer(encodedCode){
+
+    const code =
+        decodeURIComponent(encodedCode);
+
+    const row =
+        deliveries[code];
+
+    if(!row){
+
+        alert("Delivery request not found.");
+
+        return;
+    }
+
+    const phone =
+        row.phone ||
+        row.phone_number ||
+        row.whatsapp;
+
+    if(!phone){
+
+        alert(
+            "Customer phone number is not available."
+        );
+
+        return;
+    }
+
+    window.location.href =
+        "tel:" + phone;
+}
+
+async function changeStatus(
+    encodedCode,
+    newStatus
+){
+
+    const code =
+        decodeURIComponent(encodedCode);
+
+    const row =
+        deliveries[code];
+
+    if(!row){
+
+        alert("Delivery request not found.");
+
+        return;
+    }
+
+    if(
+        newStatus === "In Progress" ||
+        newStatus === "Completed"
+    ){
+
+        if(!isPaymentConfirmed(row)){
+
+            alert(
+                "Payment has not been confirmed.\n\n" +
+                "Please verify the customer's actual payment before moving this delivery forward."
+            );
+
+            return;
+        }
+    }
+
+    let statusMessage = "";
+
+    if(newStatus === "Accepted"){
+
+        statusMessage =
+            "Your delivery request has been accepted. We are preparing your delivery.";
+
+    }
 
     if(newStatus === "In Progress"){
 
@@ -1200,7 +1281,6 @@ async function changeStatus(
 
     }
 
-
     if(newStatus === "Completed"){
 
         statusMessage =
@@ -1208,66 +1288,177 @@ async function changeStatus(
 
     }
 
+    const { error } =
+        await supabaseClient
+            .from("delivery_requests")
+            .update({
 
-    const updateData = {
+                status:newStatus,
 
-        status:newStatus,
+                status_message:statusMessage,
 
-        status_message:statusMessage,
+                updated_at:new Date().toISOString()
 
-        updated_at:new Date().toISOString()
-
-    };
-
-
-    const {
-        error
-    } = await supabaseClient
-        .from("delivery_requests")
-        .update(updateData)
-        .eq("request_code",requestCode);
-
+            })
+            .eq("request_code",code);
 
     if(error){
 
         console.error(error);
 
-        showMessage(
-            "Status update failed: " +
-            error.message,
-            "error"
+        alert(
+            "Unable to update delivery status.\n\n" +
+            error.message
         );
 
         return;
     }
 
-
-    showMessage(
-        "Delivery " +
-        requestCode +
-        " has been updated to " +
-        newStatus +
-        ".",
-        "success"
-    );
-
-
     await loadDeliveries();
 
+    /*
+       After changing the status, offer
+       the admin the option to message
+       the customer immediately.
+    */
+
+    if(
+        newStatus === "Accepted" ||
+        newStatus === "In Progress" ||
+        newStatus === "Completed"
+    ){
+
+        const send =
+            confirm(
+                "Delivery status updated to " +
+                newStatus +
+                ".\n\n" +
+                "Would you like to send the customer a WhatsApp update now?"
+            );
+
+        if(send){
+
+            sendStatusWhatsApp(
+                code,
+                newStatus
+            );
+        }
+    }
 }
 
+function sendStatusWhatsApp(
+    code,
+    status
+){
 
-/* =====================================================
-   INITIAL LOAD
-===================================================== */
+    const row =
+        deliveries[code];
 
-document.addEventListener(
-    "DOMContentLoaded",
-    loadDeliveries
-);
+    if(!row){
+
+        alert("Delivery request not found.");
+
+        return;
+    }
+
+    const phone =
+        row.phone ||
+        row.phone_number ||
+        row.whatsapp;
+
+    if(!phone){
+
+        alert("Customer phone number is not available.");
+
+        return;
+    }
+
+    const number =
+        normalizeNigeriaNumber(phone);
+
+    const customer =
+        row.customer_name ||
+        "Customer";
+
+    const trackingUrl =
+        window.location.origin +
+        window.location.pathname
+            .replace(
+                "NB_Logistics_Admin_Delivery.html",
+                "NB_Logistics_Track.html"
+            ) +
+        "?request=" +
+        encodeURIComponent(code);
+
+    let statusText = "";
+
+    if(status === "Accepted"){
+
+        statusText =
+            `Your delivery request has been accepted.
+
+Please review the delivery details and confirm your approval before payment.
+
+Delivery Fee: ${formatMoney(row.delivery_fee)}`;
+
+    }
+
+    if(status === "In Progress"){
+
+        statusText =
+            `Your package is currently on the way.
+
+Please be available to receive your delivery.`;
+
+    }
+
+    if(status === "Completed"){
+
+        statusText =
+            `Your delivery has been completed successfully.
+
+Thank you for choosing NB Logistics Hub.`;
+
+    }
+
+    const message =
+`Hello ${customer},
+
+NB Logistics Hub Delivery Update
+
+📦 Request Number: ${code}
+
+${statusText}
+
+📍 Pickup: ${row.pickup_location || "Not specified"}
+
+📍 Delivery: ${row.delivery_location || "Not specified"}
+
+Track your delivery:
+
+${trackingUrl}
+
+Thank you for choosing NB Logistics Hub.
+
+Fast • Simple • Reliable`;
+
+    const whatsappUrl =
+        "https://wa.me/" +
+        number +
+        "?text=" +
+        encodeURIComponent(message);
+
+    window.open(
+        whatsappUrl,
+        "_blank"
+    );
+}
+
+/* Load deliveries when page opens */
+
+loadDeliveries();
 
 </script>
 
 </body>
-
 </html>
