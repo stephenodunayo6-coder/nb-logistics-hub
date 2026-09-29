@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +12,7 @@
 <title>NB Logistics Hub — Delivery Receipt</title>
 
 <meta name="description"
-      content="View and print your NB Logistics Hub delivery receipt.">
+      content="NB Logistics Hub delivery receipt — Ilorin, Kwara State, Nigeria.">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -42,7 +43,7 @@ body{
     box-shadow:0 10px 35px rgba(0,0,0,.10);
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 
 .header{
     background:linear-gradient(135deg,#071f3d,#0b4f8a);
@@ -69,23 +70,22 @@ body{
     letter-spacing:1px;
 }
 
-/* LOADING */
+/* ================= LOADING ================= */
 
 .loading{
     text-align:center;
     padding:60px 20px;
-    font-size:16px;
     color:#687386;
 }
 
 .spinner{
-    width:38px;
-    height:38px;
+    width:40px;
+    height:40px;
     border:4px solid #dce4ed;
     border-top-color:#0b72c9;
     border-radius:50%;
     animation:spin 1s linear infinite;
-    margin:0 auto 15px;
+    margin:0 auto 16px;
 }
 
 @keyframes spin{
@@ -94,25 +94,31 @@ body{
     }
 }
 
-/* ERROR */
+/* ================= ERROR ================= */
 
 .error{
     display:none;
     margin:25px;
-    padding:20px;
+    padding:22px;
     border-radius:12px;
     background:#fff1f1;
-    border:1px solid #f1b7b7;
-    color:#9b2020;
+    border:1px solid #efb4b4;
+    color:#991b1b;
     text-align:center;
 }
 
-.error strong{
-    display:block;
+.error-title{
+    font-size:19px;
+    font-weight:800;
     margin-bottom:8px;
 }
 
-/* CONTENT */
+.error-text{
+    font-size:14px;
+    line-height:1.6;
+}
+
+/* ================= CONTENT ================= */
 
 .content{
     padding:30px;
@@ -140,11 +146,11 @@ body{
 
 .label{
     display:block;
-    font-size:12px;
-    font-weight:700;
+    font-size:11px;
+    font-weight:800;
     color:#687386;
     text-transform:uppercase;
-    margin-bottom:6px;
+    margin-bottom:7px;
 }
 
 .value{
@@ -154,11 +160,11 @@ body{
     word-break:break-word;
 }
 
-/* FEE */
+/* ================= FEE ================= */
 
 .fee-box{
     margin-top:28px;
-    padding:24px;
+    padding:25px;
     border-radius:14px;
     background:#f1f8ff;
     border:2px solid #0b72c9;
@@ -174,7 +180,7 @@ body{
 }
 
 .fee{
-    font-size:38px;
+    font-size:40px;
     font-weight:900;
     color:#0b4f8a;
     margin:8px 0 12px;
@@ -188,38 +194,39 @@ body{
     font-size:13px;
 }
 
-.status.accepted{
+.status-new{
+    background:#e8edf3;
+    color:#526071;
+}
+
+.status-accepted{
     background:#fff3cd;
     color:#856404;
 }
 
-.status.in-progress{
+.status-progress{
     background:#dff1ff;
     color:#075985;
 }
 
-.status.completed{
+.status-completed{
     background:#dff7e8;
     color:#08763b;
 }
 
-.status.cancelled{
+.status-cancelled{
     background:#ffe2e2;
     color:#a61b1b;
-}
-
-.status.new{
-    background:#e8edf3;
-    color:#526071;
 }
 
 .status-message{
     margin-top:14px;
     font-size:14px;
     color:#4f5968;
+    line-height:1.5;
 }
 
-/* TIMELINE */
+/* ================= TIMELINE ================= */
 
 .timeline-section{
     margin-top:32px;
@@ -244,7 +251,7 @@ body{
     position:relative;
     display:flex;
     gap:15px;
-    margin-bottom:24px;
+    margin-bottom:25px;
 }
 
 .circle{
@@ -262,7 +269,7 @@ body{
     font-weight:900;
 }
 
-.timeline-item.completed .circle{
+.timeline-item.done .circle{
     background:#0b72c9;
     color:#fff;
 }
@@ -284,7 +291,7 @@ body{
     line-height:1.5;
 }
 
-/* ACTIONS */
+/* ================= BUTTONS ================= */
 
 .actions{
     display:flex;
@@ -321,7 +328,7 @@ body{
     color:#fff;
 }
 
-/* FOOTER */
+/* ================= FOOTER ================= */
 
 .footer{
     text-align:center;
@@ -336,7 +343,7 @@ body{
     color:#172033;
 }
 
-/* MOBILE */
+/* ================= MOBILE ================= */
 
 @media(max-width:650px){
 
@@ -350,7 +357,7 @@ body{
     }
 
     .header{
-        padding:26px 18px;
+        padding:27px 18px;
     }
 
     .logo{
@@ -367,7 +374,6 @@ body{
 
     .details{
         grid-template-columns:1fr;
-        gap:10px;
     }
 
     .fee{
@@ -383,7 +389,7 @@ body{
     }
 }
 
-/* PRINT */
+/* ================= PRINT ================= */
 
 @media print{
 
@@ -418,11 +424,14 @@ body{
 
 </head>
 
+
 <body>
 
 <div class="page">
 
 <div class="receipt">
+
+    <!-- HEADER -->
 
     <div class="header">
 
@@ -447,7 +456,11 @@ body{
 
         <div class="spinner"></div>
 
-        Loading your delivery receipt...
+        <strong>Loading your delivery receipt...</strong>
+
+        <div style="margin-top:8px;">
+            Please wait.
+        </div>
 
     </div>
 
@@ -456,15 +469,20 @@ body{
 
     <div id="error" class="error">
 
-        <strong>Receipt Not Found</strong>
+        <div class="error-title">
+            Receipt Not Found
+        </div>
 
-        We could not find this delivery receipt.
-        Please check your request number and try again.
+        <div id="errorText" class="error-text">
+
+            We could not find this delivery receipt.
+
+        </div>
 
     </div>
 
 
-    <!-- RECEIPT CONTENT -->
+    <!-- RECEIPT -->
 
     <div id="receiptContent"
          class="content"
@@ -476,6 +494,7 @@ body{
 
 
         <div class="details">
+
 
             <div class="detail-box">
 
@@ -588,10 +607,11 @@ body{
 
             </div>
 
+
         </div>
 
 
-        <!-- DELIVERY FEE -->
+        <!-- FEE -->
 
         <div class="fee-box">
 
@@ -605,7 +625,7 @@ body{
             </div>
 
             <div id="status"
-                 class="status new">
+                 class="status status-new">
                 NEW
             </div>
 
@@ -617,7 +637,7 @@ body{
         </div>
 
 
-        <!-- PROGRESS -->
+        <!-- TIMELINE -->
 
         <div class="timeline-section">
 
@@ -625,10 +645,11 @@ body{
                 Delivery Progress
             </div>
 
+
             <div class="timeline">
 
 
-                <div id="stepReceived"
+                <div id="step1"
                      class="timeline-item">
 
                     <div class="circle">
@@ -650,7 +671,7 @@ body{
                 </div>
 
 
-                <div id="stepAccepted"
+                <div id="step2"
                      class="timeline-item">
 
                     <div class="circle">
@@ -672,7 +693,7 @@ body{
                 </div>
 
 
-                <div id="stepAssigned"
+                <div id="step3"
                      class="timeline-item">
 
                     <div class="circle">
@@ -694,7 +715,7 @@ body{
                 </div>
 
 
-                <div id="stepOut"
+                <div id="step4"
                      class="timeline-item">
 
                     <div class="circle">
@@ -716,7 +737,7 @@ body{
                 </div>
 
 
-                <div id="stepCompleted"
+                <div id="step5"
                      class="timeline-item">
 
                     <div class="circle">
@@ -730,7 +751,7 @@ body{
                         </div>
 
                         <div class="timeline-text">
-                            Delivery has been completed.
+                            Delivery has been completed successfully.
                         </div>
 
                     </div>
@@ -746,6 +767,7 @@ body{
         <!-- BUTTONS -->
 
         <div class="actions">
+
 
             <button
                 class="button print-btn"
@@ -774,6 +796,7 @@ body{
 
             </a>
 
+
         </div>
 
     </div>
@@ -788,7 +811,7 @@ body{
 
         <br><br>
 
-        For enquiries or support, contact us on WhatsApp:
+        For enquiries, contact us on WhatsApp:
         <strong>09150798901</strong>
 
         <br><br>
@@ -805,16 +828,18 @@ body{
 <script>
 
 /* =========================================================
-   SUPABASE CONNECTION
+   SUPABASE
    ========================================================= */
 
 const SUPABASE_URL =
     "https://pcgamgrhrtgxpnicukfm.supabase.co";
 
+
 /*
-   IMPORTANT:
-   Put your existing Supabase ANON/PUBLIC key here.
-   Do NOT use your service_role key.
+===========================================================
+PASTE YOUR EXISTING SUPABASE ANON/PUBLIC KEY BELOW.
+DO NOT USE THE SERVICE_ROLE KEY.
+===========================================================
 */
 
 const SUPABASE_ANON_KEY =
@@ -829,20 +854,7 @@ const supabaseClient =
 
 
 /* =========================================================
-   GET REQUEST NUMBER FROM URL
-   Example:
-   NB_Logistics_Receipt.html?request=NB-20260929-9340
-   ========================================================= */
-
-const params =
-    new URLSearchParams(window.location.search);
-
-const requestCode =
-    params.get("request");
-
-
-/* =========================================================
-   ELEMENTS
+   PAGE ELEMENTS
    ========================================================= */
 
 const loading =
@@ -851,8 +863,57 @@ const loading =
 const errorBox =
     document.getElementById("error");
 
+const errorText =
+    document.getElementById("errorText");
+
 const receiptContent =
     document.getElementById("receiptContent");
+
+
+/* =========================================================
+   GET REQUEST NUMBER
+   ========================================================= */
+
+const urlParams =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+let requestCode =
+    urlParams.get("request");
+
+
+if(!requestCode){
+
+    requestCode =
+        urlParams.get("request_number");
+
+}
+
+
+if(!requestCode){
+
+    requestCode =
+        urlParams.get("requestCode");
+
+}
+
+
+if(!requestCode){
+
+    requestCode =
+        urlParams.get("id");
+
+}
+
+
+if(requestCode){
+
+    requestCode =
+        requestCode.trim();
+
+}
 
 
 /* =========================================================
@@ -887,47 +948,62 @@ function formatDate(value){
 
 
 /* =========================================================
-   FORMAT PREFERRED TIME
-   ========================================================= */
-
-function formatPreferredTime(value){
-
-    if(!value){
-        return "—";
-    }
-
-    const date =
-        new Date(value);
-
-    if(isNaN(date.getTime())){
-        return value;
-    }
-
-    return date.toLocaleString(
-        "en-NG",
-        {
-            day:"2-digit",
-            month:"long",
-            year:"numeric",
-            hour:"2-digit",
-            minute:"2-digit"
-        }
-    );
-
-}
-
-
-/* =========================================================
    FORMAT MONEY
    ========================================================= */
 
 function formatMoney(value){
 
-    const number =
-        Number(value || 0);
+    if(
+        value === null ||
+        value === undefined ||
+        value === ""
+    ){
+        return "₦0";
+    }
+
+    let number =
+        Number(
+            String(value)
+            .replace(/₦/g,"")
+            .replace(/,/g,"")
+            .trim()
+        );
+
+    if(isNaN(number)){
+        return "₦0";
+    }
 
     return "₦" +
-        number.toLocaleString("en-NG");
+        number.toLocaleString(
+            "en-NG"
+        );
+
+}
+
+
+/* =========================================================
+   FIND VALUE FROM POSSIBLE COLUMN NAMES
+   ========================================================= */
+
+function getValue(row, names){
+
+    for(
+        const name of names
+    ){
+
+        if(
+            row[name] !== undefined &&
+            row[name] !== null &&
+            row[name] !== ""
+        ){
+
+            return row[name];
+
+        }
+
+    }
+
+    return "";
 
 }
 
@@ -938,36 +1014,37 @@ function formatMoney(value){
 
 function updateStatus(status){
 
+    const normalized =
+        String(status || "new")
+        .trim()
+        .toLowerCase();
+
+
     const statusElement =
         document.getElementById("status");
 
     const messageElement =
-        document.getElementById("statusMessage");
-
-    const normalized =
-        String(status || "New")
-        .trim()
-        .toLowerCase();
+        document.getElementById(
+            "statusMessage"
+        );
 
 
     statusElement.className =
         "status";
 
 
-    let message =
-        "Your delivery request has been received.";
-
-
     if(
         normalized === "accepted"
     ){
 
-        statusElement.classList.add("accepted");
+        statusElement.classList.add(
+            "status-accepted"
+        );
 
         statusElement.textContent =
             "ACCEPTED";
 
-        message =
+        messageElement.textContent =
             "Your delivery request has been accepted. We are preparing your delivery.";
 
     }
@@ -979,12 +1056,14 @@ function updateStatus(status){
         normalized === "out for delivery"
     ){
 
-        statusElement.classList.add("in-progress");
+        statusElement.classList.add(
+            "status-progress"
+        );
 
         statusElement.textContent =
             "IN PROGRESS";
 
-        message =
+        messageElement.textContent =
             "Your delivery is currently being processed.";
 
     }
@@ -995,12 +1074,14 @@ function updateStatus(status){
         normalized === "delivered"
     ){
 
-        statusElement.classList.add("completed");
+        statusElement.classList.add(
+            "status-completed"
+        );
 
         statusElement.textContent =
             "COMPLETED";
 
-        message =
+        messageElement.textContent =
             "Your delivery has been completed successfully.";
 
     }
@@ -1011,12 +1092,14 @@ function updateStatus(status){
         normalized === "canceled"
     ){
 
-        statusElement.classList.add("cancelled");
+        statusElement.classList.add(
+            "status-cancelled"
+        );
 
         statusElement.textContent =
             "CANCELLED";
 
-        message =
+        messageElement.textContent =
             "This delivery request has been cancelled.";
 
     }
@@ -1024,19 +1107,17 @@ function updateStatus(status){
 
     else{
 
-        statusElement.classList.add("new");
+        statusElement.classList.add(
+            "status-new"
+        );
 
         statusElement.textContent =
             "NEW";
 
-        message =
+        messageElement.textContent =
             "Your delivery request has been received.";
 
     }
-
-
-    messageElement.textContent =
-        message;
 
 
     updateTimeline(normalized);
@@ -1050,54 +1131,52 @@ function updateStatus(status){
 
 function updateTimeline(status){
 
-    const steps = {
+    const steps = [
 
-        received:
-            document.getElementById("stepReceived"),
+        document.getElementById("step1"),
 
-        accepted:
-            document.getElementById("stepAccepted"),
+        document.getElementById("step2"),
 
-        assigned:
-            document.getElementById("stepAssigned"),
+        document.getElementById("step3"),
 
-        out:
-            document.getElementById("stepOut"),
+        document.getElementById("step4"),
 
-        completed:
-            document.getElementById("stepCompleted")
+        document.getElementById("step5")
 
-    };
+    ];
 
 
-    Object.values(steps)
-        .forEach(step => {
+    steps.forEach(
+        step => {
 
             step.classList.remove(
-                "completed",
+                "done",
                 "active"
             );
 
-        });
-
-
-    /* Every existing request reaches Received */
-
-    steps.received.classList.add(
-        "completed"
+        }
     );
 
+
+    /* RECEIVED */
+
+    steps[0].classList.add(
+        "done"
+    );
+
+
+    /* NEW */
 
     if(
         status === "new" ||
         status === "pending"
     ){
 
-        steps.received.classList.remove(
-            "completed"
+        steps[0].classList.remove(
+            "done"
         );
 
-        steps.received.classList.add(
+        steps[0].classList.add(
             "active"
         );
 
@@ -1105,12 +1184,14 @@ function updateTimeline(status){
 
     }
 
+
+    /* ACCEPTED */
 
     if(
         status === "accepted"
     ){
 
-        steps.accepted.classList.add(
+        steps[1].classList.add(
             "active"
         );
 
@@ -1118,16 +1199,18 @@ function updateTimeline(status){
 
     }
 
+
+    /* ASSIGNED */
 
     if(
         status === "assigned"
     ){
 
-        steps.accepted.classList.add(
-            "completed"
+        steps[1].classList.add(
+            "done"
         );
 
-        steps.assigned.classList.add(
+        steps[2].classList.add(
             "active"
         );
 
@@ -1135,6 +1218,8 @@ function updateTimeline(status){
 
     }
 
+
+    /* IN PROGRESS */
 
     if(
         status === "in progress" ||
@@ -1142,15 +1227,15 @@ function updateTimeline(status){
         status === "out for delivery"
     ){
 
-        steps.accepted.classList.add(
-            "completed"
+        steps[1].classList.add(
+            "done"
         );
 
-        steps.assigned.classList.add(
-            "completed"
+        steps[2].classList.add(
+            "done"
         );
 
-        steps.out.classList.add(
+        steps[3].classList.add(
             "active"
         );
 
@@ -1159,28 +1244,45 @@ function updateTimeline(status){
     }
 
 
+    /* COMPLETED */
+
     if(
         status === "completed" ||
         status === "delivered"
     ){
 
-        steps.accepted.classList.add(
-            "completed"
-        );
+        steps.forEach(
+            step => {
 
-        steps.assigned.classList.add(
-            "completed"
-        );
+                step.classList.add(
+                    "done"
+                );
 
-        steps.out.classList.add(
-            "completed"
-        );
-
-        steps.completed.classList.add(
-            "completed"
+            }
         );
 
     }
+
+}
+
+
+/* =========================================================
+   SHOW ERROR
+   ========================================================= */
+
+function showError(message){
+
+    loading.style.display =
+        "none";
+
+    receiptContent.style.display =
+        "none";
+
+    errorBox.style.display =
+        "block";
+
+    errorText.textContent =
+        message;
 
 }
 
@@ -1193,11 +1295,9 @@ async function loadReceipt(){
 
     if(!requestCode){
 
-        loading.style.display =
-            "none";
-
-        errorBox.style.display =
-            "block";
+        showError(
+            "No delivery request number was provided. Open the receipt using your delivery request number."
+        );
 
         return;
 
@@ -1206,7 +1306,12 @@ async function loadReceipt(){
 
     try{
 
-        const { data, error } =
+        /*
+        The main column used by your NB Logistics Hub
+        request system is request_code.
+        */
+
+        const result =
             await supabaseClient
 
             .from("customer_requests")
@@ -1221,25 +1326,33 @@ async function loadReceipt(){
             .maybeSingle();
 
 
-        if(error){
+        if(result.error){
 
             console.error(
                 "Supabase error:",
-                error
+                result.error
             );
 
-            throw error;
+            showError(
+                "Unable to retrieve this receipt from the delivery system. Please check the Supabase connection and request number."
+            );
+
+            return;
 
         }
 
 
+        const data =
+            result.data;
+
+
         if(!data){
 
-            loading.style.display =
-                "none";
-
-            errorBox.style.display =
-                "block";
+            showError(
+                "No delivery request was found for " +
+                requestCode +
+                ". Please check that the request number is correct."
+            );
 
             return;
 
@@ -1247,72 +1360,151 @@ async function loadReceipt(){
 
 
         console.log(
-            "Delivery receipt:",
+            "Receipt record:",
             data
         );
 
 
         /* =================================================
-           DISPLAY DATA
+           REQUEST NUMBER
            ================================================= */
 
-        document.getElementById(
-            "requestNumber"
-        ).textContent =
-            data.request_code ||
+        const actualRequestCode =
+            getValue(
+                data,
+                [
+                    "request_code",
+                    "request_number",
+                    "requestCode",
+                    "code"
+                ]
+            ) ||
             requestCode;
 
 
         document.getElementById(
+            "requestNumber"
+        ).textContent =
+            actualRequestCode;
+
+
+        /* =================================================
+           CUSTOMER
+           ================================================= */
+
+        document.getElementById(
             "customerName"
         ).textContent =
-            data.customer_name ||
-            data.name ||
-            "—";
+            getValue(
+                data,
+                [
+                    "customer_name",
+                    "name",
+                    "full_name",
+                    "customer"
+                ]
+            ) || "—";
 
+
+        /* =================================================
+           PHONE
+           ================================================= */
 
         document.getElementById(
             "phone"
         ).textContent =
-            data.phone ||
-            data.whatsapp ||
-            "—";
+            getValue(
+                data,
+                [
+                    "phone",
+                    "whatsapp",
+                    "phone_number"
+                ]
+            ) || "—";
 
+
+        /* =================================================
+           PICKUP
+           ================================================= */
 
         document.getElementById(
             "pickup"
         ).textContent =
-            data.pickup_location ||
-            data.area ||
-            "—";
+            getValue(
+                data,
+                [
+                    "pickup_location",
+                    "pickup",
+                    "pickup_address",
+                    "area"
+                ]
+            ) || "—";
 
+
+        /* =================================================
+           DESTINATION
+           ================================================= */
 
         document.getElementById(
             "destination"
         ).textContent =
-            data.delivery_destination ||
-            data.destination ||
-            data.city ||
-            "—";
+            getValue(
+                data,
+                [
+                    "delivery_destination",
+                    "destination",
+                    "delivery_address",
+                    "address",
+                    "city"
+                ]
+            ) || "—";
 
+
+        /* =================================================
+           PACKAGE
+           ================================================= */
 
         document.getElementById(
             "package"
         ).textContent =
-            data.package_goods ||
-            data.needs ||
-            data.additional_requirement ||
-            "—";
+            getValue(
+                data,
+                [
+                    "package_goods",
+                    "package",
+                    "goods",
+                    "needs",
+                    "additional_requirement"
+                ]
+            ) || "—";
+
+
+        /* =================================================
+           PREFERRED TIME
+           ================================================= */
+
+        const preferredTime =
+            getValue(
+                data,
+                [
+                    "preferred_time",
+                    "preferred_date",
+                    "deadline"
+                ]
+            );
 
 
         document.getElementById(
             "preferredTime"
         ).textContent =
-            formatPreferredTime(
-                data.preferred_time ||
-                data.deadline
+            formatDate(
+                preferredTime
             );
 
+
+        /* =================================================
+           REQUEST DATE
+           ================================================= */
 
         document.getElementById(
             "requestDate"
@@ -1326,30 +1518,47 @@ async function loadReceipt(){
            DELIVERY FEE
            ================================================= */
 
-        const fee =
-            data.delivery_fee ??
-            data.fee ??
-            data.amount ??
-            0;
+        const deliveryFee =
+            getValue(
+                data,
+                [
+                    "delivery_fee",
+                    "fee",
+                    "delivery_cost",
+                    "amount",
+                    "price"
+                ]
+            );
 
 
         document.getElementById(
             "deliveryFee"
         ).textContent =
-            formatMoney(fee);
+            formatMoney(
+                deliveryFee
+            );
 
 
         /* =================================================
            STATUS
            ================================================= */
 
+        const currentStatus =
+            getValue(
+                data,
+                [
+                    "status"
+                ]
+            ) || "New";
+
+
         updateStatus(
-            data.status
+            currentStatus
         );
 
 
         /* =================================================
-           TRACKING BUTTON
+           TRACKING LINK
            ================================================= */
 
         document.getElementById(
@@ -1358,8 +1567,7 @@ async function loadReceipt(){
             "https://stephenodunayo6-coder.github.io/nb-logistics-hub/NB_Logistics_Track.html?request="
             +
             encodeURIComponent(
-                data.request_code ||
-                requestCode
+                actualRequestCode
             );
 
 
@@ -1379,15 +1587,13 @@ async function loadReceipt(){
     catch(error){
 
         console.error(
-            "Receipt loading failed:",
+            "Receipt error:",
             error
         );
 
-        loading.style.display =
-            "none";
-
-        errorBox.style.display =
-            "block";
+        showError(
+            "Unable to check your delivery right now. Please try again."
+        );
 
     }
 
@@ -1405,4 +1611,4 @@ loadReceipt();
 </body>
 
 </html>
-
+```
