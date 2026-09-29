@@ -5,8 +5,7 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>NB Logistics Hub — Customer Approval</title>
 
@@ -19,10 +18,6 @@
 
 <style>
 
-/* =====================================================
-   GLOBAL
-===================================================== */
-
 *{
     box-sizing:border-box;
 }
@@ -34,17 +29,6 @@ body{
     background:#f4f7fb;
     color:#172033;
 }
-
-.container{
-    width:100%;
-    max-width:760px;
-    margin:0 auto;
-    padding:20px;
-}
-
-/* =====================================================
-   HEADER
-===================================================== */
 
 .header{
     background:#123c69;
@@ -65,13 +49,16 @@ body{
     opacity:.9;
 }
 
-/* =====================================================
-   MAIN CARD
-===================================================== */
+.container{
+    width:100%;
+    max-width:760px;
+    margin:0 auto;
+    padding:20px;
+}
 
 .main-card{
     background:#ffffff;
-    margin-top:25px;
+    margin-top:10px;
     border-radius:18px;
     padding:25px;
     box-shadow:0 8px 30px rgba(0,0,0,.08);
@@ -91,11 +78,8 @@ body{
 .page-title p{
     margin:8px 0 0;
     color:#667085;
+    line-height:1.5;
 }
-
-/* =====================================================
-   SEARCH
-===================================================== */
 
 .search-box{
     margin-bottom:20px;
@@ -142,9 +126,10 @@ body{
     background:#0d2e51;
 }
 
-/* =====================================================
-   LOADING
-===================================================== */
+.search-btn:disabled{
+    opacity:.65;
+    cursor:not-allowed;
+}
 
 .loading{
     display:none;
@@ -153,10 +138,6 @@ body{
     color:#123c69;
     font-weight:700;
 }
-
-/* =====================================================
-   ERROR
-===================================================== */
 
 .error-box{
     display:none;
@@ -168,10 +149,6 @@ body{
     margin-top:15px;
     line-height:1.5;
 }
-
-/* =====================================================
-   REQUEST CARD
-===================================================== */
 
 .request-card{
     display:none;
@@ -197,11 +174,8 @@ body{
 .request-number strong{
     font-size:22px;
     color:#123c69;
+    word-break:break-word;
 }
-
-/* =====================================================
-   DELIVERY INFORMATION
-===================================================== */
 
 .section-title{
     font-size:19px;
@@ -238,11 +212,8 @@ body{
     font-weight:700;
     color:#172033;
     word-break:break-word;
+    line-height:1.4;
 }
-
-/* =====================================================
-   DELIVERY FEE
-===================================================== */
 
 .fee-box{
     margin-top:20px;
@@ -265,10 +236,6 @@ body{
     font-size:30px;
     font-weight:900;
 }
-
-/* =====================================================
-   ACTION AREA
-===================================================== */
 
 .action-area{
     margin-top:25px;
@@ -295,6 +262,12 @@ body{
     background:#166534;
 }
 
+.approve-btn:disabled,
+.decline-btn:disabled{
+    opacity:.65;
+    cursor:not-allowed;
+}
+
 .decline-btn{
     background:#ffffff;
     color:#b42318;
@@ -304,10 +277,6 @@ body{
 .decline-btn:hover{
     background:#fff5f5;
 }
-
-/* =====================================================
-   STATUS
-===================================================== */
 
 .status-box{
     margin-top:20px;
@@ -336,10 +305,6 @@ body{
     border:1px solid #fecdd3;
 }
 
-/* =====================================================
-   SUCCESS
-===================================================== */
-
 .success-box{
     display:none;
     margin-top:20px;
@@ -351,10 +316,6 @@ body{
     line-height:1.6;
     text-align:center;
 }
-
-/* =====================================================
-   PAYMENT AREA
-===================================================== */
 
 .payment-area{
     margin-top:20px;
@@ -388,16 +349,13 @@ body{
     line-height:1.5;
 }
 
-/* =====================================================
-   WHATSAPP
-===================================================== */
-
 .whatsapp-box{
     margin-top:25px;
     text-align:center;
     padding:18px;
     background:#f8fafc;
     border-radius:12px;
+    line-height:1.6;
 }
 
 .whatsapp-btn{
@@ -411,10 +369,6 @@ body{
     font-weight:800;
 }
 
-/* =====================================================
-   FOOTER
-===================================================== */
-
 .footer{
     text-align:center;
     padding:30px 15px;
@@ -422,10 +376,6 @@ body{
     font-size:13px;
     line-height:1.6;
 }
-
-/* =====================================================
-   MOBILE
-===================================================== */
 
 @media(max-width:600px){
 
@@ -477,13 +427,8 @@ body{
 
 </head>
 
-
 <body>
 
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
 
 <header class="header">
 
@@ -496,16 +441,10 @@ body{
 </header>
 
 
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
 <div class="container">
 
 <div class="main-card">
 
-
-    <!-- PAGE TITLE -->
 
     <div class="page-title">
 
@@ -517,8 +456,6 @@ body{
 
     </div>
 
-
-    <!-- SEARCH -->
 
     <div class="search-box">
 
@@ -548,8 +485,6 @@ body{
     </div>
 
 
-    <!-- LOADING -->
-
     <div
         id="loading"
         class="loading"
@@ -558,23 +493,17 @@ body{
     </div>
 
 
-    <!-- ERROR -->
-
     <div
         id="errorBox"
         class="error-box"
     ></div>
 
 
-    <!-- REQUEST CARD -->
-
     <div
         id="requestCard"
         class="request-card"
     >
 
-
-        <!-- REQUEST NUMBER -->
 
         <div class="request-number">
 
@@ -588,8 +517,6 @@ body{
 
         </div>
 
-
-        <!-- DELIVERY INFORMATION -->
 
         <div class="section-title">
             Delivery Information
@@ -698,8 +625,6 @@ body{
         </div>
 
 
-        <!-- DELIVERY FEE -->
-
         <div class="fee-box">
 
             <div class="fee-label">
@@ -716,23 +641,17 @@ body{
         </div>
 
 
-        <!-- APPROVAL ACTIONS -->
-
         <div
             id="actionArea"
             class="action-area"
         ></div>
 
 
-        <!-- SUCCESS MESSAGE -->
-
         <div
             id="successBox"
             class="success-box"
         ></div>
 
-
-        <!-- STATUS -->
 
         <div
             id="statusBox"
@@ -742,17 +661,13 @@ body{
         </div>
 
 
-        <!-- =================================================
-             PAYMENT BUTTON AREA
-        ================================================== -->
+        <!-- PAYMENT BUTTON APPEARS HERE -->
 
         <div
             id="paymentArea"
             class="payment-area"
         ></div>
 
-
-        <!-- WHATSAPP -->
 
         <div class="whatsapp-box">
 
@@ -775,8 +690,6 @@ body{
 
 </div>
 
-
-<!-- FOOTER -->
 
 <div class="footer">
 
@@ -816,15 +729,11 @@ const supabaseClient =
     );
 
 
-/* =====================================================
-   GLOBAL CURRENT REQUEST
-===================================================== */
-
 let currentRequest = null;
 
 
 /* =====================================================
-   GET REQUEST NUMBER FROM URL
+   REQUEST FROM URL
 ===================================================== */
 
 function getRequestFromURL(){
@@ -848,18 +757,34 @@ function getRequestFromURL(){
 
 
 /* =====================================================
-   FORMAT MONEY
+   MONEY
 ===================================================== */
 
 function formatMoney(value){
 
-    const number =
-        Number(value || 0);
-
     return "₦" +
-        number.toLocaleString(
-            "en-NG"
+        Number(value || 0)
+        .toLocaleString("en-NG");
+
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+function showError(message){
+
+    const errorBox =
+        document.getElementById(
+            "errorBox"
         );
+
+    errorBox.textContent =
+        message;
+
+    errorBox.style.display =
+        "block";
 
 }
 
@@ -870,14 +795,9 @@ function formatMoney(value){
 
 async function loadRequest(){
 
-    const requestInput =
+    const input =
         document.getElementById(
             "requestInput"
-        );
-
-    const requestCard =
-        document.getElementById(
-            "requestCard"
         );
 
     const loading =
@@ -885,40 +805,41 @@ async function loadRequest(){
             "loading"
         );
 
+    const card =
+        document.getElementById(
+            "requestCard"
+        );
+
     const errorBox =
         document.getElementById(
             "errorBox"
         );
 
-    const searchButton =
+    const button =
         document.getElementById(
             "searchButton"
         );
 
+
     const requestCode =
-        requestInput.value
-            .trim()
-            .toUpperCase();
+        input.value
+        .trim()
+        .toUpperCase();
 
-
-    /* RESET */
 
     errorBox.style.display =
         "none";
 
-    errorBox.textContent =
-        "";
-
-    requestCard.style.display =
+    card.style.display =
         "none";
 
     loading.style.display =
         "block";
 
-    searchButton.disabled =
+    button.disabled =
         true;
 
-    searchButton.textContent =
+    button.textContent =
         "Checking...";
 
 
@@ -931,10 +852,10 @@ async function loadRequest(){
         loading.style.display =
             "none";
 
-        searchButton.disabled =
+        button.disabled =
             false;
 
-        searchButton.textContent =
+        button.textContent =
             "Check Request";
 
         return;
@@ -963,10 +884,7 @@ async function loadRequest(){
 
         if(error){
 
-            console.error(
-                "Supabase error:",
-                error
-            );
+            console.error(error);
 
             throw error;
 
@@ -984,13 +902,9 @@ async function loadRequest(){
         }
 
 
-        /* SAVE REQUEST */
-
         currentRequest =
             data;
 
-
-        /* DISPLAY DATA */
 
         document.getElementById(
             "requestNumber"
@@ -1045,13 +959,9 @@ async function loadRequest(){
             );
 
 
-        /* SHOW REQUEST */
-
-        requestCard.style.display =
+        card.style.display =
             "block";
 
-
-        /* UPDATE APPROVAL */
 
         updateApprovalDisplay(
             data.customer_approval_status
@@ -1073,10 +983,10 @@ async function loadRequest(){
         loading.style.display =
             "none";
 
-        searchButton.disabled =
+        button.disabled =
             false;
 
-        searchButton.textContent =
+        button.textContent =
             "Check Request";
 
     }
@@ -1085,27 +995,7 @@ async function loadRequest(){
 
 
 /* =====================================================
-   SHOW ERROR
-===================================================== */
-
-function showError(message){
-
-    const errorBox =
-        document.getElementById(
-            "errorBox"
-        );
-
-    errorBox.textContent =
-        message;
-
-    errorBox.style.display =
-        "block";
-
-}
-
-
-/* =====================================================
-   UPDATE APPROVAL DISPLAY
+   APPROVAL DISPLAY
 ===================================================== */
 
 function updateApprovalDisplay(status){
@@ -1141,10 +1031,11 @@ function updateApprovalDisplay(status){
         .toLowerCase();
 
 
-    /* RESET */
-
     statusBox.className =
         "status-box";
+
+    actionArea.innerHTML =
+        "";
 
     successBox.style.display =
         "none";
@@ -1156,9 +1047,7 @@ function updateApprovalDisplay(status){
         "";
 
 
-    /* =================================================
-       APPROVED
-    ================================================= */
+    /* APPROVED */
 
     if(status === "approved"){
 
@@ -1168,10 +1057,6 @@ function updateApprovalDisplay(status){
 
         statusBox.textContent =
             "✓ Approval Status: Approved";
-
-
-        actionArea.innerHTML =
-            "";
 
 
         successBox.style.display =
@@ -1184,20 +1069,16 @@ function updateApprovalDisplay(status){
             "Please proceed to payment to continue your delivery.";
 
 
-        /* VERY IMPORTANT:
-           SHOW PAYMENT BUTTON
-        */
-
         showPaymentButton();
+
+        return;
 
     }
 
 
-    /* =================================================
-       DECLINED
-    ================================================= */
+    /* DECLINED */
 
-    else if(status === "declined"){
+    if(status === "declined"){
 
         statusBox.classList.add(
             "status-declined"
@@ -1205,10 +1086,6 @@ function updateApprovalDisplay(status){
 
         statusBox.textContent =
             "Approval Status: Declined";
-
-
-        actionArea.innerHTML =
-            "";
 
 
         successBox.style.display =
@@ -1219,52 +1096,44 @@ function updateApprovalDisplay(status){
             "You have declined this delivery request.<br>" +
             "Please contact NB Logistics Hub if you would like to discuss the delivery.";
 
-
-        paymentArea.innerHTML =
-            "";
+        return;
 
     }
 
 
-    /* =================================================
-       PENDING
-    ================================================= */
+    /* PENDING */
 
-    else{
+    statusBox.classList.add(
+        "status-pending"
+    );
 
-        statusBox.classList.add(
-            "status-pending"
-        );
-
-        statusBox.textContent =
-            "Approval Status: Pending";
+    statusBox.textContent =
+        "Approval Status: Pending";
 
 
-        actionArea.innerHTML = `
+    actionArea.innerHTML = `
 
-            <button
-                class="approve-btn"
-                onclick="approveRequest()"
-            >
-                ✓ Accept & Proceed
-            </button>
+        <button
+            class="approve-btn"
+            onclick="approveRequest()"
+        >
+            ✓ Accept & Proceed
+        </button>
 
-            <button
-                class="decline-btn"
-                onclick="declineRequest()"
-            >
-                Decline Delivery
-            </button>
+        <button
+            class="decline-btn"
+            onclick="declineRequest()"
+        >
+            Decline Delivery
+        </button>
 
-        `;
-
-    }
+    `;
 
 }
 
 
 /* =====================================================
-   SHOW PAYMENT BUTTON
+   PAYMENT BUTTON
 ===================================================== */
 
 function showPaymentButton(){
@@ -1277,10 +1146,6 @@ function showPaymentButton(){
 
     if(!currentRequest){
 
-        console.error(
-            "No current request available."
-        );
-
         return;
 
     }
@@ -1292,18 +1157,10 @@ function showPaymentButton(){
 
     if(!requestCode){
 
-        console.error(
-            "Request code is missing."
-        );
-
         return;
 
     }
 
-
-    /*
-       THIS IS THE PAYMENT PAGE LINK
-    */
 
     const paymentURL =
         "payment.html?request=" +
@@ -1324,8 +1181,10 @@ function showPaymentButton(){
         <div class="payment-note">
 
             Your approval has been received.
+
             <br>
-            Click the button above to continue to payment.
+
+            Click above to continue to payment.
 
         </div>
 
@@ -1335,7 +1194,7 @@ function showPaymentButton(){
 
 
 /* =====================================================
-   APPROVE REQUEST
+   APPROVE
 ===================================================== */
 
 async function approveRequest(){
@@ -1351,9 +1210,6 @@ async function approveRequest(){
         document.getElementById(
             "actionArea"
         );
-
-    const originalHTML =
-        actionArea.innerHTML;
 
 
     actionArea.innerHTML = `
@@ -1398,27 +1254,16 @@ async function approveRequest(){
 
         if(error){
 
-            console.error(
-                "Approval error:",
-                error
-            );
+            console.error(error);
 
             throw error;
 
         }
 
 
-        /*
-           UPDATE LOCAL REQUEST
-        */
-
         currentRequest =
             data;
 
-
-        /*
-           SHOW APPROVED STATE
-        */
 
         updateApprovalDisplay(
             "Approved"
@@ -1430,11 +1275,13 @@ async function approveRequest(){
 
         console.error(error);
 
-        actionArea.innerHTML =
-            originalHTML;
-
         showError(
             "We could not save your approval right now. Please try again."
+        );
+
+
+        updateApprovalDisplay(
+            currentRequest.customer_approval_status
         );
 
     }
@@ -1443,7 +1290,7 @@ async function approveRequest(){
 
 
 /* =====================================================
-   DECLINE REQUEST
+   DECLINE
 ===================================================== */
 
 async function declineRequest(){
@@ -1516,10 +1363,7 @@ async function declineRequest(){
 
         if(error){
 
-            console.error(
-                "Decline error:",
-                error
-            );
+            console.error(error);
 
             throw error;
 
@@ -1555,43 +1399,43 @@ async function declineRequest(){
 
 
 /* =====================================================
-   ENTER KEY SEARCH
+   ENTER KEY
 ===================================================== */
 
 document
-    .getElementById("requestInput")
-    .addEventListener(
-        "keydown",
-        function(event){
+.getElementById("requestInput")
+.addEventListener(
+    "keydown",
+    function(event){
 
-            if(event.key === "Enter"){
+        if(event.key === "Enter"){
 
-                loadRequest();
-
-            }
+            loadRequest();
 
         }
-    );
+
+    }
+);
 
 
 /* =====================================================
-   AUTOMATIC REQUEST FROM URL
+   AUTO LOAD FROM URL
 ===================================================== */
 
 window.addEventListener(
     "DOMContentLoaded",
     function(){
 
-        const requestFromURL =
+        const request =
             getRequestFromURL();
 
 
-        if(requestFromURL){
+        if(request){
 
             document.getElementById(
                 "requestInput"
             ).value =
-                requestFromURL;
+                request;
 
 
             loadRequest();
