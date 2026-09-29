@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +6,7 @@
 
 <title>NB Logistics Hub — Ilorin Delivery Service</title>
 
-<meta name="description" content="NB Logistics Hub provides motorcycle delivery services in Ilorin. Request a delivery, track your package and contact our team on WhatsApp.">
+<meta name="description" content="NB Logistics Hub provides motorcycle delivery services in Ilorin. Request a delivery, track your package, make payments and contact our team on WhatsApp.">
 
 <style>
 *{
@@ -353,6 +352,106 @@ header{
     line-height:1.8;
 }
 
+/* PAYMENT */
+
+.payment-section{
+    background:#07111f;
+}
+
+.payment-box{
+    max-width:700px;
+    margin:auto;
+    background:linear-gradient(135deg,#101f32,#0b1727);
+    border:1px solid rgba(245,196,0,.30);
+    border-radius:20px;
+    padding:35px 25px;
+    box-shadow:0 15px 40px rgba(0,0,0,.20);
+}
+
+.payment-header{
+    text-align:center;
+    margin-bottom:28px;
+}
+
+.payment-icon{
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.payment-header h2{
+    margin:0 0 10px;
+    font-size:30px;
+}
+
+.payment-header p{
+    color:#9facbd;
+    margin:0;
+    line-height:1.6;
+}
+
+.payment-details{
+    background:#0a1422;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:15px;
+    padding:22px;
+}
+
+.payment-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    padding:15px 0;
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.payment-row:last-child{
+    border-bottom:none;
+}
+
+.payment-label{
+    color:#8f9bad;
+    font-size:13px;
+}
+
+.payment-value{
+    font-weight:800;
+    text-align:right;
+}
+
+.account-number{
+    color:#f5c400;
+    font-size:20px;
+    letter-spacing:1px;
+}
+
+.copy-btn{
+    width:100%;
+    margin-top:20px;
+    padding:15px;
+    border:none;
+    border-radius:9px;
+    background:#f5c400;
+    color:#07111f;
+    font-size:15px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.copy-btn:hover{
+    background:#ffda37;
+    transform:translateY(-2px);
+}
+
+.payment-note{
+    text-align:center;
+    margin:18px 0 0;
+    color:#8995a6;
+    font-size:12px;
+    line-height:1.6;
+}
+
 /* TRUST */
 
 .trust-grid{
@@ -577,6 +676,20 @@ footer{
         font-size:29px;
     }
 
+    .payment-row{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:6px;
+    }
+
+    .payment-value{
+        text-align:left;
+    }
+
+    .account-number{
+        font-size:18px;
+    }
+
     .whatsapp-float{
         right:14px;
         bottom:14px;
@@ -605,6 +718,8 @@ footer{
         <div class="nav-links">
             <a href="#how">How It Works</a>
             <a href="#services">Services</a>
+            <a href="#payment">Payment</a>
+
             <a href="NB_Logistics_Track.html" class="nav-track">
                 🔎 Track Delivery
             </a>
@@ -637,6 +752,394 @@ footer{
         <div class="hero-buttons">
 
             <a href="NB_Logistics_Request.html"
+               class="btn btn-primary">
+                📦 Request a Delivery
+            </a>
+
+            <a href="NB_Logistics_Track.html"
+               class="btn btn-secondary">
+                🔎 Track My Delivery
+            </a>
+
+        </div>
+
+        <div class="hero-note">
+            📍 Serving customers across Ilorin and surrounding areas
+        </div>
+
+    </div>
+</section>
+
+<!-- QUICK ACTIONS -->
+
+<section class="quick">
+    <div class="quick-grid">
+
+        <a href="NB_Logistics_Request.html" class="quick-card">
+            <div class="quick-icon">📦</div>
+
+            <h3>Request a Delivery</h3>
+
+            <p>
+                Tell us where your package is going
+                and we'll arrange the delivery.
+            </p>
+        </a>
+
+        <a href="NB_Logistics_Track.html" class="quick-card">
+
+            <div class="quick-icon">🔎</div>
+
+            <h3>Track Your Delivery</h3>
+
+            <p>
+                Enter your NB request number to see
+                your delivery status and updates.
+            </p>
+
+        </a>
+
+        <a href="https://wa.me/2349150798901?text=Hello%20NB%20Logistics%20Hub%2C%20I%20need%20help%20with%20a%20delivery."
+           target="_blank"
+           rel="noopener"
+           class="quick-card">
+
+            <div class="quick-icon">💬</div>
+
+            <h3>Contact NB Logistics</h3>
+
+            <p>
+                Chat with us directly on WhatsApp
+                for delivery enquiries and assistance.
+            </p>
+
+        </a>
+
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+
+<section class="section" id="how">
+
+    <div class="section-title">
+
+        <div class="label">SIMPLE PROCESS</div>
+
+        <h2>How NB Logistics Hub Works</h2>
+
+        <p>
+            From your delivery request to final destination,
+            the process is designed to be simple and easy to follow.
+        </p>
+
+    </div>
+
+    <div class="steps">
+
+        <div class="step">
+
+            <div class="step-number">1</div>
+
+            <h3>Request</h3>
+
+            <p>
+                Submit your delivery details, pickup location
+                and destination through our request page.
+            </p>
+
+        </div>
+
+        <div class="step">
+
+            <div class="step-number">2</div>
+
+            <h3>Confirmation</h3>
+
+            <p>
+                NB Logistics Hub reviews your request
+                and confirms the delivery arrangement.
+            </p>
+
+        </div>
+
+        <div class="step">
+
+            <div class="step-number">3</div>
+
+            <h3>Pickup & Delivery</h3>
+
+            <p>
+                Your goods are collected and transported
+                to the delivery point.
+            </p>
+
+        </div>
+
+        <div class="step">
+
+            <div class="step-number">4</div>
+
+            <h3>Delivered</h3>
+
+            <p>
+                Track your delivery until your goods
+                reach their final destination.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- SERVICE AREA -->
+
+<section class="service-area" id="services">
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <div class="label">OUR SERVICE</div>
+
+            <h2>Local Delivery Made Simple</h2>
+
+        </div>
+
+        <div class="area-box">
+
+            <div class="area-icon">🏍️</div>
+
+            <h2>Ilorin & Surrounding Areas</h2>
+
+            <p>
+                NB Logistics Hub provides motorcycle delivery
+                services for customers who need goods, packages
+                and items moved from one location to another.
+            </p>
+
+            <p>
+                Every delivery receives a unique request number
+                so customers can easily follow its progress.
+            </p>
+
+            <a href="NB_Logistics_Request.html"
+               class="btn btn-primary">
+                Request a Delivery
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- PAYMENT -->
+
+<section class="payment-section" id="payment">
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <div class="label">PAYMENT</div>
+
+            <h2>Payment Details</h2>
+
+            <p>
+                Once your delivery fee has been confirmed,
+                you can make payment using the account details below.
+            </p>
+
+        </div>
+
+        <div class="payment-box">
+
+            <div class="payment-header">
+
+                <div class="payment-icon">💳</div>
+
+                <h2>NB Logistics Hub</h2>
+
+                <p>
+                    Please confirm your delivery details and
+                    fee with NB Logistics Hub before making payment.
+                </p>
+
+            </div>
+
+            <div class="payment-details">
+
+                <div class="payment-row">
+
+                    <div class="payment-label">
+                        Payment Platform
+                    </div>
+
+                    <div class="payment-value">
+                        Opay
+                    </div>
+
+                </div>
+
+                <div class="payment-row">
+
+                    <div class="payment-label">
+                        Account Name
+                    </div>
+
+                    <div class="payment-value">
+                        Festus Odunayo Stephen
+                    </div>
+
+                </div>
+
+                <div class="payment-row">
+
+                    <div class="payment-label">
+                        Account Number
+                    </div>
+
+                    <div class="payment-value account-number">
+                        915 079 8901
+                    </div>
+
+                </div>
+
+            </div>
+
+            <button
+                class="copy-btn"
+                onclick="copyAccountNumber()">
+                📋 Copy Account Number
+            </button>
+
+            <p class="payment-note">
+                For your security, only make payment after
+                your delivery fee has been confirmed by NB Logistics Hub.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- TRUST FEATURES -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="label">WHY USE NB</div>
+
+        <h2>Designed Around Your Delivery</h2>
+
+    </div>
+
+    <div class="trust-grid">
+
+        <div class="trust-card">
+
+            <div class="icon">🔎</div>
+
+            <h3>Delivery Tracking</h3>
+
+            <p>
+                Follow your delivery using your unique
+                NB request number.
+            </p>
+
+        </div>
+
+        <div class="trust-card">
+
+            <div class="icon">💬</div>
+
+            <h3>Status Updates</h3>
+
+            <p>
+                View clear delivery status information
+                as your package moves through the process.
+            </p>
+
+        </div>
+
+        <div class="trust-card">
+
+            <div class="icon">🧾</div>
+
+            <h3>Delivery Receipt</h3>
+
+            <p>
+                View your delivery information and
+                fee details through the receipt system.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CALL TO ACTION -->
+
+<section class="cta">
+
+    <div class="cta-box">
+
+        <h2>Ready to send something?</h2>
+
+        <p>
+            Create your delivery request and let
+            NB Logistics Hub handle the journey.
+        </p>
+
+        <a href="NB_Logistics_Request.html"
+           class="btn btn-primary">
+            📦 Request a Delivery
+        </a>
+
+    </div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div class="footer-inner">
+
+        <div>
+
+            <div class="footer-brand">
+                NB <span>Logistics Hub</span>
+            </div>
+
+            <div class="footer-text">
+                Ilorin Delivery Service
+            </div>
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="NB_Logistics_Request.html">
+                Request
+            </a>
+
+            <a href="NB_Logistics_Track.html">
+                Track
+            </a>
+
+            <a href="#payment">
+                Payment
+            </a>
+
+            <a href="https://wa.me/2349150798901"
+               target="_blank"
+    tml"
                class="btn btn-primary">
                 📦 Request a Delivery
             </a>
