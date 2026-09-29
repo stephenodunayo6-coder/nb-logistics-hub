@@ -5,681 +5,844 @@
 
 <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
 <title>NB Logistics Hub — Customer Payment</title>
 
-<meta
-    name="description"
-    content="Payment for your NB Logistics Hub delivery."
->
+<meta name="description"
+      content="Complete payment for your approved NB Logistics Hub delivery.">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
+/* =====================================================
+   GLOBAL
+===================================================== */
+
 *{
     box-sizing:border-box;
 }
 
+html{
+    scroll-behavior:smooth;
+}
+
 body{
     margin:0;
-    padding:0;
     font-family:Arial,Helvetica,sans-serif;
-    background:#f4f7fb;
-    color:#172033;
+    background:
+        linear-gradient(
+            rgba(5,15,30,.92),
+            rgba(5,15,30,.96)
+        ),
+        url("https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=1800&q=85")
+        center/cover fixed;
+    color:#fff;
+    min-height:100vh;
 }
 
-.header{
-    background:#123c69;
-    color:#ffffff;
+/* =====================================================
+   HEADER
+===================================================== */
+
+header{
+    background:rgba(4,13,27,.96);
+    border-bottom:1px solid rgba(255,193,7,.25);
+    padding:22px 18px;
+}
+
+.header-inner{
+    max-width:1050px;
+    margin:auto;
     text-align:center;
-    padding:28px 20px;
 }
 
-.header h1{
-    margin:0;
-    font-size:28px;
+.logo{
+    font-size:30px;
     font-weight:800;
+    color:#ffc107;
+    margin-bottom:5px;
 }
 
-.header p{
-    margin:8px 0 0;
-    opacity:.9;
+.location{
+    color:#d8e1ec;
+    font-size:14px;
 }
+
+/* =====================================================
+   MAIN
+===================================================== */
 
 .container{
-    width:100%;
-    max-width:760px;
-    margin:0 auto;
-    padding:20px;
+    width:92%;
+    max-width:850px;
+    margin:45px auto 70px;
 }
 
+/* =====================================================
+   CARD
+===================================================== */
+
 .card{
-    background:#ffffff;
-    margin-top:10px;
-    padding:25px;
-    border-radius:18px;
-    box-shadow:0 8px 30px rgba(0,0,0,.08);
+    background:rgba(255,255,255,.97);
+    color:#172033;
+    border-radius:22px;
+    padding:32px;
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
 }
 
 .title{
     text-align:center;
+    margin-bottom:8px;
+    color:#101c30;
+    font-size:30px;
 }
 
-.title h2{
-    margin:0;
-    color:#123c69;
-    font-size:25px;
-}
-
-.title p{
-    color:#667085;
-    line-height:1.5;
-}
-
-.loading{
+.subtitle{
     text-align:center;
-    padding:30px;
-    color:#123c69;
-    font-weight:700;
+    color:#64748b;
+    margin-bottom:28px;
 }
 
-.error{
-    display:none;
-    padding:16px;
-    margin-top:20px;
-    background:#fff1f1;
-    border:1px solid #f3b5b5;
+/* =====================================================
+   SEARCH
+===================================================== */
+
+.search-box{
+    display:flex;
+    gap:10px;
+    margin-bottom:25px;
+}
+
+.search-box input{
+    flex:1;
+    padding:15px;
+    border:1px solid #cbd5e1;
     border-radius:10px;
-    color:#b42318;
+    font-size:16px;
+    outline:none;
+}
+
+.search-box input:focus{
+    border-color:#ffc107;
+    box-shadow:0 0 0 3px rgba(255,193,7,.15);
+}
+
+.search-box button{
+    border:none;
+    background:#ffc107;
+    color:#111827;
+    padding:15px 22px;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.search-box button:hover{
+    background:#ffca28;
+}
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.message{
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
+    display:none;
     line-height:1.5;
 }
 
-.content{
+.message.error{
+    display:block;
+    background:#fee2e2;
+    color:#991b1b;
+    border:1px solid #fecaca;
+}
+
+.message.success{
+    display:block;
+    background:#dcfce7;
+    color:#166534;
+    border:1px solid #bbf7d0;
+}
+
+.message.info{
+    display:block;
+    background:#e0f2fe;
+    color:#075985;
+    border:1px solid #bae6fd;
+}
+
+/* =====================================================
+   DELIVERY DETAILS
+===================================================== */
+
+.details{
     display:none;
-}
-
-.request-number{
-    margin-top:20px;
-    background:#eef5ff;
-    padding:18px;
-    border-radius:12px;
-    text-align:center;
-}
-
-.request-number small{
-    display:block;
-    color:#667085;
-}
-
-.request-number strong{
-    display:block;
-    margin-top:5px;
-    color:#123c69;
-    font-size:21px;
-    word-break:break-word;
 }
 
 .section-title{
-    margin-top:25px;
-    margin-bottom:12px;
-    color:#123c69;
     font-size:19px;
     font-weight:800;
+    margin:25px 0 15px;
+    color:#101c30;
 }
 
-.info-grid{
+.detail-grid{
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
 }
 
-.info-box{
+.detail{
     background:#f8fafc;
-    border:1px solid #eaecf0;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
     padding:15px;
-    border-radius:10px;
 }
 
-.full{
-    grid-column:1/-1;
-}
-
-.label{
+.detail-label{
     display:block;
-    color:#667085;
-    font-size:13px;
+    color:#64748b;
+    font-size:12px;
     margin-bottom:6px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
 }
 
-.value{
+.detail-value{
     font-weight:700;
-    line-height:1.4;
+    color:#172033;
     word-break:break-word;
 }
 
+/* =====================================================
+   FEE
+===================================================== */
+
 .fee-box{
-    margin-top:20px;
-    padding:22px;
+    margin:25px 0;
+    padding:25px;
+    border-radius:16px;
+    background:#fff8df;
+    border:2px solid #ffc107;
     text-align:center;
-    background:#ecfdf3;
-    border:1px solid #bbf7d0;
-    border-radius:14px;
 }
 
 .fee-label{
-    color:#166534;
-    font-weight:700;
+    color:#6b7280;
+    font-size:14px;
+    margin-bottom:7px;
 }
 
 .fee{
-    margin-top:6px;
-    font-size:32px;
+    font-size:38px;
     font-weight:900;
-    color:#15803d;
+    color:#111827;
 }
 
+/* =====================================================
+   PAYMENT BOX
+===================================================== */
+
 .payment-box{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:18px;
+    padding:24px;
     margin-top:25px;
-    padding:20px;
-    border-radius:14px;
-    background:#fffaf0;
-    border:1px solid #f4d28b;
 }
 
 .payment-box h3{
     margin-top:0;
-    color:#123c69;
-    font-size:21px;
+    color:#101c30;
 }
 
-.payment-box p{
-    line-height:1.6;
+.payment-row{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    padding:13px 0;
+    border-bottom:1px solid #e5e7eb;
 }
 
-.opay-row{
-    margin-top:12px;
-    padding:14px;
-    background:#ffffff;
-    border-radius:10px;
-    border:1px solid #e5e7eb;
+.payment-row:last-child{
+    border-bottom:none;
 }
 
-.opay-label{
-    color:#667085;
-    font-size:13px;
+.payment-label{
+    color:#64748b;
 }
 
-.opay-value{
-    margin-top:5px;
+.payment-value{
     font-weight:800;
-    font-size:18px;
+    text-align:right;
     word-break:break-word;
 }
 
+/* =====================================================
+   COPY BUTTON
+===================================================== */
+
 .copy-btn{
-    margin-top:9px;
-    padding:9px 14px;
-    border:0;
-    border-radius:8px;
-    background:#123c69;
-    color:#ffffff;
+    margin-top:15px;
+    width:100%;
+    padding:13px;
+    border:1px solid #ffc107;
+    background:#fff;
+    color:#111827;
+    border-radius:10px;
     font-weight:700;
     cursor:pointer;
 }
 
+.copy-btn:hover{
+    background:#fff8df;
+}
+
+/* =====================================================
+   INSTRUCTIONS
+===================================================== */
+
 .instructions{
-    margin-top:18px;
+    margin-top:25px;
+    background:#eef6ff;
+    border-left:5px solid #2563eb;
+    padding:20px;
+    border-radius:10px;
+    color:#1e3a5f;
     line-height:1.7;
+}
+
+.instructions strong{
+    color:#0f172a;
+}
+
+/* =====================================================
+   PAYMENT BUTTON
+===================================================== */
+
+.payment-action{
+    margin-top:28px;
 }
 
 .paid-btn{
     width:100%;
-    margin-top:22px;
-    padding:18px;
-    border:0;
+    border:none;
+    background:#16a34a;
+    color:white;
+    padding:17px;
     border-radius:12px;
-    background:#15803d;
-    color:#ffffff;
     font-size:18px;
     font-weight:800;
     cursor:pointer;
+    transition:.2s;
 }
 
 .paid-btn:hover{
-    background:#166534;
+    background:#15803d;
+    transform:translateY(-1px);
 }
 
 .paid-btn:disabled{
     background:#94a3b8;
     cursor:not-allowed;
+    transform:none;
 }
 
-.success{
-    display:none;
-    margin-top:20px;
-    padding:18px;
-    background:#ecfdf3;
-    border:1px solid #bbf7d0;
-    border-radius:12px;
-    color:#166534;
+.payment-note{
     text-align:center;
-    line-height:1.6;
-}
-
-.payment-status{
-    display:none;
-    margin-top:20px;
-    padding:18px;
-    background:#eff6ff;
-    border:1px solid #bfdbfe;
-    border-radius:12px;
-    color:#1e40af;
-    text-align:center;
-    line-height:1.6;
-}
-
-.whatsapp{
-    margin-top:25px;
-    text-align:center;
-    padding:18px;
-    background:#f8fafc;
-    border-radius:12px;
-    line-height:1.6;
-}
-
-.whatsapp a{
-    display:inline-block;
-    margin-top:10px;
-    padding:13px 20px;
-    background:#25D366;
-    color:#ffffff;
-    text-decoration:none;
-    border-radius:10px;
-    font-weight:800;
-}
-
-.footer{
-    text-align:center;
-    padding:30px 15px;
-    color:#667085;
+    color:#64748b;
     font-size:13px;
     line-height:1.6;
+    margin-top:12px;
 }
 
-@media(max-width:600px){
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading{
+    display:none;
+    text-align:center;
+    padding:25px;
+    color:#64748b;
+}
+
+.spinner{
+    width:35px;
+    height:35px;
+    border:4px solid #e5e7eb;
+    border-top-color:#ffc107;
+    border-radius:50%;
+    margin:0 auto 12px;
+    animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer{
+    text-align:center;
+    color:#cbd5e1;
+    font-size:13px;
+    line-height:1.7;
+    padding:0 20px 35px;
+}
+
+footer a{
+    color:#ffc107;
+    text-decoration:none;
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:650px){
 
     .container{
-        padding:12px;
+        width:94%;
+        margin-top:25px;
     }
 
     .card{
-        padding:18px;
-        border-radius:14px;
+        padding:22px 17px;
+        border-radius:17px;
     }
 
-    .info-grid{
+    .title{
+        font-size:25px;
+    }
+
+    .search-box{
+        flex-direction:column;
+    }
+
+    .search-box button{
+        width:100%;
+    }
+
+    .detail-grid{
         grid-template-columns:1fr;
     }
 
-    .full{
-        grid-column:auto;
+    .payment-row{
+        flex-direction:column;
+        gap:5px;
+    }
+
+    .payment-value{
+        text-align:left;
     }
 
     .fee{
-        font-size:28px;
+        font-size:32px;
     }
-
 }
 
 </style>
 
 </head>
 
-
 <body>
 
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
-<header class="header">
+<header>
 
-    <h1>NB Logistics Hub</h1>
+    <div class="header-inner">
 
-    <p>
-        Ilorin, Kwara State, Nigeria
-    </p>
+        <div class="logo">
+            NB Logistics Hub
+        </div>
+
+        <div class="location">
+            Ilorin, Kwara State, Nigeria
+        </div>
+
+    </div>
 
 </header>
 
 
-<div class="container">
+<!-- =====================================================
+     MAIN
+===================================================== -->
 
-<div class="card">
+<main class="container">
 
+    <div class="card">
 
-    <div class="title">
+        <h1 class="title">
+            Customer Payment
+        </h1>
 
-        <h2>Customer Payment</h2>
-
-        <p>
+        <div class="subtitle">
             Complete payment for your approved delivery.
-        </p>
-
-    </div>
-
-
-    <div
-        id="loading"
-        class="loading"
-    >
-        Loading your delivery information...
-    </div>
-
-
-    <div
-        id="error"
-        class="error"
-    ></div>
-
-
-    <div
-        id="content"
-        class="content"
-    >
-
-
-        <div class="request-number">
-
-            <small>
-                Delivery Request Number
-            </small>
-
-            <strong id="requestNumber">
-                —
-            </strong>
-
         </div>
 
 
-        <div class="section-title">
-            Delivery Information
-        </div>
+        <!-- SEARCH -->
 
+        <div class="search-box">
 
-        <div class="info-grid">
-
-
-            <div class="info-box">
-
-                <span class="label">
-                    Customer
-                </span>
-
-                <div
-                    class="value"
-                    id="customerName"
-                >
-                    —
-                </div>
-
-            </div>
-
-
-            <div class="info-box">
-
-                <span class="label">
-                    Phone
-                </span>
-
-                <div
-                    class="value"
-                    id="phone"
-                >
-                    —
-                </div>
-
-            </div>
-
-
-            <div class="info-box">
-
-                <span class="label">
-                    Pickup Location
-                </span>
-
-                <div
-                    class="value"
-                    id="pickup"
-                >
-                    —
-                </div>
-
-            </div>
-
-
-            <div class="info-box">
-
-                <span class="label">
-                    Delivery Location
-                </span>
-
-                <div
-                    class="value"
-                    id="destination"
-                >
-                    —
-                </div>
-
-            </div>
-
-
-            <div class="info-box full">
-
-                <span class="label">
-                    Package / Goods
-                </span>
-
-                <div
-                    class="value"
-                    id="package"
-                >
-                    —
-                </div>
-
-            </div>
-
-
-            <div class="info-box full">
-
-                <span class="label">
-                    Preferred Time
-                </span>
-
-                <div
-                    class="value"
-                    id="preferredTime"
-                >
-                    —
-                </div>
-
-            </div>
-
-
-        </div>
-
-
-        <div class="fee-box">
-
-            <div class="fee-label">
-                Delivery Fee to Pay
-            </div>
-
-            <div
-                class="fee"
-                id="deliveryFee"
+            <input
+                type="text"
+                id="requestInput"
+                placeholder="Enter delivery request number"
+                autocomplete="off"
             >
-                ₦0
-            </div>
+
+            <button
+                type="button"
+                onclick="loadRequest()"
+            >
+                Check
+            </button>
 
         </div>
 
 
-        <div class="payment-box">
+        <!-- MESSAGE -->
 
-            <h3>
-                💳 Pay by OPay Transfer
-            </h3>
-
-            <p>
-                Please transfer the exact delivery fee shown above
-                to the OPay account below.
-            </p>
+        <div
+            id="message"
+            class="message"
+        ></div>
 
 
-            <div class="opay-row">
+        <!-- LOADING -->
 
-                <div class="opay-label">
-                    Account Name
+        <div
+            id="loading"
+            class="loading"
+        >
+
+            <div class="spinner"></div>
+
+            Loading delivery information...
+
+        </div>
+
+
+        <!-- DELIVERY DETAILS -->
+
+        <div
+            id="details"
+            class="details"
+        >
+
+            <div class="section-title">
+                Delivery Information
+            </div>
+
+
+            <div class="detail-grid">
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        Request Number
+                    </span>
+
+                    <span
+                        class="detail-value"
+                        id="requestCode"
+                    >
+                        —
+                    </span>
+
                 </div>
 
-                <div class="opay-value">
-                    Festus Odunayo Stephen
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        Customer
+                    </span>
+
+                    <span
+                        class="detail-value"
+                        id="customer"
+                    >
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        Phone
+                    </span>
+
+                    <span
+                        class="detail-value"
+                        id="phone"
+                    >
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        Package / Goods
+                    </span>
+
+                    <span
+                        class="detail-value"
+                        id="package"
+                    >
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        Pickup Location
+                    </span>
+
+                    <span
+                        class="detail-value"
+                        id="pickup"
+                    >
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        Delivery Location
+                    </span>
+
+                    <span
+                        class="detail-value"
+                        id="destination"
+                    >
+                        —
+                    </span>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        Preferred Time
+                    </span>
+
+                    <span
+                        class="detail-value"
+                        id="preferredTime"
+                    >
+                        —
+                    </span>
+
                 </div>
 
             </div>
 
 
-            <div class="opay-row">
+            <!-- FEE -->
 
-                <div class="opay-label">
-                    OPay Account Number
+            <div class="fee-box">
+
+                <div class="fee-label">
+                    Delivery Fee
                 </div>
 
                 <div
-                    class="opay-value"
-                    id="accountNumber"
+                    class="fee"
+                    id="deliveryFee"
                 >
-                    9150798901
+                    ₦0
                 </div>
+
+            </div>
+
+
+            <!-- PAYMENT DETAILS -->
+
+            <div class="section-title">
+                Payment Details
+            </div>
+
+
+            <div class="payment-box">
+
+                <h3>
+                    OPay Transfer
+                </h3>
+
+
+                <div class="payment-row">
+
+                    <span class="payment-label">
+                        Payment Provider
+                    </span>
+
+                    <span class="payment-value">
+                        OPay
+                    </span>
+
+                </div>
+
+
+                <div class="payment-row">
+
+                    <span class="payment-label">
+                        Account Name
+                    </span>
+
+                    <span class="payment-value">
+                        Festus Odunayo Stephen
+                    </span>
+
+                </div>
+
+
+                <div class="payment-row">
+
+                    <span class="payment-label">
+                        Account Number
+                    </span>
+
+                    <span
+                        class="payment-value"
+                        id="accountNumber"
+                    >
+                        9150798901
+                    </span>
+
+                </div>
+
 
                 <button
+                    type="button"
                     class="copy-btn"
                     onclick="copyAccountNumber()"
                 >
-                    Copy Account Number
+                    📋 Copy OPay Account Number
                 </button>
 
             </div>
 
 
-            <div class="opay-row">
-
-                <div class="opay-label">
-                    Payment Provider
-                </div>
-
-                <div class="opay-value">
-                    OPay
-                </div>
-
-            </div>
-
+            <!-- INSTRUCTIONS -->
 
             <div class="instructions">
 
-                <strong>Payment Instructions</strong>
+                <strong>
+                    How to pay
+                </strong>
 
                 <br><br>
 
-                1. Transfer the exact delivery fee shown above.
+                1. Transfer the exact delivery fee shown above
+                to the OPay account.
 
                 <br>
 
-                2. Confirm the recipient name is
+                2. Confirm that the recipient name is
                 <strong>Festus Odunayo Stephen</strong>.
 
                 <br>
 
-                3. Keep your OPay transfer receipt.
+                3. Keep your OPay payment receipt.
 
                 <br>
 
-                4. After completing the transfer, click
-                <strong>I Have Made Payment</strong>.
+                4. After making the transfer, click
+                <strong>I Have Made Payment</strong> below.
 
                 <br>
 
-                5. NB Logistics Hub will verify the transfer
+                5. NB Logistics Hub will verify the payment
                 before the delivery proceeds.
 
             </div>
 
 
-            <button
-                id="paidButton"
-                class="paid-btn"
-                onclick="paymentMade()"
-            >
-                ✓ I Have Made Payment
-            </button>
+            <!-- PAYMENT ACTION -->
 
+            <div class="payment-action">
 
-        </div>
+                <button
+                    type="button"
+                    id="paymentButton"
+                    class="paid-btn"
+                    onclick="paymentMade()"
+                >
+                    ✓ I Have Made Payment
+                </button>
 
+                <div
+                    id="paymentNote"
+                    class="payment-note"
+                >
+                    Only click this button after you have
+                    completed the OPay transfer.
+                </div>
 
-        <div
-            id="success"
-            class="success"
-        ></div>
-
-
-        <div
-            id="paymentStatus"
-            class="payment-status"
-        ></div>
-
-
-        <div class="whatsapp">
-
-            Need help with payment?
-
-            <br>
-
-            <a
-                href="https://wa.me/2349150798901"
-                target="_blank"
-            >
-                💬 Contact NB Logistics Hub
-            </a>
+            </div>
 
         </div>
-
 
     </div>
 
-</div>
+</main>
 
 
-<div class="footer">
+<!-- =====================================================
+     FOOTER
+===================================================== -->
 
-    NB Logistics Hub — Ilorin, Kwara State, Nigeria
+<footer>
 
-    <br>
+    <div>
+        NB Logistics Hub — Ilorin, Kwara State, Nigeria
+    </div>
 
-    WhatsApp Support:
-    <strong>09150798901</strong>
+    <div>
+        For enquiries or support:
+        <a
+            href="https://wa.me/2349150798901"
+            target="_blank"
+        >
+            WhatsApp 09150798901
+        </a>
+    </div>
 
-    <br><br>
+    <div>
+        © 2026 NB Logistics Hub
+    </div>
 
-    © 2026 NB Logistics Hub. All rights reserved.
-
-</div>
-
-
-</div>
+</footer>
 
 
 <script>
@@ -709,106 +872,181 @@ let currentDelivery = null;
 
 
 /* =====================================================
-   GET REQUEST NUMBER
+   GET REQUEST NUMBER FROM URL
 ===================================================== */
 
-function getRequestNumber(){
+function getRequestFromURL(){
 
     const params =
         new URLSearchParams(
             window.location.search
         );
 
-    return (
+    const request =
         params.get("request") ||
         params.get("request_number") ||
         params.get("requestCode") ||
         params.get("id") ||
-        ""
-    )
-    .trim()
-    .toUpperCase();
+        "";
 
+    return request
+        .trim()
+        .toUpperCase();
 }
 
 
 /* =====================================================
-   MONEY
+   MESSAGE FUNCTIONS
+===================================================== */
+
+function showMessage(
+    text,
+    type = "info"
+){
+
+    const message =
+        document.getElementById("message");
+
+    message.className =
+        "message " + type;
+
+    message.innerHTML =
+        text;
+}
+
+
+function hideMessage(){
+
+    const message =
+        document.getElementById("message");
+
+    message.className =
+        "message";
+
+    message.innerHTML =
+        "";
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+function setLoading(show){
+
+    const loading =
+        document.getElementById("loading");
+
+    loading.style.display =
+        show ? "block" : "none";
+}
+
+
+/* =====================================================
+   FORMAT MONEY
 ===================================================== */
 
 function formatMoney(value){
 
-    return "₦" +
-        Number(value || 0)
-        .toLocaleString("en-NG");
+    if(
+        value === null ||
+        value === undefined ||
+        value === ""
+    ){
+        return "₦0";
+    }
 
+    const number =
+        Number(value);
+
+    if(
+        Number.isNaN(number)
+    ){
+        return "₦" + value;
+    }
+
+    return "₦" +
+        number.toLocaleString(
+            "en-NG",
+            {
+                minimumFractionDigits:0,
+                maximumFractionDigits:2
+            }
+        );
 }
 
 
 /* =====================================================
-   SHOW ERROR
+   FORMAT DATE / TIME
 ===================================================== */
 
-function showError(message){
+function formatDateTime(value){
 
-    const loading =
+    if(!value){
+        return "—";
+    }
+
+    const date =
+        new Date(value);
+
+    if(
+        Number.isNaN(
+            date.getTime()
+        )
+    ){
+        return value;
+    }
+
+    return date.toLocaleString(
+        "en-NG",
+        {
+            dateStyle:"medium",
+            timeStyle:"short"
+        }
+    );
+}
+
+
+/* =====================================================
+   LOAD REQUEST
+===================================================== */
+
+async function loadRequest(){
+
+    hideMessage();
+
+    const input =
         document.getElementById(
-            "loading"
+            "requestInput"
         );
 
-    const error =
-        document.getElementById(
+    const code =
+        input.value
+            .trim()
+            .toUpperCase();
+
+    if(!code){
+
+        showMessage(
+            "Please enter your delivery request number.",
             "error"
         );
 
-    loading.style.display =
-        "none";
-
-    error.textContent =
-        message;
-
-    error.style.display =
-        "block";
-
-}
-
-
-/* =====================================================
-   LOAD DELIVERY
-===================================================== */
-
-async function loadDelivery(){
-
-    const requestCode =
-        getRequestNumber();
-
-    const loading =
-        document.getElementById(
-            "loading"
-        );
-
-    const content =
-        document.getElementById(
-            "content"
-        );
-
-
-    if(!requestCode){
-
-        showError(
-            "No delivery request number was provided."
-        );
-
         return;
-
     }
+
+    setLoading(true);
+
+    document.getElementById(
+        "details"
+    ).style.display = "none";
 
 
     try{
 
         const {
             data,
-            error: supabaseError
+            error
         } = await supabaseClient
 
             .from("delivery_requests")
@@ -817,37 +1055,46 @@ async function loadDelivery(){
 
             .ilike(
                 "request_code",
-                requestCode
+                code
             )
 
             .maybeSingle();
 
 
-        if(supabaseError){
+        if(error){
 
             console.error(
-                supabaseError
+                "Supabase error:",
+                error
             );
 
-            throw supabaseError;
+            showMessage(
+                "We could not retrieve this delivery request. Please try again.",
+                "error"
+            );
 
+            return;
         }
 
 
         if(!data){
 
-            showError(
-                "We could not find this delivery request. Please check your request number."
+            showMessage(
+                "Delivery request not found. Please check your request number.",
+                "error"
             );
 
             return;
-
         }
 
 
-        /* =============================================
-           CUSTOMER MUST HAVE APPROVED
-        ============================================= */
+        currentDelivery =
+            data;
+
+
+        /* =================================================
+           CHECK CUSTOMER APPROVAL
+        ================================================= */
 
         const approvalStatus =
             (
@@ -859,71 +1106,84 @@ async function loadDelivery(){
             .toLowerCase();
 
 
-        if(approvalStatus !== "approved"){
+        if(
+            approvalStatus !== "approved"
+        ){
 
-            showError(
-                "This delivery request has not been approved by the customer yet."
+            showMessage(
+                `
+                This delivery request has not been
+                approved by the customer yet.
+                <br><br>
+                Please return to the customer approval
+                page and approve the delivery fee before
+                making payment.
+                `,
+                "error"
             );
 
             return;
-
         }
 
 
-        /* =============================================
-           SAVE CURRENT DELIVERY
-        ============================================= */
-
-        currentDelivery = data;
-
-
-        /* =============================================
+        /* =================================================
            DISPLAY INFORMATION
-        ============================================= */
+        ================================================= */
 
         document.getElementById(
-            "requestNumber"
+            "requestCode"
         ).textContent =
             data.request_code || "—";
 
 
         document.getElementById(
-            "customerName"
+            "customer"
         ).textContent =
-            data.customer_name || "—";
+            data.customer_name ||
+            data.customer ||
+            "—";
 
 
         document.getElementById(
             "phone"
         ).textContent =
             data.phone ||
-            data.phone_number ||
-            data.whatsapp ||
+            data.customer_phone ||
+            "—";
+
+
+        document.getElementById(
+            "package"
+        ).textContent =
+            data.package ||
+            data.goods ||
+            data.package_goods ||
             "—";
 
 
         document.getElementById(
             "pickup"
         ).textContent =
-            data.pickup_location || "—";
+            data.pickup_location ||
+            data.pickup ||
+            "—";
 
 
         document.getElementById(
             "destination"
         ).textContent =
-            data.delivery_location || "—";
-
-
-        document.getElementById(
-            "package"
-        ).textContent =
-            data.package_details || "—";
+            data.delivery_location ||
+            data.destination ||
+            data.delivery ||
+            "—";
 
 
         document.getElementById(
             "preferredTime"
         ).textContent =
-            data.preferred_time || "—";
+            data.preferred_time ||
+            data.preferred_date ||
+            "—";
 
 
         document.getElementById(
@@ -934,35 +1194,118 @@ async function loadDelivery(){
             );
 
 
-        loading.style.display =
-            "none";
+        /* =================================================
+           PAYMENT STATUS
+        ================================================= */
 
-        content.style.display =
-            "block";
+        const paymentSubmitted =
+            data.payment_submitted_at;
 
 
-        /* =============================================
-           CHECK EXISTING PAYMENT SUBMISSION
-        ============================================= */
+        const paymentConfirmed =
+            data.payment_confirmed_at;
 
-        if(data.payment_submitted_at){
 
-            showAlreadySubmitted(
-                data
-            );
+        if(paymentConfirmed){
+
+            document.getElementById(
+                "paymentButton"
+            ).disabled = true;
+
+            document.getElementById(
+                "paymentButton"
+            ).textContent =
+                "✓ Payment Confirmed";
+
+
+            document.getElementById(
+                "paymentNote"
+            ).innerHTML =
+                `
+                Your payment has already been
+                confirmed by NB Logistics Hub.
+                <br>
+                Confirmed:
+                ${formatDateTime(paymentConfirmed)}
+                `;
 
         }
 
+        else if(paymentSubmitted){
+
+            document.getElementById(
+                "paymentButton"
+            ).disabled = true;
+
+            document.getElementById(
+                "paymentButton"
+            ).textContent =
+                "✓ Payment Notification Submitted";
+
+
+            document.getElementById(
+                "paymentNote"
+            ).innerHTML =
+                `
+                Your payment notification has already
+                been submitted.
+                <br>
+                NB Logistics Hub is verifying your payment.
+                <br>
+                Submitted:
+                ${formatDateTime(paymentSubmitted)}
+                `;
+
+        }
+
+        else{
+
+            document.getElementById(
+                "paymentButton"
+            ).disabled = false;
+
+            document.getElementById(
+                "paymentButton"
+            ).textContent =
+                "✓ I Have Made Payment";
+
+
+            document.getElementById(
+                "paymentNote"
+            ).innerHTML =
+                `
+                Only click this button after you have
+                completed the OPay transfer.
+                `;
+
+        }
+
+
+        document.getElementById(
+            "details"
+        ).style.display =
+            "block";
+
+
     }
-    catch(errorObject){
+
+    catch(error){
 
         console.error(
-            errorObject
+            "Unexpected error:",
+            error
         );
 
-        showError(
-            "Unable to load your delivery information right now. Please try again."
+        showMessage(
+            "An unexpected error occurred. Please try again.",
+            "error"
         );
+
+    }
+
+    finally{
+
+        setLoading(false);
 
     }
 
@@ -970,93 +1313,15 @@ async function loadDelivery(){
 
 
 /* =====================================================
-   SHOW ALREADY SUBMITTED
-===================================================== */
-
-function showAlreadySubmitted(data){
-
-    const button =
-        document.getElementById(
-            "paidButton"
-        );
-
-    const paymentStatus =
-        document.getElementById(
-            "paymentStatus"
-        );
-
-
-    if(button){
-
-        button.disabled =
-            true;
-
-        button.textContent =
-            "✓ Payment Notification Submitted";
-
-    }
-
-
-    paymentStatus.style.display =
-        "block";
-
-
-    if(data.payment_confirmed_at){
-
-        paymentStatus.innerHTML = `
-
-            <strong>
-                ✓ Payment Confirmed
-            </strong>
-
-            <br><br>
-
-            Your payment for
-            <strong>
-                ${data.request_code || ""}
-            </strong>
-            has been confirmed by
-            NB Logistics Hub.
-
-        `;
-
-        return;
-
-    }
-
-
-    paymentStatus.innerHTML = `
-
-        <strong>
-            ✓ Payment Notification Already Submitted
-        </strong>
-
-        <br><br>
-
-        Your payment notification for
-        <strong>
-            ${data.request_code || ""}
-        </strong>
-        has already been received.
-
-        <br><br>
-
-        NB Logistics Hub is verifying your payment.
-        Please keep your OPay transfer receipt.
-
-    `;
-
-}
-
-
-/* =====================================================
-   COPY OPAY ACCOUNT
+   COPY ACCOUNT NUMBER
 ===================================================== */
 
 async function copyAccountNumber(){
 
     const accountNumber =
-        "9150798901";
+        document.getElementById(
+            "accountNumber"
+        ).textContent.trim();
 
 
     try{
@@ -1065,16 +1330,19 @@ async function copyAccountNumber(){
             accountNumber
         );
 
-        alert(
-            "OPay account number copied."
+
+        showMessage(
+            "OPay account number copied successfully.",
+            "success"
         );
 
     }
+
     catch(error){
 
-        alert(
-            "OPay account number: " +
-            accountNumber
+        showMessage(
+            "Unable to copy automatically. Please copy the account number manually.",
+            "error"
         );
 
     }
@@ -1083,91 +1351,103 @@ async function copyAccountNumber(){
 
 
 /* =====================================================
-   PAYMENT MADE
+   CUSTOMER PAYMENT NOTIFICATION
 ===================================================== */
 
 async function paymentMade(){
 
-    const requestCode =
-        getRequestNumber();
+    if(!currentDelivery){
 
-    const button =
-        document.getElementById(
-            "paidButton"
+        showMessage(
+            "Please load your delivery request first.",
+            "error"
         );
 
-    const success =
-        document.getElementById(
+        return;
+    }
+
+
+    const approvalStatus =
+        (
+            currentDelivery.customer_approval_status ||
+            ""
+        )
+        .toString()
+        .trim()
+        .toLowerCase();
+
+
+    if(
+        approvalStatus !== "approved"
+    ){
+
+        showMessage(
+            "This delivery request has not been approved yet.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if(
+        currentDelivery.payment_confirmed_at
+    ){
+
+        showMessage(
+            "This payment has already been confirmed.",
             "success"
         );
 
-    const paymentStatus =
+        return;
+    }
+
+
+    if(
+        currentDelivery.payment_submitted_at
+    ){
+
+        showMessage(
+            "Your payment notification has already been submitted. NB Logistics Hub is verifying the payment.",
+            "info"
+        );
+
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            "Please confirm that you have completed the OPay transfer for the exact delivery fee shown on this page."
+        );
+
+
+    if(!confirmed){
+        return;
+    }
+
+
+    const paymentTime =
+        new Date().toISOString();
+
+
+    const button =
         document.getElementById(
-            "paymentStatus"
+            "paymentButton"
         );
 
 
-    if(!requestCode){
-
-        alert(
-            "Delivery request number is missing."
-        );
-
-        return;
-
-    }
-
-
-    if(!currentDelivery){
-
-        alert(
-            "Delivery information has not loaded yet. Please refresh the page and try again."
-        );
-
-        return;
-
-    }
-
-
-    /* =============================================
-       PREVENT DUPLICATE SUBMISSION
-    ============================================= */
-
-    if(currentDelivery.payment_submitted_at){
-
-        showAlreadySubmitted(
-            currentDelivery
-        );
-
-        return;
-
-    }
-
-
-    /* =============================================
-       DISABLE BUTTON WHILE SAVING
-    ============================================= */
-
-    button.disabled =
-        true;
+    button.disabled = true;
 
     button.textContent =
-        "Submitting Payment Notification...";
+        "Submitting...";
 
 
     try{
 
-        const paymentTime =
-            new Date().toISOString();
-
-
-        /* =============================================
-           SAVE PAYMENT INFORMATION
-        ============================================= */
-
         const {
             data,
-            error: updateError
+            error
         } = await supabaseClient
 
             .from("delivery_requests")
@@ -1183,144 +1463,95 @@ async function paymentMade(){
                 payment_submitted_at:
                     paymentTime
 
-                /*
-                 * payment_confirmed_at is intentionally
-                 * NOT changed here.
-                 *
-                 * It must be added by the admin
-                 * after the OPay transfer is verified.
-                 */
-
             })
 
             .eq(
                 "request_code",
-                requestCode
+                currentDelivery.request_code
             )
 
             .select()
+
             .single();
 
 
-        if(updateError){
+        if(error){
 
             console.error(
                 "Payment update error:",
-                updateError
+                error
             );
 
-            throw updateError;
+            button.disabled = false;
 
-        }
+            button.textContent =
+                "✓ I Have Made Payment";
 
 
-        if(!data){
-
-            throw new Error(
-                "The payment notification could not be saved."
+            showMessage(
+                `
+                Payment notification could not be
+                submitted.
+                <br><br>
+                Please try again. If the problem continues,
+                contact NB Logistics Hub on WhatsApp.
+                `,
+                "error"
             );
 
+            return;
         }
 
-
-        /* =============================================
-           UPDATE LOCAL DATA
-        ============================================= */
 
         currentDelivery =
             data;
 
 
-        /* =============================================
-           SHOW SUCCESS
-        ============================================= */
-
-        success.style.display =
-            "block";
-
-
-        success.innerHTML = `
-
-            <strong>
-                ✓ Payment Notification Received
-            </strong>
-
-            <br><br>
-
-            Your payment notification for
-            <strong>
-                ${requestCode}
-            </strong>
-            has been successfully submitted.
-
-            <br><br>
-
-            <strong>
-                Payment Method:
-            </strong>
-            OPay
-
-            <br>
-
-            <strong>
-                Payment Submitted:
-            </strong>
-            ${formatDateTime(
-                data.payment_submitted_at
-            )}
-
-            <br><br>
-
-            NB Logistics Hub will verify your
-            OPay transfer before the delivery proceeds.
-
-            <br><br>
-
-            Please keep your transfer receipt.
-
-        `;
-
-
-        /* =============================================
-           SHOW PAYMENT STATUS
-        ============================================= */
-
-        paymentStatus.style.display =
-            "block";
-
-
-        paymentStatus.innerHTML = `
-
-            <strong>
-                Payment Status: Awaiting Verification
-            </strong>
-
-            <br><br>
-
-            Your notification has been recorded.
-            The payment will be confirmed after
-            NB Logistics Hub verifies the transfer.
-
-        `;
-
+        button.disabled =
+            true;
 
         button.textContent =
             "✓ Payment Notification Submitted";
 
 
-        success.scrollIntoView({
+        document.getElementById(
+            "paymentNote"
+        ).innerHTML =
+            `
+            Your payment notification has been
+            successfully submitted.
+            <br><br>
+            NB Logistics Hub will verify the OPay transfer
+            before your delivery proceeds.
+            <br><br>
+            Submitted:
+            ${formatDateTime(paymentTime)}
+            `;
 
-            behavior:"smooth",
 
-            block:"center"
+        showMessage(
+            `
+            <strong>Payment notification submitted successfully.</strong>
+            <br><br>
+            Request:
+            <strong>
+                ${currentDelivery.request_code}
+            </strong>
+            <br><br>
+            Please keep your OPay receipt until the payment
+            has been verified.
+            `,
+            "success"
+        );
 
-        });
 
     }
-    catch(errorObject){
+
+    catch(error){
 
         console.error(
-            errorObject
+            "Unexpected payment error:",
+            error
         );
 
 
@@ -1331,14 +1562,9 @@ async function paymentMade(){
             "✓ I Have Made Payment";
 
 
-        alert(
-
-            "We could not save your payment notification. " +
-
-            "Please try again. If the problem continues, " +
-
-            "contact NB Logistics Hub on WhatsApp."
-
+        showMessage(
+            "An unexpected error occurred while submitting your payment notification.",
+            "error"
         );
 
     }
@@ -1347,47 +1573,52 @@ async function paymentMade(){
 
 
 /* =====================================================
-   FORMAT DATE AND TIME
+   ENTER KEY
 ===================================================== */
 
-function formatDateTime(value){
+document
+    .getElementById("requestInput")
+    .addEventListener(
+        "keydown",
+        function(event){
 
-    if(!value){
+            if(
+                event.key === "Enter"
+            ){
 
-        return "—";
+                loadRequest();
 
-    }
+            }
 
-
-    const date =
-        new Date(value);
-
-
-    if(isNaN(date.getTime())){
-
-        return "—";
-
-    }
-
-
-    return date.toLocaleString(
-        "en-NG",
-        {
-            dateStyle:"medium",
-            timeStyle:"short"
         }
     );
 
-}
-
 
 /* =====================================================
-   START
+   AUTOMATIC REQUEST LOADING
 ===================================================== */
 
-window.addEventListener(
+document.addEventListener(
     "DOMContentLoaded",
-    loadDelivery
+    function(){
+
+        const request =
+            getRequestFromURL();
+
+
+        if(request){
+
+            document.getElementById(
+                "requestInput"
+            ).value =
+                request;
+
+
+            loadRequest();
+
+        }
+
+    }
 );
 
 </script>
@@ -1395,4 +1626,3 @@ window.addEventListener(
 </body>
 
 </html>
-
