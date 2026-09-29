@@ -30,6 +30,7 @@
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
+
     background:
         linear-gradient(
             rgba(0, 0, 0, 0.58),
@@ -44,6 +45,7 @@ body {
     color: #222;
     min-height: 100vh;
 }
+
 
 /* =====================================================
    HEADER
@@ -83,6 +85,7 @@ header {
     background: #084298;
 }
 
+
 /* =====================================================
    MAIN CONTAINER
 ===================================================== */
@@ -92,6 +95,7 @@ header {
     max-width: 850px;
     margin: 35px auto;
 }
+
 
 /* =====================================================
    CARD
@@ -117,6 +121,7 @@ h1 {
     color: #666;
     margin-bottom: 25px;
 }
+
 
 /* =====================================================
    FORM
@@ -159,6 +164,7 @@ input:focus {
     background: #084298;
 }
 
+
 /* =====================================================
    MESSAGES
 ===================================================== */
@@ -186,6 +192,7 @@ input:focus {
     background: #cff4fc;
     color: #055160;
 }
+
 
 /* =====================================================
    RESULT
@@ -220,6 +227,91 @@ input:focus {
     color: #555;
     line-height: 1.5;
 }
+
+
+/* =====================================================
+   PAYMENT STATUS
+===================================================== */
+
+.payment-status-box {
+    margin: 25px 0;
+    padding: 22px;
+    border-radius: 14px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.payment-status-title {
+    margin: 0 0 12px;
+    color: #063970;
+    font-size: 21px;
+}
+
+.payment-status-icon {
+    font-size: 42px;
+    margin-bottom: 8px;
+}
+
+.payment-status-value {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.payment-status-message {
+    color: #555;
+    line-height: 1.5;
+    margin: 0;
+}
+
+
+/* Pending payment */
+
+.payment-not-submitted {
+    background: #fff8e1;
+    border-color: #ffe08a;
+}
+
+.payment-not-submitted .payment-status-value {
+    color: #856404;
+}
+
+
+/* Submitted */
+
+.payment-submitted {
+    background: #cff4fc;
+    border-color: #9eeaf9;
+}
+
+.payment-submitted .payment-status-value {
+    color: #055160;
+}
+
+
+/* Confirmed */
+
+.payment-confirmed {
+    background: #d1e7dd;
+    border-color: #a3cfbb;
+}
+
+.payment-confirmed .payment-status-value {
+    color: #0f5132;
+}
+
+
+/* Rejected */
+
+.payment-rejected {
+    background: #f8d7da;
+    border-color: #f1aeb5;
+}
+
+.payment-rejected .payment-status-value {
+    color: #842029;
+}
+
 
 /* =====================================================
    TIMELINE
@@ -286,6 +378,7 @@ input:focus {
     color: #0b5ed7;
 }
 
+
 /* =====================================================
    DETAILS
 ===================================================== */
@@ -324,6 +417,7 @@ input:focus {
     font-size: 19px;
 }
 
+
 /* =====================================================
    ACTION AREA
 ===================================================== */
@@ -356,6 +450,7 @@ input:focus {
     font-weight: bold;
     font-size: 17px;
     margin-top: 10px;
+    text-align: center;
 }
 
 .approval-btn {
@@ -365,6 +460,15 @@ input:focus {
 
 .approval-btn:hover {
     background: #146c43;
+}
+
+.payment-btn {
+    background: #0b5ed7;
+    color: #fff;
+}
+
+.payment-btn:hover {
+    background: #084298;
 }
 
 .receipt-btn {
@@ -394,6 +498,7 @@ input:focus {
     background: #565e64;
 }
 
+
 /* =====================================================
    FOOTER
 ===================================================== */
@@ -408,6 +513,7 @@ footer {
 footer strong {
     color: #fff;
 }
+
 
 /* =====================================================
    MOBILE
@@ -440,6 +546,10 @@ footer strong {
 
     .status-value {
         font-size: 24px;
+    }
+
+    .payment-status-value {
+        font-size: 20px;
     }
 
 }
@@ -518,8 +628,6 @@ footer strong {
         </button>
 
 
-        <!-- Messages -->
-
         <div
             id="loadingMessage"
             class="message loading"
@@ -576,6 +684,44 @@ footer strong {
             >
                 Your delivery request has been accepted.
             </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             PAYMENT STATUS
+        ================================================== -->
+
+        <div
+            id="paymentStatusBox"
+            class="payment-status-box payment-not-submitted"
+        >
+
+            <div class="payment-status-title">
+                Payment Status
+            </div>
+
+            <div
+                id="paymentStatusIcon"
+                class="payment-status-icon"
+            >
+                🟠
+            </div>
+
+            <div
+                id="paymentStatusValue"
+                class="payment-status-value"
+            >
+                Payment Not Submitted
+            </div>
+
+            <p
+                id="paymentStatusMessage"
+                class="payment-status-message"
+            >
+                Your payment notification has not been submitted yet.
+            </p>
 
         </div>
 
@@ -927,6 +1073,7 @@ footer strong {
         </a>
 
 
+
         <!-- =================================================
              BACK HOME
         ================================================== -->
@@ -984,7 +1131,9 @@ const supabaseClient =
 function getRequestFromURL() {
 
     const params =
-        new URLSearchParams(window.location.search);
+        new URLSearchParams(
+            window.location.search
+        );
 
     return (
         params.get("request") ||
@@ -1003,7 +1152,10 @@ function getRequestFromURL() {
 
 function escapeHTML(value) {
 
-    if (value === null || value === undefined) {
+    if (
+        value === null ||
+        value === undefined
+    ) {
         return "";
     }
 
@@ -1034,7 +1186,9 @@ function formatNaira(value) {
     const number =
         Number(value);
 
-    if (Number.isNaN(number)) {
+    if (
+        Number.isNaN(number)
+    ) {
         return escapeHTML(value);
     }
 
@@ -1063,7 +1217,11 @@ function formatDate(value) {
     const date =
         new Date(value);
 
-    if (Number.isNaN(date.getTime())) {
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
         return escapeHTML(value);
     }
 
@@ -1094,7 +1252,11 @@ function formatPreferredTime(value) {
     const date =
         new Date(value);
 
-    if (Number.isNaN(date.getTime())) {
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
         return escapeHTML(value);
     }
 
@@ -1118,9 +1280,11 @@ function formatPreferredTime(value) {
 
 function normalizeStatus(status) {
 
-    return String(status || "")
-        .trim()
-        .toLowerCase();
+    return String(
+        status || ""
+    )
+    .trim()
+    .toLowerCase();
 
 }
 
@@ -1131,9 +1295,26 @@ function normalizeStatus(status) {
 
 function normalizeApproval(value) {
 
-    return String(value || "")
-        .trim()
-        .toLowerCase();
+    return String(
+        value || ""
+    )
+    .trim()
+    .toLowerCase();
+
+}
+
+
+/* =====================================================
+   NORMALIZE PAYMENT STATUS
+===================================================== */
+
+function normalizePaymentStatus(value) {
+
+    return String(
+        value || ""
+    )
+    .trim()
+    .toLowerCase();
 
 }
 
@@ -1146,15 +1327,18 @@ function hideMessages() {
 
     document.getElementById(
         "loadingMessage"
-    ).style.display = "none";
+    ).style.display =
+        "none";
 
     document.getElementById(
         "errorMessage"
-    ).style.display = "none";
+    ).style.display =
+        "none";
 
     document.getElementById(
         "successMessage"
-    ).style.display = "none";
+    ).style.display =
+        "none";
 
 }
 
@@ -1226,43 +1410,52 @@ function resetTimeline() {
         "stepCompleted"
     ];
 
-    steps.forEach(function(id) {
+    steps.forEach(
+        function(id) {
 
-        const element =
-            document.getElementById(id);
+            const element =
+                document.getElementById(id);
 
-        element.classList.remove(
-            "completed",
-            "current"
-        );
+            element.classList.remove(
+                "completed",
+                "current"
+            );
 
-    });
+        }
+    );
 
 
     document.getElementById(
         "iconReceived"
-    ).textContent = "1";
+    ).textContent =
+        "1";
 
     document.getElementById(
         "iconAccepted"
-    ).textContent = "2";
+    ).textContent =
+        "2";
 
     document.getElementById(
         "iconProgress"
-    ).textContent = "3";
+    ).textContent =
+        "3";
 
     document.getElementById(
         "iconCompleted"
-    ).textContent = "4";
+    ).textContent =
+        "4";
 
 }
 
 
 /* =====================================================
-   SET TIMELINE STEP
+   SET COMPLETED TIMELINE STEP
 ===================================================== */
 
-function setCompleted(id, iconId) {
+function setCompleted(
+    id,
+    iconId
+) {
 
     const element =
         document.getElementById(id);
@@ -1273,13 +1466,14 @@ function setCompleted(id, iconId) {
 
     document.getElementById(
         iconId
-    ).textContent = "✓";
+    ).textContent =
+        "✓";
 
 }
 
 
 /* =====================================================
-   SET CURRENT STEP
+   SET CURRENT TIMELINE STEP
 ===================================================== */
 
 function setCurrent(id) {
@@ -1420,6 +1614,162 @@ function updateTimeline(status) {
 
 
 /* =====================================================
+   UPDATE PAYMENT STATUS
+===================================================== */
+
+function updatePaymentStatus(data) {
+
+    const box =
+        document.getElementById(
+            "paymentStatusBox"
+        );
+
+    const icon =
+        document.getElementById(
+            "paymentStatusIcon"
+        );
+
+    const value =
+        document.getElementById(
+            "paymentStatusValue"
+        );
+
+    const message =
+        document.getElementById(
+            "paymentStatusMessage"
+        );
+
+
+    /* -----------------------------------------------
+       RESET CLASSES
+    ------------------------------------------------ */
+
+    box.classList.remove(
+        "payment-not-submitted",
+        "payment-submitted",
+        "payment-confirmed",
+        "payment-rejected"
+    );
+
+
+    const paymentStatus =
+        normalizePaymentStatus(
+            data.payment_status
+        );
+
+
+    const submittedAt =
+        data.payment_submitted_at;
+
+
+    const confirmedAt =
+        data.payment_confirmed_at;
+
+
+    const paidAt =
+        data.paid_at;
+
+
+    /* -----------------------------------------------
+       CONFIRMED
+    ------------------------------------------------ */
+
+    if (
+        paymentStatus === "confirmed" ||
+        confirmedAt ||
+        paidAt
+    ) {
+
+        box.classList.add(
+            "payment-confirmed"
+        );
+
+        icon.textContent =
+            "🟢";
+
+        value.textContent =
+            "Payment Confirmed";
+
+        message.textContent =
+            "Your payment has been verified successfully. Your delivery can now proceed.";
+
+        return;
+    }
+
+
+    /* -----------------------------------------------
+       REJECTED
+    ------------------------------------------------ */
+
+    if (
+        paymentStatus === "rejected"
+    ) {
+
+        box.classList.add(
+            "payment-rejected"
+        );
+
+        icon.textContent =
+            "🔴";
+
+        value.textContent =
+            "Payment Rejected";
+
+        message.textContent =
+            "Your payment notification could not be confirmed. Please contact NB Logistics Hub for assistance.";
+
+        return;
+    }
+
+
+    /* -----------------------------------------------
+       PAYMENT SUBMITTED
+    ------------------------------------------------ */
+
+    if (
+        submittedAt ||
+        paymentStatus === "submitted" ||
+        paymentStatus === "pending"
+    ) {
+
+        box.classList.add(
+            "payment-submitted"
+        );
+
+        icon.textContent =
+            "🟡";
+
+        value.textContent =
+            "Payment Notification Submitted";
+
+        message.textContent =
+            "Your payment notification has been received and is awaiting verification.";
+
+        return;
+    }
+
+
+    /* -----------------------------------------------
+       NOT SUBMITTED
+    ------------------------------------------------ */
+
+    box.classList.add(
+        "payment-not-submitted"
+    );
+
+    icon.textContent =
+        "🟠";
+
+    value.textContent =
+        "Payment Not Submitted";
+
+    message.textContent =
+        "Your payment notification has not been submitted yet.";
+
+}
+
+
+/* =====================================================
    UPDATE ACTION AREA
 ===================================================== */
 
@@ -1449,9 +1799,22 @@ function updateActionArea(data) {
     const requestCode =
         data.request_code;
 
+
     const normalizedStatus =
         normalizeStatus(
             data.status
+        );
+
+
+    const paymentStatus =
+        normalizePaymentStatus(
+            data.payment_status
+        );
+
+
+    const approvalStatus =
+        normalizeApproval(
+            data.customer_approval_status
         );
 
 
@@ -1462,11 +1825,18 @@ function updateActionArea(data) {
        CUSTOMER APPROVAL FIRST.
 
        NEVER send Track directly
-       to NB_Logistics_Payment.html.
+       to Payment.
     */
 
     const approvalURL =
         "NB_Logistics_Approval.html?request=" +
+        encodeURIComponent(
+            requestCode
+        );
+
+
+    const paymentURL =
+        "NB_Logistics_Payment.html?request=" +
         encodeURIComponent(
             requestCode
         );
@@ -1508,15 +1878,145 @@ function updateActionArea(data) {
 
 
     /* -----------------------------------------------
-       ALL ACTIVE REQUESTS
+       PAYMENT CONFIRMED
+    ------------------------------------------------ */
 
-       ALWAYS ROUTE:
+    if (
+        paymentStatus === "confirmed" ||
+        data.payment_confirmed_at ||
+        data.paid_at
+    ) {
 
-       TRACK
-          ↓
-       APPROVAL
-          ↓
-       PAYMENT
+        actionTitle.textContent =
+            "Payment Confirmed";
+
+        actionDescription.textContent =
+            "Your payment has been verified. NB Logistics Hub can now proceed with your delivery.";
+
+        approvalLink.textContent =
+            "✓ Payment Confirmed";
+
+        approvalLink.href =
+            "#";
+
+        approvalLink.className =
+            "action-btn payment-btn";
+
+        approvalLink.style.display =
+            "block";
+
+        return;
+    }
+
+
+    /* -----------------------------------------------
+       PAYMENT SUBMITTED
+    ------------------------------------------------ */
+
+    if (
+        data.payment_submitted_at ||
+        paymentStatus === "submitted" ||
+        paymentStatus === "pending"
+    ) {
+
+        actionTitle.textContent =
+            "Payment Awaiting Verification";
+
+        actionDescription.textContent =
+            "Your payment notification has been received. We are verifying your OPay payment.";
+
+        approvalLink.textContent =
+            "⏳ Payment Verification in Progress";
+
+        approvalLink.href =
+            "#";
+
+        approvalLink.className =
+            "action-btn payment-btn";
+
+        approvalLink.style.display =
+            "block";
+
+        return;
+    }
+
+
+    /* -----------------------------------------------
+       PAYMENT REJECTED
+    ------------------------------------------------ */
+
+    if (
+        paymentStatus === "rejected"
+    ) {
+
+        actionTitle.textContent =
+            "Payment Needs Attention";
+
+        actionDescription.textContent =
+            "Your payment notification was not confirmed. Please contact NB Logistics Hub for assistance.";
+
+        approvalLink.textContent =
+            "💬 Contact Us on WhatsApp";
+
+        approvalLink.href =
+            "https://wa.me/2349150798901";
+
+        approvalLink.target =
+            "_blank";
+
+        approvalLink.rel =
+            "noopener noreferrer";
+
+        approvalLink.className =
+            "action-btn whatsapp-btn";
+
+        approvalLink.style.display =
+            "block";
+
+        return;
+    }
+
+
+    /* -----------------------------------------------
+       APPROVED BUT PAYMENT NOT SUBMITTED
+    ------------------------------------------------ */
+
+    if (
+        approvalStatus === "approved"
+    ) {
+
+        actionTitle.textContent =
+            "Payment Required";
+
+        actionDescription.textContent =
+            "Your delivery has been approved. Please proceed to payment to continue.";
+
+        approvalLink.textContent =
+            "💳 Proceed to Payment";
+
+        approvalLink.href =
+            paymentURL;
+
+        approvalLink.className =
+            "action-btn payment-btn";
+
+        approvalLink.removeAttribute(
+            "target"
+        );
+
+        approvalLink.removeAttribute(
+            "rel"
+        );
+
+        approvalLink.style.display =
+            "block";
+
+        return;
+    }
+
+
+    /* -----------------------------------------------
+       DEFAULT
     ------------------------------------------------ */
 
     actionTitle.textContent =
@@ -1534,12 +2034,16 @@ function updateActionArea(data) {
     approvalLink.className =
         "action-btn approval-btn";
 
+    approvalLink.removeAttribute(
+        "target"
+    );
+
+    approvalLink.removeAttribute(
+        "rel"
+    );
+
     approvalLink.style.display =
         "block";
-
-
-    receiptLink.style.display =
-        "none";
 
 }
 
@@ -1557,12 +2061,13 @@ function displayDelivery(data) {
 
 
     /* -----------------------------------------------
-       STATUS
+       DELIVERY STATUS
     ------------------------------------------------ */
 
     const status =
         data.status ||
         "New";
+
 
     document.getElementById(
         "statusValue"
@@ -1574,7 +2079,18 @@ function displayDelivery(data) {
         "statusMessage"
     ).textContent =
         data.status_message ||
-        getDefaultStatusMessage(status);
+        getDefaultStatusMessage(
+            status
+        );
+
+
+    /* -----------------------------------------------
+       PAYMENT STATUS
+    ------------------------------------------------ */
+
+    updatePaymentStatus(
+        data
+    );
 
 
     /* -----------------------------------------------
@@ -1593,13 +2109,15 @@ function displayDelivery(data) {
     document.getElementById(
         "detailRequest"
     ).textContent =
-        data.request_code || "—";
+        data.request_code ||
+        "—";
 
 
     document.getElementById(
         "detailCustomer"
     ).textContent =
-        data.customer_name || "—";
+        data.customer_name ||
+        "—";
 
 
     document.getElementById(
@@ -1614,26 +2132,16 @@ function displayDelivery(data) {
     document.getElementById(
         "detailPickup"
     ).textContent =
-        data.pickup_location || "—";
+        data.pickup_location ||
+        "—";
 
 
     document.getElementById(
         "detailDelivery"
     ).textContent =
-        data.delivery_location || "—";
+        data.delivery_location ||
+        "—";
 
-
-    /*
-       PACKAGE FIELD
-
-       Primary:
-       package_details
-
-       Fallback:
-       package
-       goods
-       package_description
-    */
 
     const packageValue =
         data.package_details ||
@@ -1675,7 +2183,7 @@ function displayDelivery(data) {
 
 
     /* -----------------------------------------------
-       ACTION
+       ACTION AREA
     ------------------------------------------------ */
 
     updateActionArea(
@@ -1689,10 +2197,14 @@ function displayDelivery(data) {
    DEFAULT STATUS MESSAGE
 ===================================================== */
 
-function getDefaultStatusMessage(status) {
+function getDefaultStatusMessage(
+    status
+) {
 
     const normalized =
-        normalizeStatus(status);
+        normalizeStatus(
+            status
+        );
 
 
     if (
@@ -1736,6 +2248,7 @@ function getDefaultStatusMessage(status) {
 
 
     return "Your delivery request is being processed.";
+
 }
 
 
@@ -1821,11 +2334,7 @@ async function trackDelivery() {
 
         /* -------------------------------------------
            UPDATE URL
-
-           Example:
-
-           NB_Logistics_Track.html?request=NB-20260929-9340
-        ------------------------------------------- */
+        -------------------------------------------- */
 
         const newURL =
             window.location.pathname +
@@ -1850,20 +2359,23 @@ async function trackDelivery() {
         );
 
 
-        /*
-           Scroll to result
-        */
+        /* -------------------------------------------
+           SCROLL TO RESULT
+        -------------------------------------------- */
 
-        setTimeout(function() {
+        setTimeout(
+            function() {
 
-            document.getElementById(
-                "result"
-            ).scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
+                document.getElementById(
+                    "result"
+                ).scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
 
-        }, 100);
+            },
+            100
+        );
 
 
     } catch (error) {
