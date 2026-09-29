@@ -1,110 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>NB Logistics Hub — Track Delivery</title>
 
+<meta name="description"
+      content="Track your NB Logistics Hub delivery in Ilorin. Check delivery status, view delivery details and contact our team on WhatsApp.">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
+/* ==============================
+   RESET
+============================== */
+
 *{
     box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
 }
 
 body{
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
-    background:#f3f4f6;
+    background:#f3f5f8;
     color:#172033;
 }
 
+
+/* ==============================
+   HEADER
+============================== */
+
 header{
-    background:#071a35;
+    background:linear-gradient(135deg,#06152d,#0b2c55);
     color:white;
-    padding:22px 15px;
+    padding:24px 15px;
     text-align:center;
+    box-shadow:0 3px 15px rgba(0,0,0,.12);
 }
 
 header h1{
     margin:0;
-    font-size:26px;
+    font-size:28px;
+    letter-spacing:.3px;
 }
 
 header p{
-    margin:7px 0 0;
+    margin:8px 0 0;
     color:#ffd21c;
     font-weight:bold;
+    font-size:15px;
 }
+
+
+/* ==============================
+   MAIN CONTAINER
+============================== */
 
 .container{
     width:94%;
-    max-width:650px;
-    margin:30px auto;
+    max-width:680px;
+    margin:30px auto 50px;
 }
+
+
+/* ==============================
+   CARD
+============================== */
 
 .card{
     background:white;
-    border-radius:15px;
-    padding:25px;
-    box-shadow:0 5px 20px rgba(0,0,0,.10);
+    border-radius:18px;
+    padding:26px;
+    box-shadow:0 7px 25px rgba(0,0,0,.08);
     margin-bottom:20px;
 }
 
-h2{
-    margin-top:0;
+.card h2{
+    margin:0 0 10px;
     color:#071a35;
+    font-size:23px;
 }
+
+.card-intro{
+    color:#596273;
+    line-height:1.6;
+    margin-bottom:22px;
+}
+
+
+/* ==============================
+   FORM
+============================== */
 
 label{
     display:block;
     font-weight:bold;
     margin-bottom:8px;
+    color:#172033;
+}
+
+.input-wrapper{
+    position:relative;
 }
 
 input{
     width:100%;
-    padding:14px;
-    border:1px solid #ccc;
-    border-radius:8px;
+    padding:15px 14px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
     font-size:16px;
     margin-bottom:14px;
+    outline:none;
+    transition:.2s;
+    text-transform:uppercase;
 }
+
+input:focus{
+    border-color:#071a35;
+    box-shadow:0 0 0 3px rgba(7,26,53,.08);
+}
+
+
+/* ==============================
+   TRACK BUTTON
+============================== */
 
 button{
     width:100%;
     padding:15px;
     border:none;
-    border-radius:8px;
+    border-radius:10px;
     background:#ffd21c;
     color:#071a35;
     font-size:17px;
     font-weight:bold;
     cursor:pointer;
+    transition:.2s;
 }
 
 button:hover{
     background:#f0c500;
+    transform:translateY(-1px);
 }
+
+button:disabled{
+    opacity:.75;
+    cursor:not-allowed;
+    transform:none;
+}
+
+
+/* ==============================
+   LOADING
+============================== */
+
+.loading-content{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+}
+
+.spinner{
+    width:19px;
+    height:19px;
+    border:3px solid rgba(7,26,53,.25);
+    border-top-color:#071a35;
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+
+/* ==============================
+   MESSAGES
+============================== */
 
 .message{
     display:none;
-    padding:13px;
-    border-radius:8px;
+    padding:14px;
+    border-radius:10px;
     margin-top:15px;
     font-weight:bold;
+    line-height:1.5;
 }
 
 .error{
-    background:#ffe1e1;
+    background:#ffe5e5;
     color:#a00000;
+    border-left:4px solid #c40000;
 }
 
 .success{
-    background:#e1f7e7;
+    background:#e5f8eb;
     color:#146b2d;
 }
+
+
+/* ==============================
+   DELIVERY SUMMARY
+============================== */
+
+.delivery-summary{
+    background:linear-gradient(135deg,#071a35,#0d315d);
+    color:white;
+    padding:20px;
+    border-radius:14px;
+    margin-bottom:22px;
+}
+
+.summary-label{
+    font-size:13px;
+    color:#d8e1ec;
+    margin-bottom:5px;
+}
+
+.summary-code{
+    font-size:22px;
+    font-weight:bold;
+    color:#ffd21c;
+    word-break:break-word;
+}
+
+.summary-status{
+    margin-top:14px;
+    font-size:14px;
+}
+
+.status{
+    display:inline-block;
+    margin-top:6px;
+    padding:7px 13px;
+    border-radius:20px;
+    background:#ffd21c;
+    color:#071a35;
+    font-weight:bold;
+}
+
+
+/* ==============================
+   DETAILS
+============================== */
 
 .details{
     display:none;
@@ -114,8 +263,8 @@ button:hover{
     display:flex;
     justify-content:space-between;
     gap:20px;
-    padding:13px 0;
-    border-bottom:1px solid #eee;
+    padding:14px 0;
+    border-bottom:1px solid #edf0f3;
 }
 
 .row:last-child{
@@ -124,7 +273,7 @@ button:hover{
 
 .label{
     font-weight:bold;
-    color:#555;
+    color:#5c6573;
     width:42%;
 }
 
@@ -135,69 +284,223 @@ button:hover{
     word-break:break-word;
 }
 
-.status{
-    display:inline-block;
-    padding:7px 13px;
-    border-radius:20px;
-    background:#071a35;
-    color:#ffd21c;
-    font-weight:bold;
-}
-
-.status-message{
-    margin-top:20px;
-    background:#f7f7f7;
-    border-left:5px solid #ffd21c;
-    padding:15px;
-    border-radius:6px;
-    line-height:1.5;
-}
-
 .fee{
     color:#008000;
     font-size:18px;
 }
 
+
+/* ==============================
+   STATUS TIMELINE
+============================== */
+
+.timeline-section{
+    margin-top:28px;
+}
+
+.timeline-title{
+    color:#071a35;
+    font-size:19px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.timeline{
+    position:relative;
+    padding-left:35px;
+}
+
+.timeline::before{
+    content:"";
+    position:absolute;
+    left:10px;
+    top:8px;
+    bottom:8px;
+    width:3px;
+    background:#e1e5ea;
+    border-radius:5px;
+}
+
+.timeline-item{
+    position:relative;
+    padding-bottom:25px;
+}
+
+.timeline-item:last-child{
+    padding-bottom:0;
+}
+
+.timeline-dot{
+    position:absolute;
+    left:-31px;
+    top:2px;
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    background:#d6dbe1;
+    border:4px solid white;
+    box-shadow:0 0 0 2px #d6dbe1;
+    z-index:2;
+}
+
+.timeline-item.active .timeline-dot{
+    background:#ffd21c;
+    box-shadow:0 0 0 2px #ffd21c;
+}
+
+.timeline-item.completed .timeline-dot{
+    background:#16853a;
+    box-shadow:0 0 0 2px #16853a;
+}
+
+.timeline-item.active .timeline-title-text,
+.timeline-item.completed .timeline-title-text{
+    color:#071a35;
+}
+
+.timeline-title-text{
+    font-weight:bold;
+    color:#7b8491;
+    margin-bottom:4px;
+}
+
+.timeline-description{
+    color:#697384;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.timeline-item.active .timeline-description{
+    color:#303b4b;
+}
+
+
+/* ==============================
+   DELIVERY UPDATE
+============================== */
+
+.status-message{
+    margin-top:24px;
+    background:#f7f9fb;
+    border-left:5px solid #ffd21c;
+    padding:16px;
+    border-radius:8px;
+    line-height:1.6;
+    color:#404b5b;
+}
+
+.status-message strong{
+    color:#071a35;
+}
+
+
+/* ==============================
+   WHATSAPP
+============================== */
+
+.whatsapp-btn{
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    margin-top:15px;
+    padding:14px;
+    background:#25D366;
+    color:white;
+    border-radius:9px;
+    font-weight:bold;
+    transition:.2s;
+}
+
+.whatsapp-btn:hover{
+    background:#1ebe5d;
+    transform:translateY(-1px);
+}
+
+
+/* ==============================
+   RECEIPT
+============================== */
+
 .receipt-btn{
     display:block;
     text-align:center;
     text-decoration:none;
-    margin-top:20px;
+    margin-top:15px;
     padding:14px;
     background:#071a35;
     color:white;
-    border-radius:8px;
+    border-radius:9px;
     font-weight:bold;
+    transition:.2s;
 }
 
 .receipt-btn:hover{
     background:#102b50;
+    transform:translateY(-1px);
 }
+
+
+/* ==============================
+   BACK LINK
+============================== */
 
 .back{
     display:block;
     text-align:center;
-    margin-top:15px;
+    margin-top:18px;
     color:#071a35;
     text-decoration:none;
     font-weight:bold;
 }
 
+.back:hover{
+    text-decoration:underline;
+}
+
+
+/* ==============================
+   FOOTER
+============================== */
+
 footer{
     text-align:center;
-    padding:25px 10px;
-    color:#666;
+    padding:28px 10px;
+    color:#697384;
     font-size:14px;
 }
 
-@media(max-width:500px){
+
+/* ==============================
+   MOBILE
+============================== */
+
+@media(max-width:600px){
+
+    header{
+        padding:21px 12px;
+    }
+
+    header h1{
+        font-size:24px;
+    }
+
+    .container{
+        width:94%;
+        margin-top:20px;
+    }
 
     .card{
         padding:20px;
+        border-radius:15px;
+    }
+
+    .card h2{
+        font-size:21px;
     }
 
     .row{
         display:block;
+        padding:13px 0;
     }
 
     .label,
@@ -209,101 +512,418 @@ footer{
     .value{
         margin-top:5px;
     }
+
+    .summary-code{
+        font-size:19px;
+    }
+
+    .timeline{
+        padding-left:31px;
+    }
+
+    .timeline-dot{
+        left:-27px;
+    }
+
 }
+
+
+/* ==============================
+   SMALL PHONES
+============================== */
+
+@media(max-width:380px){
+
+    .card{
+        padding:17px;
+    }
+
+    button,
+    .receipt-btn,
+    .whatsapp-btn{
+        font-size:15px;
+    }
+
+}
+
 </style>
 </head>
 
+
 <body>
 
+
+<!-- ==============================
+     HEADER
+============================== -->
+
 <header>
+
     <h1>NB Logistics Hub</h1>
+
     <p>Track Your Delivery</p>
+
 </header>
 
+
+
 <div class="container">
+
+
+    <!-- ==============================
+         TRACKING FORM
+    ============================== -->
 
     <div class="card">
 
         <h2>Track Delivery</h2>
 
-        <p>
-            Enter your delivery request number to see the latest delivery status.
+        <p class="card-intro">
+            Enter your delivery request number below to see
+            the latest status and delivery information.
         </p>
 
-        <label for="requestCode">Request Number</label>
+
+        <label for="requestCode">
+            Request Number
+        </label>
+
 
         <input
             type="text"
             id="requestCode"
             placeholder="Example: NB-20260928-0001"
             autocomplete="off"
+            autocapitalize="characters"
         >
 
-        <button onclick="trackDelivery()">
-            Track Delivery
+
+        <button
+            id="trackButton"
+            onclick="trackDelivery()"
+        >
+
+            <span id="buttonText">
+                Track Delivery
+            </span>
+
+            <span
+                id="loadingContent"
+                class="loading-content"
+                style="display:none;"
+            >
+
+                <span class="spinner"></span>
+
+                Checking Delivery...
+
+            </span>
+
         </button>
 
-        <div id="errorMessage" class="message error"></div>
+
+        <div
+            id="errorMessage"
+            class="message error"
+        ></div>
 
     </div>
 
 
-    <div id="detailsCard" class="card details">
 
-        <h2>Delivery Details</h2>
+    <!-- ==============================
+         DELIVERY DETAILS
+    ============================== -->
 
-        <div class="row">
-            <div class="label">Request Number</div>
-            <div class="value" id="requestNumber"></div>
-        </div>
+    <div
+        id="detailsCard"
+        class="card details"
+    >
 
-        <div class="row">
-            <div class="label">Customer</div>
-            <div class="value" id="customerName"></div>
-        </div>
 
-        <div class="row">
-            <div class="label">Pickup Location</div>
-            <div class="value" id="pickupLocation"></div>
-        </div>
+        <!-- SUMMARY -->
 
-        <div class="row">
-            <div class="label">Delivery Destination</div>
-            <div class="value" id="deliveryLocation"></div>
-        </div>
+        <div class="delivery-summary">
 
-        <div class="row">
-            <div class="label">Package / Goods</div>
-            <div class="value" id="packageDetails"></div>
-        </div>
-
-        <div class="row">
-            <div class="label">Preferred Time</div>
-            <div class="value" id="preferredTime"></div>
-        </div>
-
-        <div class="row">
-            <div class="label">Delivery Fee</div>
-            <div class="value fee" id="deliveryFee"></div>
-        </div>
-
-        <div class="row">
-            <div class="label">Status</div>
-            <div class="value">
-                <span class="status" id="deliveryStatus"></span>
+            <div class="summary-label">
+                DELIVERY REQUEST
             </div>
+
+            <div
+                class="summary-code"
+                id="requestNumber"
+            ></div>
+
+            <div class="summary-status">
+
+                Current Status:
+
+                <br>
+
+                <span
+                    class="status"
+                    id="deliveryStatus"
+                ></span>
+
+            </div>
+
         </div>
 
+
+
+        <h2>
+            Delivery Details
+        </h2>
+
+
+
+        <!-- CUSTOMER -->
+
         <div class="row">
-            <div class="label">Last Updated</div>
-            <div class="value" id="lastUpdated"></div>
+
+            <div class="label">
+                Customer
+            </div>
+
+            <div
+                class="value"
+                id="customerName"
+            ></div>
+
         </div>
+
+
+
+        <!-- PICKUP -->
+
+        <div class="row">
+
+            <div class="label">
+                Pickup Location
+            </div>
+
+            <div
+                class="value"
+                id="pickupLocation"
+            ></div>
+
+        </div>
+
+
+
+        <!-- DESTINATION -->
+
+        <div class="row">
+
+            <div class="label">
+                Delivery Destination
+            </div>
+
+            <div
+                class="value"
+                id="deliveryLocation"
+            ></div>
+
+        </div>
+
+
+
+        <!-- PACKAGE -->
+
+        <div class="row">
+
+            <div class="label">
+                Package / Goods
+            </div>
+
+            <div
+                class="value"
+                id="packageDetails"
+            ></div>
+
+        </div>
+
+
+
+        <!-- TIME -->
+
+        <div class="row">
+
+            <div class="label">
+                Preferred Time
+            </div>
+
+            <div
+                class="value"
+                id="preferredTime"
+            ></div>
+
+        </div>
+
+
+
+        <!-- FEE -->
+
+        <div class="row">
+
+            <div class="label">
+                Delivery Fee
+            </div>
+
+            <div
+                class="value fee"
+                id="deliveryFee"
+            ></div>
+
+        </div>
+
+
+
+        <!-- UPDATED -->
+
+        <div class="row">
+
+            <div class="label">
+                Last Updated
+            </div>
+
+            <div
+                class="value"
+                id="lastUpdated"
+            ></div>
+
+        </div>
+
+
+
+        <!-- ==============================
+             STATUS TIMELINE
+        ============================== -->
+
+        <div class="timeline-section">
+
+            <div class="timeline-title">
+                Delivery Progress
+            </div>
+
+
+            <div class="timeline">
+
+
+                <!-- NEW -->
+
+                <div
+                    class="timeline-item"
+                    id="timelineNew"
+                >
+
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-title-text">
+                        Request Received
+                    </div>
+
+                    <div class="timeline-description">
+                        Your delivery request has been received
+                        by NB Logistics Hub.
+                    </div>
+
+                </div>
+
+
+
+                <!-- ACCEPTED -->
+
+                <div
+                    class="timeline-item"
+                    id="timelineAccepted"
+                >
+
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-title-text">
+                        Delivery Accepted
+                    </div>
+
+                    <div class="timeline-description">
+                        Your request has been accepted and
+                        arrangements are being made.
+                    </div>
+
+                </div>
+
+
+
+                <!-- IN PROGRESS -->
+
+                <div
+                    class="timeline-item"
+                    id="timelineProgress"
+                >
+
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-title-text">
+                        Delivery In Progress
+                    </div>
+
+                    <div class="timeline-description">
+                        Your goods have been collected and
+                        are on the way to the destination.
+                    </div>
+
+                </div>
+
+
+
+                <!-- COMPLETED -->
+
+                <div
+                    class="timeline-item"
+                    id="timelineCompleted"
+                >
+
+                    <div class="timeline-dot"></div>
+
+                    <div class="timeline-title-text">
+                        Delivery Completed
+                    </div>
+
+                    <div class="timeline-description">
+                        Your goods have been delivered to
+                        the final destination.
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ==============================
+             STATUS MESSAGE
+        ============================== -->
 
         <div class="status-message">
-            <strong>Delivery Update</strong>
+
+            <strong>
+                Delivery Update
+            </strong>
+
             <br><br>
+
             <span id="statusMessage"></span>
+
         </div>
+
+
+
+        <!-- ==============================
+             RECEIPT
+        ============================== -->
 
         <a
             id="receiptButton"
@@ -313,20 +933,60 @@ footer{
             View Delivery Receipt
         </a>
 
+
+
+        <!-- ==============================
+             WHATSAPP
+        ============================== -->
+
+        <a
+            id="whatsappButton"
+            class="whatsapp-btn"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            💬 Contact NB Logistics Hub on WhatsApp
+        </a>
+
+
     </div>
 
-    <a class="back" href="index.html">
+
+
+    <!-- ==============================
+         BACK
+    ============================== -->
+
+    <a
+        class="back"
+        href="index.html"
+    >
         ← Back to NB Logistics Hub
     </a>
 
+
 </div>
 
+
+
+<!-- ==============================
+     FOOTER
+============================== -->
+
 <footer>
+
     © 2026 NB Logistics Hub — Ilorin Delivery Service
+
 </footer>
 
 
+
 <script>
+
+/* =========================================
+   SUPABASE
+========================================= */
 
 const SUPABASE_URL =
     "https://kygkgcpuiwawatugkfne.supabase.co";
@@ -341,27 +1001,71 @@ const supabaseClient =
     );
 
 
+
+/* =========================================
+   WHATSAPP NUMBER
+=========================================
+
+   Replace this number with your official
+   NB Logistics Hub WhatsApp number.
+
+   Format:
+   Country code + number
+   WITHOUT the + sign or spaces.
+
+   Example:
+   2348012345678
+
+========================================= */
+
+const WHATSAPP_NUMBER =
+    "2348012345678";
+
+
+
+/* =========================================
+   STATUS MESSAGE
+========================================= */
+
 function getDefaultStatusMessage(status){
 
     if(status === "New"){
-        return "Your delivery request has been received by NB Logistics Hub.";
+
+        return "Your delivery request has been received by NB Logistics Hub. Our team will review and process your request.";
+
     }
+
 
     if(status === "Accepted"){
-        return "Your delivery request has been accepted by NB Logistics Hub. Your delivery will be arranged shortly.";
+
+        return "Your delivery request has been accepted by NB Logistics Hub. Your delivery arrangements are being made.";
+
     }
+
 
     if(status === "In Progress"){
-        return "Your delivery goods have been collected by NB Logistics Hub and are on the way to the delivery point.";
+
+        return "Your goods have been collected by NB Logistics Hub and are currently on the way to the delivery destination.";
+
     }
+
 
     if(status === "Completed"){
-        return "Your delivery has been delivered to the final destination.";
+
+        return "Your delivery has been successfully completed and delivered to the final destination.";
+
     }
 
-    return "Your delivery status is being updated by NB Logistics Hub.";
+
+    return "Your delivery status is currently being updated by NB Logistics Hub.";
+
 }
 
+
+
+/* =========================================
+   FORMAT FEE
+========================================= */
 
 function formatFee(fee){
 
@@ -370,33 +1074,53 @@ function formatFee(fee){
         fee === undefined ||
         fee === ""
     ){
+
         return "Not yet assigned";
+
     }
+
 
     const number =
         Number(fee);
 
+
     if(isNaN(number)){
+
         return fee;
+
     }
+
 
     return "₦" +
         number.toLocaleString("en-NG");
+
 }
 
+
+
+/* =========================================
+   FORMAT DATE
+========================================= */
 
 function formatDate(dateValue){
 
     if(!dateValue){
+
         return "Not available";
+
     }
+
 
     const date =
         new Date(dateValue);
 
+
     if(isNaN(date.getTime())){
+
         return dateValue;
+
     }
+
 
     return date.toLocaleString(
         "en-NG",
@@ -405,8 +1129,164 @@ function formatDate(dateValue){
             timeStyle:"short"
         }
     );
+
 }
 
+
+
+/* =========================================
+   RESET TIMELINE
+========================================= */
+
+function resetTimeline(){
+
+    const items = [
+
+        "timelineNew",
+        "timelineAccepted",
+        "timelineProgress",
+        "timelineCompleted"
+
+    ];
+
+
+    items.forEach(function(id){
+
+        const item =
+            document.getElementById(id);
+
+        item.classList.remove(
+            "active",
+            "completed"
+        );
+
+    });
+
+}
+
+
+
+/* =========================================
+   UPDATE TIMELINE
+========================================= */
+
+function updateTimeline(status){
+
+    resetTimeline();
+
+
+    const order = {
+
+        "New":0,
+
+        "Accepted":1,
+
+        "In Progress":2,
+
+        "Completed":3
+
+    };
+
+
+    const current =
+        order[status];
+
+
+    if(current === undefined){
+
+        document
+            .getElementById("timelineNew")
+            .classList.add("active");
+
+        return;
+
+    }
+
+
+    const timelineIds = [
+
+        "timelineNew",
+
+        "timelineAccepted",
+
+        "timelineProgress",
+
+        "timelineCompleted"
+
+    ];
+
+
+    timelineIds.forEach(function(id,index){
+
+        const item =
+            document.getElementById(id);
+
+
+        if(index < current){
+
+            item.classList.add("completed");
+
+        }
+
+
+        if(index === current){
+
+            item.classList.add("active");
+
+        }
+
+    });
+
+}
+
+
+
+/* =========================================
+   LOADING STATE
+========================================= */
+
+function setLoading(isLoading){
+
+    const button =
+        document.getElementById("trackButton");
+
+    const buttonText =
+        document.getElementById("buttonText");
+
+    const loadingContent =
+        document.getElementById("loadingContent");
+
+
+    if(isLoading){
+
+        button.disabled = true;
+
+        buttonText.style.display =
+            "none";
+
+        loadingContent.style.display =
+            "flex";
+
+    }
+    else{
+
+        button.disabled = false;
+
+        buttonText.style.display =
+            "inline";
+
+        loadingContent.style.display =
+            "none";
+
+    }
+
+}
+
+
+
+/* =========================================
+   TRACK DELIVERY
+========================================= */
 
 async function trackDelivery(){
 
@@ -414,7 +1294,8 @@ async function trackDelivery(){
         document.getElementById("requestCode");
 
     const code =
-        input.value.trim();
+        input.value.trim().toUpperCase();
+
 
     const errorBox =
         document.getElementById("errorMessage");
@@ -423,8 +1304,11 @@ async function trackDelivery(){
         document.getElementById("detailsCard");
 
 
-    errorBox.style.display = "none";
-    detailsCard.style.display = "none";
+    errorBox.style.display =
+        "none";
+
+    detailsCard.style.display =
+        "none";
 
 
     if(!code){
@@ -432,99 +1316,168 @@ async function trackDelivery(){
         errorBox.textContent =
             "Please enter your delivery request number.";
 
-        errorBox.style.display = "block";
+        errorBox.style.display =
+            "block";
 
         return;
+
     }
+
+
+    setLoading(true);
 
 
     try{
 
         const { data, error } =
             await supabaseClient
+
             .from("delivery_requests")
+
             .select("*")
-            .eq("request_code", code)
+
+            .ilike(
+                "request_code",
+                code
+            )
+
             .maybeSingle();
+
 
 
         if(error){
 
-            console.error(error);
+            console.error(
+                "Supabase error:",
+                error
+            );
+
 
             errorBox.textContent =
                 "Unable to check your delivery right now. Please try again.";
 
-            errorBox.style.display = "block";
+            errorBox.style.display =
+                "block";
 
             return;
+
         }
+
 
 
         if(!data){
 
             errorBox.textContent =
-                "No delivery request was found with that request number.";
+                "No delivery request was found with that request number. Please check the number and try again.";
 
-            errorBox.style.display = "block";
+            errorBox.style.display =
+                "block";
 
             return;
+
         }
 
 
-        /*
-        IMPORTANT:
-        These are the exact Supabase column names.
-        */
 
-        document.getElementById("requestNumber").textContent =
-            data.request_code || "—";
-
-        document.getElementById("customerName").textContent =
-            data.customer_name || "—";
-
-        document.getElementById("pickupLocation").textContent =
-            data.pickup_location || "—";
+        /* =================================
+           DISPLAY DETAILS
+        ================================= */
 
 
-        // CORRECT DESTINATION FIELD
-        document.getElementById("deliveryLocation").textContent =
-            data.delivery_location || "—";
+        document
+            .getElementById("requestNumber")
+            .textContent =
+                data.request_code || "—";
 
 
-        document.getElementById("packageDetails").textContent =
-            data.package_details || "—";
 
-        document.getElementById("preferredTime").textContent =
-            data.preferred_time || "—";
-
-
-        // CORRECT FEE FIELD
-        document.getElementById("deliveryFee").textContent =
-            formatFee(data.delivery_fee);
+        document
+            .getElementById("customerName")
+            .textContent =
+                data.customer_name || "—";
 
 
-        document.getElementById("deliveryStatus").textContent =
+
+        document
+            .getElementById("pickupLocation")
+            .textContent =
+                data.pickup_location || "—";
+
+
+
+        document
+            .getElementById("deliveryLocation")
+            .textContent =
+                data.delivery_location || "—";
+
+
+
+        document
+            .getElementById("packageDetails")
+            .textContent =
+                data.package_details || "—";
+
+
+
+        document
+            .getElementById("preferredTime")
+            .textContent =
+                data.preferred_time || "—";
+
+
+
+        document
+            .getElementById("deliveryFee")
+            .textContent =
+                formatFee(
+                    data.delivery_fee
+                );
+
+
+
+        const status =
             data.status || "New";
 
 
-        document.getElementById("lastUpdated").textContent =
-            formatDate(
-                data.updated_at ||
-                data.created_at
-            );
+
+        document
+            .getElementById("deliveryStatus")
+            .textContent =
+                status;
 
 
-        document.getElementById("statusMessage").textContent =
-            data.status_message ||
-            getDefaultStatusMessage(data.status);
+
+        document
+            .getElementById("lastUpdated")
+            .textContent =
+                formatDate(
+                    data.updated_at ||
+                    data.created_at
+                );
 
 
-        /*
-        Receipt only needs the request number.
-        The receipt page now fetches the rest directly
-        from Supabase.
-        */
+
+        document
+            .getElementById("statusMessage")
+            .textContent =
+                data.status_message ||
+                getDefaultStatusMessage(
+                    status
+                );
+
+
+
+        /* =================================
+           TIMELINE
+        ================================= */
+
+        updateTimeline(status);
+
+
+
+        /* =================================
+           RECEIPT
+        ================================= */
 
         const receiptUrl =
             "NB_Logistics_Receipt.html?request=" +
@@ -532,39 +1485,124 @@ async function trackDelivery(){
                 data.request_code
             );
 
-        document.getElementById("receiptButton").href =
-            receiptUrl;
 
+        document
+            .getElementById("receiptButton")
+            .href =
+                receiptUrl;
+
+
+
+        /* =================================
+           WHATSAPP
+        ================================= */
+
+        const whatsappMessage =
+            "Hello NB Logistics Hub, I would like to ask about my delivery request " +
+            data.request_code +
+            ".";
+
+
+        const whatsappUrl =
+            "https://wa.me/" +
+            WHATSAPP_NUMBER +
+            "?text=" +
+            encodeURIComponent(
+                whatsappMessage
+            );
+
+
+        document
+            .getElementById("whatsappButton")
+            .href =
+                whatsappUrl;
+
+
+
+        /* =================================
+           SHOW DETAILS
+        ================================= */
 
         detailsCard.style.display =
             "block";
 
+
+        /* Smooth scroll to result */
+
+        setTimeout(function(){
+
+            detailsCard.scrollIntoView({
+                behavior:"smooth",
+                block:"start"
+            });
+
+        },100);
+
+
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            "Tracking error:",
+            error
+        );
+
 
         errorBox.textContent =
-            "Something went wrong while checking the delivery.";
+            "Something went wrong while checking the delivery. Please try again.";
 
         errorBox.style.display =
             "block";
+
     }
+    finally{
+
+        setLoading(false);
+
+    }
+
 }
 
 
+
+/* =========================================
+   ENTER KEY
+========================================= */
+
 document
-.getElementById("requestCode")
-.addEventListener(
-    "keydown",
-    function(event){
+    .getElementById("requestCode")
+    .addEventListener(
+        "keydown",
+        function(event){
 
-        if(event.key === "Enter"){
-            trackDelivery();
+            if(event.key === "Enter"){
+
+                event.preventDefault();
+
+                trackDelivery();
+
+            }
+
         }
+    );
 
-    }
-);
+
+
+/* =========================================
+   AUTOMATIC UPPERCASE
+========================================= */
+
+document
+    .getElementById("requestCode")
+    .addEventListener(
+        "input",
+        function(){
+
+            this.value =
+                this.value.toUpperCase();
+
+        }
+    );
 
 </script>
 
