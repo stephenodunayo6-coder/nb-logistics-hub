@@ -10,6 +10,9 @@
 
 <title>NB Logistics Hub — Customer Payment</title>
 
+<meta name="description"
+      content="Customer payment page for NB Logistics Hub deliveries.">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -21,8 +24,10 @@
 body{
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
-    background:linear-gradient(135deg,#eef7f2,#f4f7fb);
+    background:
+        linear-gradient(135deg,#eef8f2,#f4f7fb);
     color:#172033;
+    min-height:100vh;
 }
 
 .container{
@@ -32,7 +37,7 @@ body{
 
 .header{
     text-align:center;
-    margin-bottom:22px;
+    margin-bottom:24px;
 }
 
 .header h1{
@@ -57,28 +62,35 @@ body{
     background:#e9f8ef;
     color:#17643f;
     border:1px solid #b9e2c8;
-    padding:14px;
+    padding:15px;
     border-radius:12px;
     font-weight:bold;
     margin-bottom:22px;
 }
 
 h2{
-    margin-top:0;
+    margin:0 0 10px;
+    font-size:25px;
+}
+
+.description{
+    color:#596579;
+    line-height:1.6;
 }
 
 .info{
     background:#f7f9fb;
     border-radius:14px;
-    padding:15px;
-    margin-top:18px;
+    padding:16px;
+    margin-top:20px;
 }
 
 .row{
     display:flex;
     justify-content:space-between;
-    gap:15px;
-    padding:11px 0;
+    align-items:flex-start;
+    gap:18px;
+    padding:12px 0;
     border-bottom:1px solid #e5e9ee;
 }
 
@@ -93,13 +105,14 @@ h2{
 .value{
     font-weight:bold;
     text-align:right;
+    max-width:60%;
 }
 
 .amount{
     margin:22px 0;
-    padding:23px;
+    padding:24px;
     background:#087443;
-    color:white;
+    color:#fff;
     border-radius:16px;
     text-align:center;
 }
@@ -112,13 +125,13 @@ h2{
 }
 
 .amount strong{
-    font-size:34px;
+    font-size:35px;
 }
 
 .payment-title{
     font-size:20px;
     font-weight:bold;
-    margin:25px 0 12px;
+    margin:27px 0 12px;
 }
 
 .payment-box{
@@ -131,7 +144,7 @@ h2{
     font-size:23px;
     font-weight:800;
     color:#087443;
-    margin-bottom:18px;
+    margin-bottom:20px;
 }
 
 .account-label{
@@ -166,19 +179,19 @@ h2{
     border:none;
     background:#087443;
     color:white;
-    padding:12px 15px;
+    padding:12px 17px;
     border-radius:9px;
     font-weight:bold;
     cursor:pointer;
 }
 
-.copy-btn:active{
-    transform:scale(.98);
+.copy-btn:hover{
+    opacity:.9;
 }
 
 .instructions{
     margin-top:18px;
-    padding:15px;
+    padding:16px;
     background:#fff8e6;
     border:1px solid #efd48a;
     border-radius:12px;
@@ -193,10 +206,14 @@ h2{
     border:none;
     border-radius:12px;
     background:#087443;
-    color:white;
+    color:#fff;
     font-size:16px;
     font-weight:bold;
     cursor:pointer;
+}
+
+.main-btn:hover{
+    opacity:.94;
 }
 
 .main-btn:disabled{
@@ -244,6 +261,11 @@ h2{
     color:#7b8491;
     font-size:13px;
     margin-top:22px;
+    padding-bottom:25px;
+}
+
+.loading{
+    opacity:.65;
 }
 
 @media(max-width:600px){
@@ -262,13 +284,18 @@ h2{
         font-size:25px;
     }
 
+    h2{
+        font-size:22px;
+    }
+
     .row{
         flex-direction:column;
-        gap:4px;
+        gap:5px;
     }
 
     .value{
         text-align:left;
+        max-width:100%;
     }
 
     .account-number-box{
@@ -287,19 +314,25 @@ h2{
     .amount strong{
         font-size:29px;
     }
+
 }
 
 </style>
 
 </head>
 
+
 <body>
+
 
 <div class="container">
 
+
     <div class="header">
 
-        <h1>NB Logistics Hub</h1>
+        <h1>
+            NB Logistics Hub
+        </h1>
 
         <p>
             Ilorin, Kwara State, Nigeria
@@ -310,8 +343,11 @@ h2{
 
     <div class="card">
 
+
         <div class="approved">
+
             ✓ Customer Approval Confirmed
+
         </div>
 
 
@@ -319,14 +355,22 @@ h2{
             Payment for Your Delivery
         </h2>
 
-        <p>
+
+        <p class="description">
+
             Your delivery request has been approved.
-            Please review the payment information below
-            before making your transfer.
+            Please review the information below before
+            making your transfer.
+
         </p>
 
 
+        <!-- =========================================
+             DELIVERY INFORMATION
+        ========================================== -->
+
         <div class="info">
+
 
             <div class="row">
 
@@ -337,7 +381,9 @@ h2{
                 <span
                     class="value"
                     id="requestNumber">
+
                     Loading...
+
                 </span>
 
             </div>
@@ -352,7 +398,9 @@ h2{
                 <span
                     class="value"
                     id="customerName">
+
                     Loading...
+
                 </span>
 
             </div>
@@ -361,13 +409,15 @@ h2{
             <div class="row">
 
                 <span class="label">
-                    Pickup
+                    Pickup Location
                 </span>
 
                 <span
                     class="value"
                     id="pickup">
+
                     Loading...
+
                 </span>
 
             </div>
@@ -376,13 +426,15 @@ h2{
             <div class="row">
 
                 <span class="label">
-                    Delivery
+                    Delivery Location
                 </span>
 
                 <span
                     class="value"
                     id="delivery">
+
                     Loading...
+
                 </span>
 
             </div>
@@ -391,19 +443,43 @@ h2{
             <div class="row">
 
                 <span class="label">
-                    Package
+                    Package / Goods
                 </span>
 
                 <span
                     class="value"
                     id="package">
+
                     Loading...
+
                 </span>
 
             </div>
 
+
+            <div class="row">
+
+                <span class="label">
+                    Preferred Time
+                </span>
+
+                <span
+                    class="value"
+                    id="preferredTime">
+
+                    Loading...
+
+                </span>
+
+            </div>
+
+
         </div>
 
+
+        <!-- =========================================
+             AMOUNT
+        ========================================== -->
 
         <div class="amount">
 
@@ -418,41 +494,61 @@ h2{
         </div>
 
 
+        <!-- =========================================
+             PAYMENT
+        ========================================== -->
+
         <div class="payment-title">
+
             Transfer Payment
+
         </div>
 
 
         <div class="payment-box">
 
+
             <div class="opay">
+
                 OPay
+
             </div>
 
 
             <div class="account-label">
+
                 Account Name
+
             </div>
 
+
             <div class="account-name">
+
                 Festus Odunayo Stephen
+
             </div>
 
 
             <div
                 class="account-label"
                 style="margin-top:18px;">
+
                 Account Number
+
             </div>
 
 
             <div class="account-number-box">
 
+
                 <span
                     class="account-number"
                     id="accountNumber">
+
                     9150798901
+
                 </span>
+
 
                 <button
                     type="button"
@@ -464,18 +560,27 @@ h2{
 
                 </button>
 
+
             </div>
+
 
         </div>
 
 
+        <!-- =========================================
+             INSTRUCTIONS
+        ========================================== -->
+
         <div class="instructions">
 
-            <strong>Important:</strong>
+            <strong>
+                Important:
+            </strong>
 
             <br><br>
 
-            Please transfer exactly the amount shown above.
+            Please transfer exactly the amount shown
+            above.
 
             <br><br>
 
@@ -486,11 +591,16 @@ h2{
 
             <br><br>
 
-            Your payment will be verified before
-            the delivery is confirmed.
+            Your payment will be verified by
+            NB Logistics Hub before the delivery
+            is confirmed.
 
         </div>
 
+
+        <!-- =========================================
+             PAYMENT REPORT BUTTON
+        ========================================== -->
 
         <button
             class="main-btn"
@@ -507,6 +617,10 @@ h2{
             class="message">
         </div>
 
+
+        <!-- =========================================
+             SUPPORT
+        ========================================== -->
 
         <div class="support">
 
@@ -526,6 +640,7 @@ h2{
 
         </div>
 
+
     </div>
 
 
@@ -536,21 +651,24 @@ h2{
 
     </div>
 
+
 </div>
 
 
 <script>
 
+
 /* =====================================================
-   SUPABASE CONNECTION
+   SUPABASE
 ===================================================== */
+
 
 const SUPABASE_URL =
     "https://pcgamgrhrtgxpnicukfm.supabase.co";
 
 
 const SUPABASE_ANON_KEY =
-    "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
+    "sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
 
 
 const supabaseClient =
@@ -561,11 +679,14 @@ const supabaseClient =
 
 
 /* =====================================================
-   REQUEST NUMBER
+   GET REQUEST NUMBER
 ===================================================== */
 
+
 const params =
-    new URLSearchParams(window.location.search);
+    new URLSearchParams(
+        window.location.search
+    );
 
 
 const requestCode =
@@ -573,10 +694,6 @@ const requestCode =
     params.get("id") ||
     params.get("request_number");
 
-
-/* =====================================================
-   DISPLAY REQUEST NUMBER
-===================================================== */
 
 document.getElementById(
     "requestNumber"
@@ -587,6 +704,7 @@ document.getElementById(
 /* =====================================================
    FORMAT NAIRA
 ===================================================== */
+
 
 function formatNaira(value){
 
@@ -600,10 +718,44 @@ function formatNaira(value){
 
 
 /* =====================================================
+   FIND VALUE FROM MULTIPLE POSSIBLE COLUMN NAMES
+===================================================== */
+
+
+function firstValue(
+    data,
+    columns,
+    fallback = ""
+){
+
+    for(
+        const column of columns
+    ){
+
+        if(
+            data[column] !== undefined &&
+            data[column] !== null &&
+            data[column] !== ""
+        ){
+
+            return data[column];
+
+        }
+
+    }
+
+    return fallback;
+
+}
+
+
+/* =====================================================
    LOAD DELIVERY REQUEST
 ===================================================== */
 
+
 async function loadRequest(){
+
 
     if(!requestCode){
 
@@ -613,36 +765,49 @@ async function loadRequest(){
         );
 
         return;
+
     }
 
 
     try{
 
+
         /*
-         * NB Logistics Hub request table
+         * CURRENT NB LOGISTICS HUB TABLE
          */
 
         const { data, error } =
+
             await supabaseClient
+
                 .from("customer_requests")
+
                 .select("*")
-                .eq("request_code", requestCode)
+
+                .eq(
+                    "request_code",
+                    requestCode
+                )
+
                 .maybeSingle();
 
 
         if(error){
 
             console.error(
-                "Supabase error:",
+                "Supabase request error:",
                 error
             );
 
+
             showMessage(
-                "Unable to load your delivery information right now.",
+                "Unable to load your delivery information right now. Please check the Supabase table permissions.",
                 "error"
             );
 
+
             return;
+
         }
 
 
@@ -655,78 +820,142 @@ async function loadRequest(){
                 "error"
             );
 
+
             return;
+
         }
 
 
         console.log(
-            "Delivery request:",
+            "NB Logistics Hub request:",
             data
         );
 
 
-        /* CUSTOMER */
+        /* =============================================
+           CUSTOMER
+        ============================================== */
+
 
         document.getElementById(
             "customerName"
         ).textContent =
 
-            data.customer_name ||
-            data.customer ||
-            "Customer";
+            firstValue(
+                data,
+                [
+                    "customer_name",
+                    "customer",
+                    "name"
+                ],
+                "Customer"
+            );
 
 
-        /* PICKUP */
+        /* =============================================
+           PICKUP
+        ============================================== */
+
 
         document.getElementById(
             "pickup"
         ).textContent =
 
-            data.pickup_location ||
-            data.pickup ||
-            data.area ||
-            "Not provided";
+            firstValue(
+                data,
+                [
+                    "pickup_location",
+                    "pickup",
+                    "pickup_address"
+                ],
+                "Not provided"
+            );
 
 
-        /* DELIVERY */
+        /* =============================================
+           DELIVERY
+        ============================================== */
+
 
         document.getElementById(
             "delivery"
         ).textContent =
 
-            data.delivery_location ||
-            data.delivery ||
-            data.city ||
-            "Not provided";
+            firstValue(
+                data,
+                [
+                    "delivery_location",
+                    "delivery",
+                    "delivery_address",
+                    "area",
+                    "city"
+                ],
+                "Not provided"
+            );
 
 
-        /* PACKAGE */
+        /* =============================================
+           PACKAGE
+        ============================================== */
+
 
         document.getElementById(
             "package"
         ).textContent =
 
-            data.package ||
-            data.goods ||
-            data.needs ||
-            data.additional_requirement ||
-            "Not provided";
+            firstValue(
+                data,
+                [
+                    "package",
+                    "goods",
+                    "package_goods",
+                    "needs",
+                    "description",
+                    "additional_requirement"
+                ],
+                "Not provided"
+            );
 
 
-        /*
-         * TEMPORARY PAYMENT AMOUNT
-         *
-         * We first check delivery_fee.
-         * If it doesn't exist, we check amount.
-         * If neither exists, we use budget.
-         */
+        /* =============================================
+           TIME
+        ============================================== */
+
+
+        document.getElementById(
+            "preferredTime"
+        ).textContent =
+
+            firstValue(
+                data,
+                [
+                    "preferred_time",
+                    "delivery_time",
+                    "time"
+                ],
+                "Not specified"
+            );
+
+
+        /* =============================================
+           DELIVERY FEE
+        ============================================== */
+
 
         const paymentAmount =
 
-            data.delivery_fee ??
-            data.amount ??
-            data.budget ??
-            0;
+            firstValue(
+                data,
+                [
+                    "delivery_fee",
+                    "deliveryFee",
+                    "fee",
+                    "amount",
+                    "payment_amount",
+                    "total_amount"
+                ],
+                0
+            );
 
 
         document.getElementById(
@@ -735,9 +964,54 @@ async function loadRequest(){
             formatNaira(paymentAmount);
 
 
+        /* =============================================
+           CHECK PAYMENT STATUS
+        ============================================== */
+
+
+        const paymentStatus =
+
+            firstValue(
+                data,
+                [
+                    "payment_status"
+                ],
+                ""
+            );
+
+
+        if(
+            paymentStatus ===
+            "Payment Reported"
+        ){
+
+            const button =
+                document.getElementById(
+                    "paymentButton"
+                );
+
+            button.disabled = true;
+
+            button.textContent =
+                "Payment Reported ✓";
+
+
+            showMessage(
+                "Your payment has already been reported and is awaiting verification.",
+                "success"
+            );
+
+        }
+
+
     }catch(error){
 
-        console.error(error);
+
+        console.error(
+            "Unexpected error:",
+            error
+        );
+
 
         showMessage(
             "Unable to connect to the delivery database.",
@@ -750,13 +1024,16 @@ async function loadRequest(){
 
 
 /* =====================================================
-   COPY OPay ACCOUNT
+   COPY ACCOUNT NUMBER
 ===================================================== */
+
 
 async function copyAccount(){
 
+
     const account =
         "9150798901";
+
 
     const button =
         document.getElementById(
@@ -766,9 +1043,11 @@ async function copyAccount(){
 
     try{
 
+
         await navigator.clipboard.writeText(
             account
         );
+
 
         button.textContent =
             "Copied ✓";
@@ -787,25 +1066,34 @@ async function copyAccount(){
 
     }catch(error){
 
+
         const input =
-            document.createElement("input");
+            document.createElement(
+                "input"
+            );
+
 
         input.value =
             account;
+
 
         document.body.appendChild(
             input
         );
 
+
         input.select();
+
 
         document.execCommand(
             "copy"
         );
 
+
         document.body.removeChild(
             input
         );
+
 
         button.textContent =
             "Copied ✓";
@@ -830,7 +1118,9 @@ async function copyAccount(){
    REPORT PAYMENT
 ===================================================== */
 
+
 async function reportPayment(){
+
 
     const button =
         document.getElementById(
@@ -846,11 +1136,11 @@ async function reportPayment(){
         );
 
         return;
+
     }
 
 
-    button.disabled =
-        true;
+    button.disabled = true;
 
     button.textContent =
         "Submitting...";
@@ -858,22 +1148,30 @@ async function reportPayment(){
 
     try{
 
+
         /*
          * IMPORTANT:
          *
-         * This does NOT say the payment is verified.
-         * It only records that the customer has
-         * reported making the transfer.
+         * This only tells NB Logistics Hub
+         * that the customer claims to have paid.
+         *
+         * It does NOT verify the money.
          */
 
 
         const { error } =
+
             await supabaseClient
+
                 .from("customer_requests")
+
                 .update({
+
                     payment_status:
                         "Payment Reported"
+
                 })
+
                 .eq(
                     "request_code",
                     requestCode
@@ -889,7 +1187,7 @@ async function reportPayment(){
 
 
             showMessage(
-                "Payment notification could not be recorded. Please contact NB Logistics Hub support.",
+                "We could not record your payment notification. Please contact NB Logistics Hub support.",
                 "error"
             );
 
@@ -897,15 +1195,18 @@ async function reportPayment(){
             button.disabled =
                 false;
 
+
             button.textContent =
                 "I Have Made Payment";
 
+
             return;
+
         }
 
 
         showMessage(
-            "Your payment notification has been received. NB Logistics Hub will verify the transfer before confirming your delivery.",
+            "Payment notification received successfully. Your payment is now awaiting verification.",
             "success"
         );
 
@@ -916,7 +1217,10 @@ async function reportPayment(){
 
     }catch(error){
 
-        console.error(error);
+
+        console.error(
+            error
+        );
 
 
         showMessage(
@@ -927,6 +1231,7 @@ async function reportPayment(){
 
         button.disabled =
             false;
+
 
         button.textContent =
             "I Have Made Payment";
@@ -940,10 +1245,12 @@ async function reportPayment(){
    MESSAGE
 ===================================================== */
 
+
 function showMessage(
     text,
     type
 ){
+
 
     const message =
         document.getElementById(
@@ -963,12 +1270,15 @@ function showMessage(
 
 
 /* =====================================================
-   START
+   START PAGE
 ===================================================== */
+
 
 loadRequest();
 
+
 </script>
+
 
 </body>
 
