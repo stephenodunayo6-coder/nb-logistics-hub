@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -254,6 +255,11 @@ body{
     background:#166534;
 }
 
+.paid-btn:disabled{
+    background:#94a3b8;
+    cursor:not-allowed;
+}
+
 .success{
     display:none;
     margin-top:20px;
@@ -262,6 +268,18 @@ body{
     border:1px solid #bbf7d0;
     border-radius:12px;
     color:#166534;
+    text-align:center;
+    line-height:1.6;
+}
+
+.payment-status{
+    display:none;
+    margin-top:20px;
+    padding:18px;
+    background:#eff6ff;
+    border:1px solid #bfdbfe;
+    border-radius:12px;
+    color:#1e40af;
     text-align:center;
     line-height:1.6;
 }
@@ -602,6 +620,7 @@ body{
 
 
             <button
+                id="paidButton"
                 class="paid-btn"
                 onclick="paymentMade()"
             >
@@ -615,6 +634,12 @@ body{
         <div
             id="success"
             class="success"
+        ></div>
+
+
+        <div
+            id="paymentStatus"
+            class="payment-status"
         ></div>
 
 
@@ -678,6 +703,13 @@ const supabaseClient =
 
 
 /* =====================================================
+   CURRENT DELIVERY
+===================================================== */
+
+let currentDelivery = null;
+
+
+/* =====================================================
    GET REQUEST NUMBER
 ===================================================== */
 
@@ -715,6 +747,34 @@ function formatMoney(value){
 
 
 /* =====================================================
+   SHOW ERROR
+===================================================== */
+
+function showError(message){
+
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+    const error =
+        document.getElementById(
+            "error"
+        );
+
+    loading.style.display =
+        "none";
+
+    error.textContent =
+        message;
+
+    error.style.display =
+        "block";
+
+}
+
+
+/* =====================================================
    LOAD DELIVERY
 ===================================================== */
 
@@ -728,11 +788,6 @@ async function loadDelivery(){
             "loading"
         );
 
-    const error =
-        document.getElementById(
-            "error"
-        );
-
     const content =
         document.getElementById(
             "content"
@@ -741,14 +796,9 @@ async function loadDelivery(){
 
     if(!requestCode){
 
-        loading.style.display =
-            "none";
-
-        error.textContent =
-            "No delivery request number was provided.";
-
-        error.style.display =
-            "block";
+        showError(
+            "No delivery request number was provided."
+        );
 
         return;
 
@@ -787,21 +837,18 @@ async function loadDelivery(){
 
         if(!data){
 
-            loading.style.display =
-                "none";
-
-            error.textContent =
-                "We could not find this delivery request. Please check your request number.";
-
-            error.style.display =
-                "block";
+            showError(
+                "We could not find this delivery request. Please check your request number."
+            );
 
             return;
 
         }
 
 
-        /* CUSTOMER MUST HAVE APPROVED */
+        /* =============================================
+           CUSTOMER MUST HAVE APPROVED
+        ============================================= */
 
         const approvalStatus =
             (
@@ -815,21 +862,25 @@ async function loadDelivery(){
 
         if(approvalStatus !== "approved"){
 
-            loading.style.display =
-                "none";
-
-            error.textContent =
-                "This delivery request has not been approved by the customer yet.";
-
-            error.style.display =
-                "block";
+            showError(
+                "This delivery request has not been approved by the customer yet."
+            );
 
             return;
 
         }
 
 
-        /* DISPLAY INFORMATION */
+        /* =============================================
+           SAVE CURRENT DELIVERY
+        ============================================= */
+
+        currentDelivery = data;
+
+
+        /* =============================================
+           DISPLAY INFORMATION
+        ============================================= */
 
         document.getElementById(
             "requestNumber"
@@ -890,6 +941,19 @@ async function loadDelivery(){
         content.style.display =
             "block";
 
+
+        /* =============================================
+           CHECK EXISTING PAYMENT SUBMISSION
+        ============================================= */
+
+        if(data.payment_submitted_at){
+
+            showAlreadySubmitted(
+                data
+            );
+
+        }
+
     }
     catch(errorObject){
 
@@ -897,14 +961,9 @@ async function loadDelivery(){
             errorObject
         );
 
-        loading.style.display =
-            "none";
-
-        error.textContent =
-            "Unable to load your delivery information right now. Please try again.";
-
-        error.style.display =
-            "block";
+        showError(
+            "Unable to load your delivery information right now. Please try again."
+        );
 
     }
 
@@ -912,7 +971,87 @@ async function loadDelivery(){
 
 
 /* =====================================================
-   COPY OPay ACCOUNT
+   SHOW ALREADY SUBMITTED
+===================================================== */
+
+function showAlreadySubmitted(data){
+
+    const button =
+        document.getElementById(
+            "paidButton"
+        );
+
+    const paymentStatus =
+        document.getElementById(
+            "paymentStatus"
+        );
+
+
+    if(button){
+
+        button.disabled =
+            true;
+
+        button.textContent =
+            "✓ Payment Notification Submitted";
+
+    }
+
+
+    paymentStatus.style.display =
+        "block";
+
+
+    if(data.payment_confirmed_at){
+
+        paymentStatus.innerHTML = `
+
+            <strong>
+                ✓ Payment Confirmed
+            </strong>
+
+            <br><br>
+
+            Your payment for
+            <strong>
+                ${data.request_code || ""}
+            </strong>
+            has been confirmed by
+            NB Logistics Hub.
+
+        `;
+
+        return;
+
+    }
+
+
+    paymentStatus.innerHTML = `
+
+        <strong>
+            ✓ Payment Notification Already Submitted
+        </strong>
+
+        <br><br>
+
+        Your payment notification for
+        <strong>
+            ${data.request_code || ""}
+        </strong>
+        has already been received.
+
+        <br><br>
+
+        NB Logistics Hub is verifying your payment.
+        Please keep your OPay transfer receipt.
+
+    `;
+
+}
+
+
+/* =====================================================
+   COPY OPAY ACCOUNT
 ===================================================== */
 
 async function copyAccountNumber(){
@@ -948,53 +1087,297 @@ async function copyAccountNumber(){
    PAYMENT MADE
 ===================================================== */
 
-function paymentMade(){
+async function paymentMade(){
 
     const requestCode =
         getRequestNumber();
+
+    const button =
+        document.getElementById(
+            "paidButton"
+        );
 
     const success =
         document.getElementById(
             "success"
         );
 
-
-    success.style.display =
-        "block";
-
-
-    success.innerHTML = `
-
-        <strong>
-            ✓ Payment Notification Received
-        </strong>
-
-        <br><br>
-
-        Your payment notification for
-        <strong>${requestCode}</strong>
-        has been received.
-
-        <br><br>
-
-        NB Logistics Hub will verify your OPay transfer
-        before the delivery proceeds.
-
-        <br><br>
-
-        Please keep your transfer receipt.
-
-        <br><br>
-
-        For assistance, contact us on WhatsApp.
-
-    `;
+    const paymentStatus =
+        document.getElementById(
+            "paymentStatus"
+        );
 
 
-    success.scrollIntoView({
-        behavior:"smooth",
-        block:"center"
-    });
+    if(!requestCode){
+
+        alert(
+            "Delivery request number is missing."
+        );
+
+        return;
+
+    }
+
+
+    if(!currentDelivery){
+
+        alert(
+            "Delivery information has not loaded yet. Please refresh the page and try again."
+        );
+
+        return;
+
+    }
+
+
+    /* =============================================
+       PREVENT DUPLICATE SUBMISSION
+    ============================================= */
+
+    if(currentDelivery.payment_submitted_at){
+
+        showAlreadySubmitted(
+            currentDelivery
+        );
+
+        return;
+
+    }
+
+
+    /* =============================================
+       DISABLE BUTTON WHILE SAVING
+    ============================================= */
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "Submitting Payment Notification...";
+
+
+    try{
+
+        const paymentTime =
+            new Date().toISOString();
+
+
+        /* =============================================
+           SAVE PAYMENT INFORMATION
+        ============================================= */
+
+        const {
+            data,
+            error: updateError
+        } = await supabaseClient
+
+            .from("delivery_requests")
+
+            .update({
+
+                payment_method:
+                    "OPay",
+
+                paid_at:
+                    paymentTime,
+
+                payment_submitted_at:
+                    paymentTime
+
+                /*
+                 * payment_confirmed_at is intentionally
+                 * NOT changed here.
+                 *
+                 * It must be added by the admin
+                 * after the OPay transfer is verified.
+                 */
+
+            })
+
+            .eq(
+                "request_code",
+                requestCode
+            )
+
+            .select()
+            .single();
+
+
+        if(updateError){
+
+            console.error(
+                "Payment update error:",
+                updateError
+            );
+
+            throw updateError;
+
+        }
+
+
+        if(!data){
+
+            throw new Error(
+                "The payment notification could not be saved."
+            );
+
+        }
+
+
+        /* =============================================
+           UPDATE LOCAL DATA
+        ============================================= */
+
+        currentDelivery =
+            data;
+
+
+        /* =============================================
+           SHOW SUCCESS
+        ============================================= */
+
+        success.style.display =
+            "block";
+
+
+        success.innerHTML = `
+
+            <strong>
+                ✓ Payment Notification Received
+            </strong>
+
+            <br><br>
+
+            Your payment notification for
+            <strong>
+                ${requestCode}
+            </strong>
+            has been successfully submitted.
+
+            <br><br>
+
+            <strong>
+                Payment Method:
+            </strong>
+            OPay
+
+            <br>
+
+            <strong>
+                Payment Submitted:
+            </strong>
+            ${formatDateTime(
+                data.payment_submitted_at
+            )}
+
+            <br><br>
+
+            NB Logistics Hub will verify your
+            OPay transfer before the delivery proceeds.
+
+            <br><br>
+
+            Please keep your transfer receipt.
+
+        `;
+
+
+        /* =============================================
+           SHOW PAYMENT STATUS
+        ============================================= */
+
+        paymentStatus.style.display =
+            "block";
+
+
+        paymentStatus.innerHTML = `
+
+            <strong>
+                Payment Status: Awaiting Verification
+            </strong>
+
+            <br><br>
+
+            Your notification has been recorded.
+            The payment will be confirmed after
+            NB Logistics Hub verifies the transfer.
+
+        `;
+
+
+        button.textContent =
+            "✓ Payment Notification Submitted";
+
+
+        success.scrollIntoView({
+
+            behavior:"smooth",
+
+            block:"center"
+
+        });
+
+    }
+    catch(errorObject){
+
+        console.error(
+            errorObject
+        );
+
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "✓ I Have Made Payment";
+
+
+        alert(
+
+            "We could not save your payment notification. " +
+
+            "Please try again. If the problem continues, " +
+
+            "contact NB Logistics Hub on WhatsApp."
+
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   FORMAT DATE AND TIME
+===================================================== */
+
+function formatDateTime(value){
+
+    if(!value){
+
+        return "—";
+
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if(isNaN(date.getTime())){
+
+        return "—";
+
+    }
+
+
+    return date.toLocaleString(
+        "en-NG",
+        {
+            dateStyle:"medium",
+            timeStyle:"short"
+        }
+    );
 
 }
 
@@ -1013,3 +1396,4 @@ window.addEventListener(
 </body>
 
 </html>
+```
