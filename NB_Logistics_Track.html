@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
@@ -10,8 +9,10 @@
 
 <title>NB Logistics Hub — Track Delivery</title>
 
-<meta name="description"
-      content="Track your NB Logistics Hub delivery in Ilorin.">
+<meta
+    name="description"
+    content="Track your NB Logistics Hub delivery in Ilorin."
+>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -23,696 +24,448 @@
 
 *{
     box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
 body{
-    margin:0;
     font-family:Arial,Helvetica,sans-serif;
-    background:#f3f6fa;
+    background:#f4f7fb;
     color:#172033;
+    line-height:1.6;
 }
 
+.container{
+    width:92%;
+    max-width:850px;
+    margin:auto;
+}
 
 /* =====================================================
    HEADER
 ===================================================== */
 
 header{
-    background:linear-gradient(
-        135deg,
-        #061936,
-        #0c2e61
-    );
-
+    background:#071b3a;
     color:white;
-    padding:20px;
-    text-align:center;
+    padding:22px 0;
+    box-shadow:0 3px 12px rgba(0,0,0,.15);
+}
+
+.header-inner{
+    width:92%;
+    max-width:1100px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
 }
 
 .logo{
-    font-size:25px;
+    font-size:24px;
     font-weight:800;
+    letter-spacing:.3px;
 }
 
 .logo span{
-    color:#ffc107;
+    color:#f7c600;
 }
 
-header p{
-    margin:7px 0 0;
-    color:#dce6f5;
+.tagline{
+    font-size:13px;
+    color:#dbe5f5;
+    margin-top:2px;
+}
+
+.home-link{
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
     font-size:14px;
 }
 
-
-/* =====================================================
-   CONTAINER
-===================================================== */
-
-.container{
-    width:92%;
-    max-width:900px;
-    margin:35px auto 60px;
+.home-link:hover{
+    color:#f7c600;
 }
 
+/* =====================================================
+   MAIN
+===================================================== */
+
+main{
+    padding:45px 0 60px;
+}
+
+.page-title{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.page-title h1{
+    font-size:34px;
+    color:#071b3a;
+    margin-bottom:8px;
+}
+
+.page-title p{
+    color:#667085;
+}
 
 /* =====================================================
-   CARD
+   TRACK FORM
 ===================================================== */
 
 .track-card{
     background:white;
-    border-radius:20px;
-    padding:30px;
-
-    box-shadow:
-        0 10px 35px rgba(0,0,0,.08);
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 8px 30px rgba(0,0,0,.08);
+    margin-bottom:25px;
 }
 
-h1{
-    text-align:center;
-    color:#071b3a;
-    margin:0;
-    font-size:30px;
+.form-label{
+    display:block;
+    font-weight:700;
+    margin-bottom:9px;
 }
 
-.subtitle{
-    text-align:center;
-    color:#667085;
-    margin:10px 0 28px;
-}
-
-
-/* =====================================================
-   SEARCH
-===================================================== */
-
-.input-group{
+.input-row{
     display:flex;
-    gap:10px;
+    gap:12px;
 }
 
 input{
     flex:1;
-
-    padding:16px;
-
-    border:2px solid #d8dee8;
-    border-radius:11px;
-
+    width:100%;
+    padding:15px 16px;
+    border:1px solid #ccd4df;
+    border-radius:10px;
     font-size:16px;
-
     outline:none;
-
-    text-transform:uppercase;
 }
 
 input:focus{
-    border-color:#071b3a;
+    border-color:#0b5ed7;
+    box-shadow:0 0 0 3px rgba(11,94,215,.1);
 }
 
-button{
-    border:0;
-
-    border-radius:11px;
-
-    padding:0 25px;
-
-    background:#ffc107;
-
+.track-btn{
+    border:none;
+    background:#f7c600;
     color:#071b3a;
-
-    font-size:16px;
-
+    padding:15px 24px;
+    border-radius:10px;
     font-weight:800;
-
+    font-size:16px;
     cursor:pointer;
-
-    min-width:160px;
+    white-space:nowrap;
 }
 
-button:hover{
-    background:#e8ae00;
+.track-btn:hover{
+    background:#e5b700;
 }
 
-button:disabled{
-    opacity:.7;
+.track-btn:disabled{
+    opacity:.65;
     cursor:not-allowed;
 }
-
-
-/* =====================================================
-   LOADING
-===================================================== */
-
-.spinner{
-    display:inline-block;
-
-    width:16px;
-    height:16px;
-
-    border:3px solid rgba(7,27,58,.3);
-
-    border-top-color:#071b3a;
-
-    border-radius:50%;
-
-    animation:spin .7s linear infinite;
-
-    vertical-align:middle;
-
-    margin-right:7px;
-}
-
-@keyframes spin{
-
-    to{
-        transform:rotate(360deg);
-    }
-
-}
-
 
 /* =====================================================
    MESSAGE
 ===================================================== */
 
 .message{
-    margin-top:20px;
-
-    padding:15px;
-
-    border-radius:10px;
-
     display:none;
-
-    line-height:1.5;
-
+    padding:15px 18px;
+    border-radius:10px;
+    margin-bottom:20px;
     font-weight:600;
 }
 
-.success{
+.message.success{
     display:block;
-
-    background:#eaf8ef;
-
-    color:#176b35;
-
-    border:1px solid #b9e4c6;
+    background:#e9f8ef;
+    color:#16733a;
+    border:1px solid #b9e7c9;
 }
 
-.error{
+.message.error{
     display:block;
-
     background:#fff0f0;
-
-    color:#a32121;
-
-    border:1px solid #efb5b5;
+    color:#b42318;
+    border:1px solid #f3b6b2;
 }
-
 
 /* =====================================================
    RESULT
 ===================================================== */
 
-.result{
-    margin-top:28px;
-
+#result{
     display:none;
 }
 
+.success-banner{
+    background:#eaf8ef;
+    border:1px solid #b8e2c5;
+    color:#166534;
+    padding:15px 18px;
+    border-radius:12px;
+    margin-bottom:20px;
+    font-weight:700;
+}
 
 /* =====================================================
-   RESULT HEADER
+   STATUS CARD
 ===================================================== */
 
-.result-header{
-    background:
-        linear-gradient(
-            135deg,
-            #071b3a,
-            #0d3773
-        );
-
+.status-card{
+    background:#071b3a;
     color:white;
-
-    padding:22px;
-
-    border-radius:16px 16px 0 0;
+    border-radius:18px;
+    padding:30px;
+    margin-bottom:22px;
+    box-shadow:0 8px 30px rgba(0,0,0,.12);
 }
 
-.result-header h2{
-    margin:0 0 8px;
-
-    font-size:22px;
+.status-label{
+    color:#b9c7dc;
+    font-size:14px;
+    margin-bottom:5px;
 }
 
-.request-code{
-    color:#ffc107;
-
+.status-value{
+    color:#f7c600;
+    font-size:30px;
     font-weight:800;
-
-    font-size:18px;
-}
-
-
-/* =====================================================
-   STATUS BOX
-===================================================== */
-
-.status-box{
-    background:white;
-
-    border:1px solid #e2e7ef;
-
-    border-top:0;
-
-    padding:25px;
-
-    border-radius:0 0 16px 16px;
-}
-
-
-/* =====================================================
-   CURRENT STATUS
-===================================================== */
-
-.current-status{
-    text-align:center;
-
-    margin-bottom:30px;
-}
-
-.current-label{
-    font-size:13px;
-
-    color:#7b8492;
-
-    text-transform:uppercase;
-
-    letter-spacing:.6px;
-
-    margin-bottom:8px;
-}
-
-.current-status span{
-    display:inline-block;
-
-    background:#ffc107;
-
-    color:#071b3a;
-
-    font-weight:800;
-
-    padding:10px 22px;
-
-    border-radius:30px;
-
-    font-size:17px;
+    margin-bottom:10px;
 }
 
 .status-message{
-    margin:15px auto 0;
-
-    max-width:650px;
-
-    color:#4d5969;
-
-    line-height:1.6;
+    color:#e7edf7;
 }
-
-
-/* =====================================================
-   SECTION TITLE
-===================================================== */
-
-.section-title{
-    font-size:18px;
-
-    font-weight:800;
-
-    color:#071b3a;
-
-    margin:30px 0 15px;
-}
-
 
 /* =====================================================
    TIMELINE
 ===================================================== */
 
-.timeline{
-    margin:25px auto 35px;
+.timeline-card{
+    background:white;
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 8px 30px rgba(0,0,0,.07);
+    margin-bottom:22px;
+}
 
-    max-width:700px;
+.section-title{
+    font-size:21px;
+    font-weight:800;
+    color:#071b3a;
+    margin-bottom:25px;
+}
+
+.timeline{
+    position:relative;
 }
 
 .timeline-item{
-    display:flex;
-
     position:relative;
-
-    min-height:82px;
+    display:flex;
+    gap:17px;
+    padding-bottom:27px;
 }
 
-.timeline-line{
+.timeline-item:last-child{
+    padding-bottom:0;
+}
+
+.timeline-item:not(:last-child)::after{
+    content:"";
     position:absolute;
-
-    left:14px;
-
-    top:30px;
-
+    left:17px;
+    top:36px;
     width:3px;
-
-    height:52px;
-
-    background:#dfe4eb;
+    height:calc(100% - 10px);
+    background:#dce3ec;
 }
 
-.timeline-item:last-child
-.timeline-line{
-    display:none;
+.timeline-item.completed:not(:last-child)::after{
+    background:#20a45b;
 }
 
-.timeline-dot{
-    width:30px;
-
-    height:30px;
-
-    min-width:30px;
-
+.timeline-icon{
+    width:36px;
+    height:36px;
+    min-width:36px;
     border-radius:50%;
-
-    background:#dfe4eb;
-
-    margin-right:16px;
-
-    position:relative;
-
-    z-index:2;
-
+    background:#e8edf3;
+    color:#7b8797;
     display:flex;
-
     align-items:center;
-
     justify-content:center;
+    font-weight:800;
+    z-index:2;
+}
 
+.timeline-item.completed .timeline-icon{
+    background:#20a45b;
+    color:white;
+}
+
+.timeline-item.current .timeline-icon{
+    background:#f7c600;
+    color:#071b3a;
+    box-shadow:0 0 0 5px rgba(247,198,0,.15);
+}
+
+.timeline-content h3{
+    font-size:17px;
+    margin-bottom:3px;
+    color:#273449;
+}
+
+.timeline-content p{
+    color:#667085;
     font-size:14px;
+}
 
-    font-weight:bold;
+.timeline-item.completed .timeline-content h3{
+    color:#166534;
+}
 
+.timeline-item.current .timeline-content h3{
     color:#071b3a;
+    font-weight:800;
 }
-
-
-/* =====================================================
-   COMPLETED
-===================================================== */
-
-.timeline-item.completed
-.timeline-dot{
-
-    background:#ffc107;
-
-    box-shadow:
-        0 0 0 5px #fff4c7;
-}
-
-.timeline-item.completed
-.timeline-line{
-
-    background:#ffc107;
-}
-
-
-/* =====================================================
-   CURRENT
-===================================================== */
-
-.timeline-item.current
-.timeline-dot{
-
-    background:#071b3a;
-
-    color:#ffc107;
-
-    box-shadow:
-        0 0 0 5px #dce8fa;
-}
-
-.timeline-item.current
-.timeline-content strong{
-
-    color:#071b3a;
-}
-
-
-/* =====================================================
-   TIMELINE CONTENT
-===================================================== */
-
-.timeline-content{
-    padding-bottom:22px;
-}
-
-.timeline-content strong{
-    display:block;
-
-    color:#8b95a3;
-
-    margin-bottom:5px;
-
-    font-size:16px;
-}
-
-.timeline-content div{
-    color:#9aa3af;
-
-    font-size:14px;
-
-    line-height:1.5;
-}
-
-.timeline-item.completed
-.timeline-content strong{
-
-    color:#071b3a;
-}
-
-.timeline-item.completed
-.timeline-content div{
-
-    color:#596575;
-}
-
 
 /* =====================================================
    DETAILS
 ===================================================== */
 
-.details{
+.details-card{
+    background:white;
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 8px 30px rgba(0,0,0,.07);
+    margin-bottom:22px;
+}
+
+.details-grid{
     display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap:12px;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
 }
 
 .detail{
     background:#f7f9fc;
-
-    padding:16px;
-
     border-radius:11px;
-
-    border:1px solid #edf0f4;
+    padding:15px;
 }
 
-.detail small{
-    display:block;
-
-    color:#7a8595;
-
-    margin-bottom:6px;
+.detail-label{
+    color:#718096;
+    font-size:13px;
+    margin-bottom:4px;
 }
 
-.detail strong{
+.detail-value{
     color:#172033;
-
+    font-weight:700;
     word-break:break-word;
 }
 
-
 /* =====================================================
-   LAST UPDATED
-===================================================== */
-
-.last-updated{
-    text-align:center;
-
-    margin-top:25px;
-
-    color:#7a8492;
-
-    font-size:13px;
-}
-
-
-/* =====================================================
-   APPROVAL ACTION
+   APPROVAL / PAYMENT ACTION
 ===================================================== */
 
 .approval-action{
-    margin-top:18px;
-
-    display:none;
-}
-
-.approval-btn{
-    display:block;
-
-    width:100%;
-
-    padding:17px;
-
-    border-radius:12px;
-
-    background:#15803d;
-
-    color:white;
-
-    text-decoration:none;
-
+    background:white;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 8px 30px rgba(0,0,0,.07);
+    margin-bottom:22px;
     text-align:center;
-
-    font-weight:800;
-
-    font-size:17px;
-
-    transition:.2s;
-
-    box-shadow:
-        0 6px 18px rgba(21,128,61,.18);
 }
 
-.approval-btn:hover{
-    background:#166534;
-
-    transform:translateY(-2px);
-}
-
-
-/* =====================================================
-   ACTIONS
-===================================================== */
-
-.actions{
-    margin-top:18px;
-
-    display:flex;
-
-    gap:12px;
-}
-
-.action{
-    flex:1;
-
-    text-align:center;
-
-    text-decoration:none;
-
-    padding:15px;
-
-    border-radius:11px;
-
-    font-weight:800;
-
-    transition:.2s;
-}
-
-.action:hover{
-    transform:translateY(-2px);
-}
-
-.receipt{
-    background:#071b3a;
-
-    color:white;
-}
-
-.whatsapp{
-    background:#25D366;
-
-    color:white;
-}
-
-
-/* =====================================================
-   BACK HOME
-===================================================== */
-
-.back-home{
-    display:block;
-
-    text-align:center;
-
-    margin-top:22px;
-
+.approval-action h2{
     color:#071b3a;
+    margin-bottom:8px;
+    font-size:22px;
+}
 
+.approval-action p{
+    color:#667085;
+    margin-bottom:18px;
+}
+
+.action-btn{
+    display:inline-block;
     text-decoration:none;
+    border:none;
+    border-radius:10px;
+    padding:14px 24px;
+    font-weight:800;
+    font-size:16px;
+    cursor:pointer;
+}
 
+.approve-btn{
+    background:#f7c600;
+    color:#071b3a;
+}
+
+.payment-btn{
+    background:#20a45b;
+    color:white;
+}
+
+.declined-btn{
+    background:#071b3a;
+    color:white;
+}
+
+/* =====================================================
+   LINKS
+===================================================== */
+
+.action-links{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    justify-content:center;
+    margin-top:20px;
+}
+
+.secondary-btn{
+    display:inline-block;
+    text-decoration:none;
+    background:#eef2f7;
+    color:#172033;
+    padding:12px 18px;
+    border-radius:9px;
     font-weight:700;
 }
 
-.back-home:hover{
-    text-decoration:underline;
+.whatsapp-btn{
+    background:#e9f8ef;
+    color:#16733a;
 }
-
-
-/* =====================================================
-   DIAGNOSTIC
-===================================================== */
-
-.diagnostic{
-    margin-top:20px;
-
-    background:#111827;
-
-    color:#d1d5db;
-
-    padding:15px;
-
-    border-radius:10px;
-
-    font-family:monospace;
-
-    font-size:12px;
-
-    white-space:pre-wrap;
-
-    overflow:auto;
-
-    display:none;
-}
-
 
 /* =====================================================
    FOOTER
 ===================================================== */
 
-.footer{
+footer{
+    background:#071b3a;
+    color:#dbe5f5;
     text-align:center;
-
-    margin-top:30px;
-
-    color:#7b8492;
-
-    font-size:13px;
+    padding:25px 15px;
+    font-size:14px;
 }
 
+footer strong{
+    color:white;
+}
 
 /* =====================================================
    MOBILE
@@ -720,55 +473,45 @@ button:disabled{
 
 @media(max-width:650px){
 
-    .container{
-        width:94%;
-
-        margin-top:20px;
+    .header-inner{
+        flex-direction:column;
+        text-align:center;
     }
 
-    .track-card{
-        padding:20px;
+    .page-title h1{
+        font-size:28px;
     }
 
-    h1{
-        font-size:25px;
-    }
-
-    .input-group{
+    .input-row{
         flex-direction:column;
     }
 
-    button{
-        min-height:52px;
-
+    .track-btn{
         width:100%;
     }
 
-    .details{
+    .details-grid{
         grid-template-columns:1fr;
     }
 
-    .actions{
-        flex-direction:column;
+    .status-value{
+        font-size:25px;
     }
 
-    .action{
-        width:100%;
-    }
-
-    .status-box{
-        padding:20px 16px;
+    .track-card,
+    .timeline-card,
+    .details-card,
+    .approval-action,
+    .status-card{
+        padding:22px;
     }
 
 }
 
 </style>
-
 </head>
 
-
 <body>
-
 
 <!-- =====================================================
      HEADER
@@ -776,45 +519,55 @@ button:disabled{
 
 <header>
 
-    <div class="logo">
-        NB <span>Logistics Hub</span>
+    <div class="header-inner">
+
+        <div>
+            <div class="logo">
+                NB <span>Logistics Hub</span>
+            </div>
+
+            <div class="tagline">
+                Fast • Simple • Reliable Delivery in Ilorin
+            </div>
+        </div>
+
+        <a href="index.html" class="home-link">
+            Home
+        </a>
+
     </div>
 
-    <p>
-        Fast • Simple • Reliable Delivery in Ilorin
-    </p>
-
 </header>
-
 
 
 <!-- =====================================================
      MAIN
 ===================================================== -->
 
+<main>
+
 <div class="container">
 
+    <div class="page-title">
+
+        <h1>Track Your Delivery</h1>
+
+        <p>
+            Enter your delivery request number to see the latest update.
+        </p>
+
+    </div>
+
+
+    <!-- TRACK FORM -->
 
     <div class="track-card">
 
+        <label class="form-label" for="requestCode">
+            Delivery Request Number
+        </label>
 
-        <h1>
-            Track Your Delivery
-        </h1>
-
-
-        <p class="subtitle">
-
-            Enter your delivery request number
-            to see the latest update.
-
-        </p>
-
-
-
-        <!-- SEARCH -->
-
-        <div class="input-group">
+        <div class="input-row">
 
             <input
                 type="text"
@@ -823,433 +576,385 @@ button:disabled{
                 autocomplete="off"
             >
 
-
             <button
+                type="button"
+                class="track-btn"
                 id="trackButton"
                 onclick="trackDelivery()"
             >
-
                 Track Delivery
-
             </button>
 
         </div>
 
+    </div>
 
 
-        <!-- MESSAGE -->
+    <!-- MESSAGE -->
 
-        <div
-            id="message"
-            class="message"
-        ></div>
+    <div id="message" class="message"></div>
 
 
+    <!-- RESULT -->
 
-        <!-- DIAGNOSTIC -->
+    <div id="result">
 
-        <div
-            id="diagnostic"
-            class="diagnostic"
-        ></div>
-
-
-
-        <!-- RESULT -->
-
-        <div
-            id="result"
-            class="result"
-        >
+        <div class="success-banner">
+            Your delivery information has been found successfully.
+        </div>
 
 
-            <!-- RESULT HEADER -->
+        <!-- STATUS -->
 
-            <div class="result-header">
+        <div class="status-card">
 
-                <h2>
-                    Delivery Tracking
-                </h2>
-
-                <div
-                    id="displayCode"
-                    class="request-code"
-                ></div>
-
+            <div class="status-label">
+                Delivery Request
             </div>
 
+            <div
+                class="status-value"
+                id="currentStatus"
+            >
+                —
+            </div>
 
+            <div
+                class="status-message"
+                id="statusMessage"
+            >
+                —
+            </div>
 
-            <div class="status-box">
+        </div>
 
 
-                <!-- CURRENT STATUS -->
+        <!-- TIMELINE -->
 
-                <div class="current-status">
+        <div class="timeline-card">
 
-                    <div class="current-label">
-                        Current Status
-                    </div>
+            <div class="section-title">
+                Delivery Progress
+            </div>
 
+            <div class="timeline">
 
-                    <span id="currentStatus">
-                        Checking...
-                    </span>
-
-
-                    <div
-                        id="statusMessage"
-                        class="status-message"
-                    ></div>
-
-                </div>
-
-
-
-                <!-- PROGRESS -->
-
-                <div class="section-title">
-
-                    Delivery Progress
-
-                </div>
-
-
-                <div class="timeline">
-
-
-                    <!-- NEW -->
-
-                    <div
-                        id="timelineNew"
-                        class="timeline-item"
-                    >
-
-                        <div class="timeline-dot">
-                            ✓
-                        </div>
-
-                        <div class="timeline-line"></div>
-
-                        <div class="timeline-content">
-
-                            <strong>
-                                Request Received
-                            </strong>
-
-                            <div>
-                                Your delivery request has been received.
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- ACCEPTED -->
-
-                    <div
-                        id="timelineAccepted"
-                        class="timeline-item"
-                    >
-
-                        <div class="timeline-dot">
-                            ✓
-                        </div>
-
-                        <div class="timeline-line"></div>
-
-                        <div class="timeline-content">
-
-                            <strong>
-                                Accepted
-                            </strong>
-
-                            <div>
-                                Your delivery request has been accepted.
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- IN PROGRESS -->
-
-                    <div
-                        id="timelineProgress"
-                        class="timeline-item"
-                    >
-
-                        <div class="timeline-dot">
-                            ✓
-                        </div>
-
-                        <div class="timeline-line"></div>
-
-                        <div class="timeline-content">
-
-                            <strong>
-                                In Progress
-                            </strong>
-
-                            <div>
-                                Your package is currently being delivered.
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- COMPLETED -->
-
-                    <div
-                        id="timelineCompleted"
-                        class="timeline-item"
-                    >
-
-                        <div class="timeline-dot">
-                            ✓
-                        </div>
-
-                        <div class="timeline-content">
-
-                            <strong>
-                                Completed
-                            </strong>
-
-                            <div>
-                                Your delivery has been completed successfully.
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-
-                <!-- DETAILS -->
-
-                <div class="section-title">
-
-                    Delivery Details
-
-                </div>
-
-
-                <div class="details">
-
-
-                    <div class="detail">
-
-                        <small>
-                            Request Number
-                        </small>
-
-                        <strong
-                            id="detailRequest"
-                        >
-                            —
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail">
-
-                        <small>
-                            Customer
-                        </small>
-
-                        <strong
-                            id="customerName"
-                        >
-                            —
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail">
-
-                        <small>
-                            Pickup
-                        </small>
-
-                        <strong
-                            id="pickupLocation"
-                        >
-                            —
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail">
-
-                        <small>
-                            Delivery Location
-                        </small>
-
-                        <strong
-                            id="deliveryLocation"
-                        >
-                            —
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail">
-
-                        <small>
-                            Package
-                        </small>
-
-                        <strong
-                            id="packageDetails"
-                        >
-                            —
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail">
-
-                        <small>
-                            Preferred Time
-                        </small>
-
-                        <strong
-                            id="preferredTime"
-                        >
-                            —
-                        </strong>
-
-                    </div>
-
-
-                    <div class="detail">
-
-                        <small>
-                            Delivery Fee
-                        </small>
-
-                        <strong
-                            id="deliveryFee"
-                        >
-                            —
-                        </strong>
-
-                    </div>
-
-
-                </div>
-
-
-
-                <!-- LAST UPDATED -->
+                <!-- REQUESTED -->
 
                 <div
-                    id="lastUpdated"
-                    class="last-updated"
+                    class="timeline-item"
+                    id="timeline-request"
                 >
-                    Last Updated: —
+
+                    <div class="timeline-icon">
+                        ✓
+                    </div>
+
+                    <div class="timeline-content">
+
+                        <h3>
+                            Request Received
+                        </h3>
+
+                        <p>
+                            Your delivery request has been received.
+                        </p>
+
+                    </div>
+
                 </div>
 
 
-
-                <!-- APPROVAL -->
+                <!-- ACCEPTED -->
 
                 <div
-                    id="approvalAction"
-                    class="approval-action"
+                    class="timeline-item"
+                    id="timeline-accepted"
                 >
 
-                    <a
-                        id="approvalLink"
-                        class="approval-btn"
-                        href="#"
-                    >
-                        ✅ Review & Approve Delivery
-                    </a>
+                    <div class="timeline-icon">
+                        ✓
+                    </div>
+
+                    <div class="timeline-content">
+
+                        <h3>
+                            Accepted
+                        </h3>
+
+                        <p>
+                            Your delivery request has been accepted.
+                        </p>
+
+                    </div>
 
                 </div>
 
 
+                <!-- IN PROGRESS -->
 
-                <!-- ACTIONS -->
+                <div
+                    class="timeline-item"
+                    id="timeline-progress"
+                >
 
-                <div class="actions">
+                    <div class="timeline-icon">
+                        3
+                    </div>
 
+                    <div class="timeline-content">
 
-                    <a
-                        id="receiptLink"
-                        class="action receipt"
-                        href="#"
-                    >
+                        <h3>
+                            In Progress
+                        </h3>
 
-                        🧾 View Delivery Receipt
+                        <p>
+                            Your package is currently being delivered.
+                        </p>
 
-                    </a>
-
-
-                    <a
-                        class="action whatsapp"
-                        href="https://wa.me/2349150798901"
-                        target="_blank"
-                        rel="noopener"
-                    >
-
-                        💬 Contact Us on WhatsApp
-
-                    </a>
-
+                    </div>
 
                 </div>
 
 
+                <!-- COMPLETED -->
 
-                <!-- HOME -->
-
-                <a
-                    class="back-home"
-                    href="index.html"
+                <div
+                    class="timeline-item"
+                    id="timeline-completed"
                 >
 
-                    ← Back to NB Logistics Hub
+                    <div class="timeline-icon">
+                        4
+                    </div>
 
-                </a>
+                    <div class="timeline-content">
 
+                        <h3>
+                            Completed
+                        </h3>
+
+                        <p>
+                            Your delivery has been completed successfully.
+                        </p>
+
+                    </div>
+
+                </div>
 
             </div>
 
         </div>
 
 
+        <!-- APPROVAL / PAYMENT -->
+
+        <div
+            class="approval-action"
+            id="approvalAction"
+        >
+
+            <h2 id="actionTitle">
+                Continue Your Delivery
+            </h2>
+
+            <p id="actionDescription">
+                Please review your delivery details.
+            </p>
+
+            <a
+                href="#"
+                id="approvalLink"
+                class="action-btn approve-btn"
+            >
+                Review &amp; Approve Delivery
+            </a>
+
+        </div>
+
+
+        <!-- DELIVERY DETAILS -->
+
+        <div class="details-card">
+
+            <div class="section-title">
+                Delivery Details
+            </div>
+
+            <div class="details-grid">
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Request Number
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="detailRequest"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Customer
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="detailCustomer"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Pickup
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="detailPickup"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Delivery Location
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="detailDelivery"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Package
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="detailPackage"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Preferred Time
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="detailTime"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Delivery Fee
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="detailFee"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+                        Last Updated
+                    </div>
+
+                    <div
+                        class="detail-value"
+                        id="detailUpdated"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- LINKS -->
+
+        <div class="action-links">
+
+            <a
+                href="#"
+                id="receiptLink"
+                class="secondary-btn"
+            >
+                🧾 View Delivery Receipt
+            </a>
+
+            <a
+                href="https://wa.me/2349150798901"
+                target="_blank"
+                rel="noopener"
+                class="secondary-btn whatsapp-btn"
+            >
+                💬 Contact Us on WhatsApp
+            </a>
+
+        </div>
+
     </div>
-
-
-
-    <!-- FOOTER -->
-
-    <div class="footer">
-
-        © 2026 NB Logistics Hub — Ilorin Delivery Service
-
-    </div>
-
 
 </div>
 
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    © 2026 <strong>NB Logistics Hub</strong>
+    — Ilorin Delivery Service
+
+</footer>
 
 
 <script>
@@ -1261,10 +966,8 @@ button:disabled{
 const SUPABASE_URL =
     "https://kygkgcpuiwawatugkfne.supabase.co";
 
-
 const SUPABASE_KEY =
     "sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
-
 
 const supabaseClient =
     window.supabase.createClient(
@@ -1278,138 +981,118 @@ const supabaseClient =
 ===================================================== */
 
 const requestInput =
-    document.getElementById(
-        "requestCode"
-    );
-
+    document.getElementById("requestCode");
 
 const trackButton =
-    document.getElementById(
-        "trackButton"
-    );
-
+    document.getElementById("trackButton");
 
 const messageBox =
-    document.getElementById(
-        "message"
-    );
-
+    document.getElementById("message");
 
 const resultBox =
-    document.getElementById(
-        "result"
-    );
+    document.getElementById("result");
 
+const currentStatus =
+    document.getElementById("currentStatus");
 
-const diagnosticBox =
-    document.getElementById(
-        "diagnostic"
-    );
-
+const statusMessage =
+    document.getElementById("statusMessage");
 
 const approvalAction =
-    document.getElementById(
-        "approvalAction"
-    );
+    document.getElementById("approvalAction");
 
+const actionTitle =
+    document.getElementById("actionTitle");
+
+const actionDescription =
+    document.getElementById("actionDescription");
 
 const approvalLink =
-    document.getElementById(
-        "approvalLink"
-    );
+    document.getElementById("approvalLink");
 
 
 /* =====================================================
-   MESSAGE
+   MESSAGE HELPERS
 ===================================================== */
 
-function showMessage(
-    text,
-    type
-){
+function showMessage(text, type){
+
+    messageBox.textContent = text;
 
     messageBox.className =
         "message " + type;
 
-    messageBox.textContent =
-        text;
+}
+
+function hideMessage(){
+
+    messageBox.textContent = "";
+
+    messageBox.className =
+        "message";
 
 }
 
 
 /* =====================================================
-   MONEY
+   NORMALIZE STATUS
 ===================================================== */
 
-function formatMoney(value){
+function normalizeStatus(status){
 
-    if(
-        value === null ||
-        value === undefined ||
-        value === ""
-    ){
-
-        return "Not specified";
-
-    }
-
-
-    const number =
-        Number(value);
-
-
-    if(
-        Number.isNaN(number)
-    ){
-
-        return value;
-
-    }
-
-
-    return "₦" +
-        number.toLocaleString(
-            "en-NG"
-        );
+    return String(status || "")
+        .trim()
+        .toLowerCase()
+        .replace(/_/g, " ");
 
 }
 
 
 /* =====================================================
-   DATE
+   STATUS TEXT
 ===================================================== */
 
-function formatDate(value){
+function getStatusTitle(status){
 
-    if(!value){
+    const normalized =
+        normalizeStatus(status);
 
-        return "Not available";
-
+    if(normalized === "new"){
+        return "New";
     }
-
-
-    const date =
-        new Date(value);
-
 
     if(
-        Number.isNaN(
-            date.getTime()
-        )
+        normalized === "accepted" ||
+        normalized === "approved"
     ){
-
-        return value;
-
+        return "Accepted";
     }
 
+    if(
+        normalized === "in progress" ||
+        normalized === "in_progress" ||
+        normalized === "out for delivery" ||
+        normalized === "out_for_delivery"
+    ){
+        return "In Progress";
+    }
 
-    return date.toLocaleString(
-        "en-NG",
-        {
-            dateStyle:"medium",
-            timeStyle:"short"
-        }
-    );
+    if(
+        normalized === "completed" ||
+        normalized === "complete" ||
+        normalized === "delivered"
+    ){
+        return "Completed";
+    }
+
+    if(
+        normalized === "cancelled" ||
+        normalized === "canceled"
+    ){
+        return "Cancelled";
+    }
+
+    return status || "New";
 
 }
 
@@ -1418,188 +1101,279 @@ function formatDate(value){
    STATUS MESSAGE
 ===================================================== */
 
-function getStatusMessage(
-    status,
-    databaseMessage
-){
+function getStatusMessage(status){
 
-    if(
-        databaseMessage &&
-        databaseMessage.trim()
-    ){
+    const normalized =
+        normalizeStatus(status);
 
-        return databaseMessage;
-
+    if(normalized === "new"){
+        return "Your delivery request has been received and is waiting for acceptance.";
     }
 
-
     if(
-        status === "New"
+        normalized === "accepted" ||
+        normalized === "approved"
     ){
-
-        return "Your request has been received and is now being reviewed.";
-
+        return "Your delivery request has been accepted. Please review and approve the delivery fee to continue.";
     }
 
-
     if(
-        status === "Accepted"
+        normalized === "in progress" ||
+        normalized === "in_progress" ||
+        normalized === "out for delivery" ||
+        normalized === "out_for_delivery"
     ){
-
-        return "Your delivery request has been accepted. We are preparing your delivery.";
-
+        return "Your package is currently being delivered.";
     }
 
-
     if(
-        status === "In Progress"
+        normalized === "completed" ||
+        normalized === "complete" ||
+        normalized === "delivered"
     ){
-
-        return "Your delivery is currently in progress.";
-
+        return "Your delivery has been completed successfully.";
     }
 
-
     if(
-        status === "Completed"
+        normalized === "cancelled" ||
+        normalized === "canceled"
     ){
-
-        return "Your delivery has been completed successfully. Thank you for using NB Logistics Hub.";
-
+        return "This delivery request has been cancelled. Please contact NB Logistics Hub if you need assistance.";
     }
 
-
-    return "Your delivery information has been updated.";
+    return "Your delivery request is being processed.";
 
 }
 
 
 /* =====================================================
-   STATUS LEVEL
+   TIMELINE
 ===================================================== */
 
-function getStatusLevel(
-    status
-){
+function updateTimeline(status){
 
-    if(
-        status === "New"
-    ){
+    const normalized =
+        normalizeStatus(status);
 
-        return 1;
+    const requestStep =
+        document.getElementById("timeline-request");
 
-    }
+    const acceptedStep =
+        document.getElementById("timeline-accepted");
 
+    const progressStep =
+        document.getElementById("timeline-progress");
 
-    if(
-        status === "Accepted"
-    ){
-
-        return 2;
-
-    }
+    const completedStep =
+        document.getElementById("timeline-completed");
 
 
-    if(
-        status === "In Progress"
-    ){
+    /* Reset */
 
-        return 3;
+    [
+        requestStep,
+        acceptedStep,
+        progressStep,
+        completedStep
+    ].forEach(function(step){
 
-    }
-
-
-    if(
-        status === "Completed"
-    ){
-
-        return 4;
-
-    }
-
-
-    return 1;
-
-}
-
-
-/* =====================================================
-   UPDATE TIMELINE
-===================================================== */
-
-function updateTimeline(
-    status
-){
-
-    const current =
-        getStatusLevel(
-            status
+        step.classList.remove(
+            "completed",
+            "current"
         );
 
-
-    const items = [
-
-        ["timelineNew",1],
-
-        ["timelineAccepted",2],
-
-        ["timelineProgress",3],
-
-        ["timelineCompleted",4]
-
-    ];
+    });
 
 
-    items.forEach(
-        function(item){
+    /* New */
 
-            const element =
-                document.getElementById(
-                    item[0]
-                );
+    if(normalized === "new"){
 
+        requestStep.classList.add("current");
 
-            const level =
-                item[1];
+        requestStep.querySelector(
+            ".timeline-icon"
+        ).textContent = "1";
 
+        acceptedStep.querySelector(
+            ".timeline-icon"
+        ).textContent = "2";
 
-            element.classList.remove(
-                "completed"
-            );
+        progressStep.querySelector(
+            ".timeline-icon"
+        ).textContent = "3";
 
+        completedStep.querySelector(
+            ".timeline-icon"
+        ).textContent = "4";
 
-            element.classList.remove(
-                "current"
-            );
-
-
-            if(
-                level < current
-            ){
-
-                element.classList.add(
-                    "completed"
-                );
-
-            }
+        return;
+    }
 
 
-            if(
-                level === current
-            ){
+    /* Accepted */
 
-                element.classList.add(
-                    "completed"
-                );
+    if(
+        normalized === "accepted" ||
+        normalized === "approved"
+    ){
 
-                element.classList.add(
-                    "current"
-                );
+        requestStep.classList.add("completed");
 
-            }
+        acceptedStep.classList.add("current");
 
+        requestStep.querySelector(
+            ".timeline-icon"
+        ).textContent = "✓";
+
+        acceptedStep.querySelector(
+            ".timeline-icon"
+        ).textContent = "✓";
+
+        progressStep.querySelector(
+            ".timeline-icon"
+        ).textContent = "3";
+
+        completedStep.querySelector(
+            ".timeline-icon"
+        ).textContent = "4";
+
+        return;
+    }
+
+
+    /* In Progress */
+
+    if(
+        normalized === "in progress" ||
+        normalized === "in_progress" ||
+        normalized === "out for delivery" ||
+        normalized === "out_for_delivery"
+    ){
+
+        requestStep.classList.add("completed");
+
+        acceptedStep.classList.add("completed");
+
+        progressStep.classList.add("current");
+
+        requestStep.querySelector(
+            ".timeline-icon"
+        ).textContent = "✓";
+
+        acceptedStep.querySelector(
+            ".timeline-icon"
+        ).textContent = "✓";
+
+        progressStep.querySelector(
+            ".timeline-icon"
+        ).textContent = "✓";
+
+        completedStep.querySelector(
+            ".timeline-icon"
+        ).textContent = "4";
+
+        return;
+    }
+
+
+    /* Completed */
+
+    if(
+        normalized === "completed" ||
+        normalized === "complete" ||
+        normalized === "delivered"
+    ){
+
+        requestStep.classList.add("completed");
+
+        acceptedStep.classList.add("completed");
+
+        progressStep.classList.add("completed");
+
+        completedStep.classList.add("completed");
+
+        requestStep.querySelector(
+            ".timeline-icon"
+        ).textContent = "✓";
+
+        acceptedStep.querySelector(
+            ".timeline-icon"
+        ).textContent = "✓";
+
+        progressStep.querySelector(
+            ".timeline-icon"
+        ).textContent = "✓";
+
+        completedStep.querySelector(
+            ".timeline-icon"
+        ).textContent = "✓";
+
+        return;
+    }
+
+
+    /* Unknown status */
+
+    requestStep.classList.add("current");
+
+}
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatDate(value){
+
+    if(!value){
+        return "Not available";
+    }
+
+    const date =
+        new Date(value);
+
+    if(Number.isNaN(date.getTime())){
+        return value;
+    }
+
+    return date.toLocaleString(
+        "en-NG",
+        {
+            day:"2-digit",
+            month:"short",
+            year:"numeric",
+            hour:"2-digit",
+            minute:"2-digit"
         }
     );
+
+}
+
+
+/* =====================================================
+   FORMAT FEE
+===================================================== */
+
+function formatFee(value){
+
+    if(
+        value === null ||
+        value === undefined ||
+        value === ""
+    ){
+        return "Not set";
+    }
+
+    const number =
+        Number(value);
+
+    if(Number.isNaN(number)){
+        return "₦" + value;
+    }
+
+    return "₦" +
+        number.toLocaleString("en-NG");
 
 }
 
@@ -1608,198 +1382,253 @@ function updateTimeline(
    DISPLAY DELIVERY
 ===================================================== */
 
-function displayDelivery(
-    data
-){
+function displayDelivery(data){
+
+    resultBox.style.display = "block";
+
+
+    const requestCode =
+        data.request_code || "";
+
 
     const status =
         data.status || "New";
 
 
-    const approvalStatus =
-        (
-            data.customer_approval_status ||
-            ""
+    const normalizedApproval =
+        String(
+            data.customer_approval_status || ""
         )
-        .toString()
         .trim()
         .toLowerCase();
 
 
-    document.getElementById(
-        "displayCode"
-    ).textContent =
-        data.request_code || "—";
+    /* -----------------------------------------------
+       STATUS
+    ----------------------------------------------- */
 
+    currentStatus.textContent =
+        getStatusTitle(status);
+
+    statusMessage.textContent =
+        data.status_message ||
+        getStatusMessage(status);
+
+
+    /* -----------------------------------------------
+       TIMELINE
+    ----------------------------------------------- */
+
+    updateTimeline(status);
+
+
+    /* -----------------------------------------------
+       DETAILS
+    ----------------------------------------------- */
 
     document.getElementById(
         "detailRequest"
     ).textContent =
-        data.request_code || "—";
+        requestCode || "Not available";
 
 
     document.getElementById(
-        "currentStatus"
+        "detailCustomer"
     ).textContent =
-        status;
+        data.customer_name ||
+        "Not available";
 
 
     document.getElementById(
-        "statusMessage"
+        "detailPickup"
     ).textContent =
-        getStatusMessage(
-            status,
-            data.status_message
-        );
+        data.pickup_location ||
+        "Not available";
 
 
     document.getElementById(
-        "customerName"
+        "detailDelivery"
     ).textContent =
-        data.customer_name || "—";
+        data.delivery_location ||
+        "Not available";
 
 
     document.getElementById(
-        "pickupLocation"
+        "detailPackage"
     ).textContent =
-        data.pickup_location || "—";
+        data.package_details ||
+        "Not available";
 
 
     document.getElementById(
-        "deliveryLocation"
+        "detailTime"
     ).textContent =
-        data.delivery_location || "—";
+        data.preferred_time ||
+        "Not specified";
 
 
     document.getElementById(
-        "packageDetails"
+        "detailFee"
     ).textContent =
-        data.package_details || "—";
+        formatFee(data.delivery_fee);
 
 
     document.getElementById(
-        "preferredTime"
+        "detailUpdated"
     ).textContent =
-        data.preferred_time || "—";
-
-
-    document.getElementById(
-        "deliveryFee"
-    ).textContent =
-        formatMoney(
-            data.delivery_fee
-        );
-
-
-    document.getElementById(
-        "lastUpdated"
-    ).textContent =
-        "Last Updated: " +
         formatDate(
             data.updated_at ||
             data.created_at
         );
 
 
-    updateTimeline(
-        status
-    );
-
-
-    /* =================================================
-       RECEIPT LINK
-    ================================================= */
+    /* -----------------------------------------------
+       RECEIPT
+    ----------------------------------------------- */
 
     document.getElementById(
         "receiptLink"
     ).href =
         "NB_Logistics_Receipt.html?request=" +
-        encodeURIComponent(
-            data.request_code
-        );
+        encodeURIComponent(requestCode);
 
 
-    /* =================================================
-       APPROVAL / PAYMENT FLOW
-    ================================================= */
+    /* -----------------------------------------------
+       ACTION
+    ----------------------------------------------- */
+
+    const approvalURL =
+        "NB_Logistics_Approval.html?request=" +
+        encodeURIComponent(requestCode);
+
+    const paymentURL =
+        "NB_Logistics_Payment.html?request=" +
+        encodeURIComponent(requestCode);
+
+
+    /*
+       COMPLETED
+    */
 
     if(
-        approvalStatus === "approved"
+        normalizeStatus(status) === "completed" ||
+        normalizeStatus(status) === "complete" ||
+        normalizeStatus(status) === "delivered"
     ){
 
-        approvalAction.style.display =
-            "block";
+        approvalAction.style.display = "block";
 
+        actionTitle.textContent =
+            "Delivery Completed";
+
+        actionDescription.textContent =
+            "This delivery has already been completed successfully.";
+
+        approvalLink.textContent =
+            "🧾 View Delivery Receipt";
 
         approvalLink.href =
-            "NB_Logistics_Payment.html?request=" +
-            encodeURIComponent(
-                data.request_code
-            );
+            "NB_Logistics_Receipt.html?request=" +
+            encodeURIComponent(requestCode);
 
+        approvalLink.className =
+            "action-btn payment-btn";
+
+        return;
+    }
+
+
+    /*
+       CUSTOMER HAS APPROVED
+    */
+
+    if(normalizedApproval === "approved"){
+
+        approvalAction.style.display = "block";
+
+        actionTitle.textContent =
+            "Delivery Approved";
+
+        actionDescription.textContent =
+            "Your delivery request has been approved. You can now proceed to payment.";
 
         approvalLink.textContent =
             "💳 Proceed to Payment";
 
+        approvalLink.href =
+            paymentURL;
 
+        approvalLink.className =
+            "action-btn payment-btn";
+
+        return;
     }
 
-    else if(
-        approvalStatus === "declined"
-    ){
 
-        approvalAction.style.display =
-            "block";
+    /*
+       CUSTOMER DECLINED
+    */
 
+    if(normalizedApproval === "declined"){
 
-        approvalLink.href =
-            "NB_Logistics_Approval.html?request=" +
-            encodeURIComponent(
-                data.request_code
-            );
+        approvalAction.style.display = "block";
 
+        actionTitle.textContent =
+            "Delivery Approval Declined";
+
+        actionDescription.textContent =
+            "You declined the delivery request. You can review the delivery details again if needed.";
 
         approvalLink.textContent =
             "↩ Review Delivery Request";
 
-
-    }
-
-    else{
-
-        approvalAction.style.display =
-            "block";
-
-
         approvalLink.href =
-            "NB_Logistics_Approval.html?request=" +
-            encodeURIComponent(
-                data.request_code
-            );
+            approvalURL;
 
+        approvalLink.className =
+            "action-btn declined-btn";
 
-        approvalLink.textContent =
-            "✅ Review & Approve Delivery";
-
+        return;
     }
 
 
-    resultBox.style.display =
-        "block";
+    /*
+       NEW / ACCEPTED / OTHER
+    */
+
+    approvalAction.style.display = "block";
+
+    actionTitle.textContent =
+        "Review Your Delivery";
+
+    actionDescription.textContent =
+        "Please review the delivery details and approve the delivery fee before payment.";
+
+    approvalLink.textContent =
+        "✅ Review & Approve Delivery";
+
+    approvalLink.href =
+        approvalURL;
+
+    approvalLink.className =
+        "action-btn approve-btn";
 
 }
 
 
 /* =====================================================
-   TRACK
+   TRACK DELIVERY
 ===================================================== */
 
 async function trackDelivery(){
 
-    const code =
-        requestInput.value
-            .trim()
-            .toUpperCase();
+    hideMessage();
+
+    resultBox.style.display = "none";
+
+
+    let code =
+        requestInput.value.trim();
 
 
     if(!code){
@@ -1810,32 +1639,22 @@ async function trackDelivery(){
         );
 
         return;
-
     }
+
+
+    code =
+        code.toUpperCase();
+
+
+    requestInput.value =
+        code;
 
 
     trackButton.disabled =
         true;
 
-
-    trackButton.innerHTML =
-        '<span class="spinner"></span>Checking...';
-
-
-    messageBox.className =
-        "message";
-
-
-    messageBox.textContent =
-        "";
-
-
-    diagnosticBox.style.display =
-        "none";
-
-
-    resultBox.style.display =
-        "none";
+    trackButton.textContent =
+        "Checking...";
 
 
     try{
@@ -1845,143 +1664,60 @@ async function trackDelivery(){
             error
         } =
         await supabaseClient
-
-            .from(
-                "delivery_requests"
-            )
-
+            .from("delivery_requests")
             .select("*")
-
             .ilike(
                 "request_code",
                 code
             )
-
             .maybeSingle();
-
-
-        console.log(
-            "Tracking request:",
-            code
-        );
-
-
-        console.log(
-            "Supabase data:",
-            data
-        );
-
-
-        console.log(
-            "Supabase error:",
-            error
-        );
 
 
         if(error){
 
             console.error(
-                "Supabase error:",
+                "Supabase tracking error:",
                 error
             );
 
-
             showMessage(
-                "Unable to check your delivery right now.",
+                "We could not check your delivery right now. Please try again.",
                 "error"
             );
 
-
-            diagnosticBox.style.display =
-                "block";
-
-
-            diagnosticBox.textContent =
-
-                "Supabase error: " +
-
-                (
-                    error.message ||
-                    "Unknown error"
-                )
-
-                +
-
-                "\n\nCode: " +
-
-                (
-                    error.code ||
-                    "No code"
-                )
-
-                +
-
-                "\n\nDetails: " +
-
-                (
-                    error.details ||
-                    "None"
-                )
-
-                +
-
-                "\n\nHint: " +
-
-                (
-                    error.hint ||
-                    "None"
-                );
-
-
             return;
-
         }
 
 
         if(!data){
 
             showMessage(
-
-                "We could not find a delivery with request number " +
-
-                code +
-
-                ". Please check the number and try again.",
-
+                "Delivery request not found. Please check the request number and try again.",
                 "error"
-
             );
 
-
             return;
-
         }
 
 
-        showMessage(
-
-            "Your delivery information has been found successfully.",
-
-            "success"
-
-        );
+        displayDelivery(data);
 
 
-        displayDelivery(
-            data
-        );
+        /*
+           Keep URL synchronized
+        */
 
+        const newURL =
+            window.location.pathname +
+            "?request=" +
+            encodeURIComponent(
+                data.request_code
+            );
 
-        setTimeout(
-            function(){
-
-                resultBox.scrollIntoView({
-                    behavior:"smooth",
-                    block:"start"
-                });
-
-            },
-            100
+        window.history.replaceState(
+            {},
+            "",
+            newURL
         );
 
 
@@ -1992,32 +1728,45 @@ async function trackDelivery(){
             error
         );
 
-
         showMessage(
-            "Unable to check your delivery right now.",
+            "An unexpected error occurred. Please try again.",
             "error"
         );
 
+    }finally{
 
-        diagnosticBox.style.display =
-            "block";
+        trackButton.disabled =
+            false;
 
-
-        diagnosticBox.textContent =
-
-            "Unexpected error:\n\n" +
-
-            error.message;
+        trackButton.textContent =
+            "Track Delivery";
 
     }
 
-
-    trackButton.disabled =
-        false;
+}
 
 
-    trackButton.textContent =
-        "Track Delivery";
+/* =====================================================
+   URL REQUEST
+===================================================== */
+
+function getRequestFromURL(){
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    return (
+        params.get("request") ||
+        params.get("request_number") ||
+        params.get("requestCode") ||
+        params.get("id") ||
+        ""
+    )
+    .trim()
+    .toUpperCase();
 
 }
 
@@ -2030,9 +1779,9 @@ requestInput.addEventListener(
     "keydown",
     function(event){
 
-        if(
-            event.key === "Enter"
-        ){
+        if(event.key === "Enter"){
+
+            event.preventDefault();
 
             trackDelivery();
 
@@ -2043,45 +1792,21 @@ requestInput.addEventListener(
 
 
 /* =====================================================
-   REQUEST FROM URL
+   AUTO LOAD REQUEST
 ===================================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
     function(){
 
-        const urlParams =
-            new URLSearchParams(
-                window.location.search
-            );
-
-
         const urlRequest =
-            (
-                urlParams.get("request") ||
-                urlParams.get("request_number") ||
-                urlParams.get("requestCode") ||
-                urlParams.get("id") ||
-                ""
-            )
-            .trim()
-            .toUpperCase();
+            getRequestFromURL();
 
 
         if(urlRequest){
 
             requestInput.value =
                 urlRequest;
-
-
-            /*
-             * Automatically track the request.
-             * This makes URLs such as:
-             *
-             * NB_Logistics_Track.html?request=NB-20260929-9340
-             *
-             * work automatically.
-             */
 
             trackDelivery();
 
@@ -2093,5 +1818,4 @@ document.addEventListener(
 </script>
 
 </body>
-
 </html>
