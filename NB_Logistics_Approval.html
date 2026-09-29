@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -105,6 +104,11 @@ button{
     font-size:16px;
     font-weight:700;
     padding:14px 20px;
+}
+
+button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
 }
 
 .search-btn{
@@ -246,6 +250,53 @@ button{
     color:#b42318;
 }
 
+/* SUCCESS */
+
+.success{
+    display:none;
+    background:#ecfdf3;
+    color:#087443;
+    border:1px solid #a6e5bf;
+    border-radius:12px;
+    padding:18px;
+    text-align:center;
+    margin-top:20px;
+    line-height:1.6;
+}
+
+/* PAYMENT AREA */
+
+.payment-area{
+    margin-top:20px;
+}
+
+.payment-btn{
+    display:block;
+    width:100%;
+    padding:18px 20px;
+    background:#123c69;
+    color:#ffffff;
+    text-align:center;
+    text-decoration:none;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:800;
+    box-shadow:0 8px 20px rgba(18,60,105,.22);
+    transition:all .2s ease;
+}
+
+.payment-btn:hover{
+    background:#0d2e51;
+    transform:translateY(-1px);
+}
+
+.payment-note{
+    text-align:center;
+    color:#667085;
+    font-size:14px;
+    margin-top:10px;
+}
+
 /* LOADING */
 
 .loading{
@@ -265,9 +316,11 @@ button{
 }
 
 @keyframes spin{
+
     to{
         transform:rotate(360deg);
     }
+
 }
 
 /* ERROR */
@@ -281,20 +334,6 @@ button{
     padding:16px;
     text-align:center;
     margin-top:20px;
-}
-
-/* SUCCESS */
-
-.success{
-    display:none;
-    background:#ecfdf3;
-    color:#087443;
-    border:1px solid #a6e5bf;
-    border-radius:12px;
-    padding:18px;
-    text-align:center;
-    margin-top:20px;
-    line-height:1.6;
 }
 
 /* WHATSAPP */
@@ -369,15 +408,25 @@ button{
     .fee{
         font-size:28px;
     }
+
+    .payment-btn{
+        font-size:17px;
+        padding:17px;
+    }
+
 }
 
 </style>
 
 </head>
 
+
 <body>
 
 <div class="container">
+
+
+    <!-- HEADER -->
 
     <div class="header">
 
@@ -400,12 +449,15 @@ button{
 
     <div class="card">
 
-        <h2>Review Your Delivery Request</h2>
+        <h2>
+            Review Your Delivery Request
+        </h2>
 
         <p>
             Enter your delivery request number below to review
             the delivery details and approve the delivery fee.
         </p>
+
 
         <div class="search-box">
 
@@ -413,27 +465,33 @@ button{
                 id="requestInput"
                 type="text"
                 placeholder="NB-20260929-9340"
-                autocomplete="off">
+                autocomplete="off"
+            >
 
             <button
                 class="search-btn"
                 id="searchBtn"
-                onclick="loadRequest()">
-
+                onclick="loadRequest()"
+            >
                 Check Request
-
             </button>
 
         </div>
 
-        <div class="error" id="errorBox"></div>
+
+        <div
+            class="error"
+            id="errorBox">
+        </div>
 
     </div>
 
 
     <!-- LOADING -->
 
-    <div class="loading" id="loading">
+    <div
+        class="loading"
+        id="loading">
 
         <div class="spinner"></div>
 
@@ -446,13 +504,25 @@ button{
 
     <!-- REQUEST CARD -->
 
-    <div class="card" id="requestCard" style="display:none;">
+    <div
+        class="card"
+        id="requestCard"
+        style="display:none;"
+    >
 
-        <div class="request-number"
-             id="requestNumber">
+
+        <div
+            class="request-number"
+            id="requestNumber">
         </div>
 
-        <h2>Delivery Information</h2>
+
+        <h2>
+            Delivery Information
+        </h2>
+
+
+        <!-- CUSTOMER -->
 
         <div class="detail">
 
@@ -460,11 +530,15 @@ button{
                 Customer
             </span>
 
-            <span class="value"
-                  id="customerName">
+            <span
+                class="value"
+                id="customerName">
             </span>
 
         </div>
+
+
+        <!-- PHONE -->
 
         <div class="detail">
 
@@ -472,11 +546,15 @@ button{
                 Phone
             </span>
 
-            <span class="value"
-                  id="phone">
+            <span
+                class="value"
+                id="phone">
             </span>
 
         </div>
+
+
+        <!-- PICKUP -->
 
         <div class="detail">
 
@@ -484,11 +562,15 @@ button{
                 Pickup Location
             </span>
 
-            <span class="value"
-                  id="pickup">
+            <span
+                class="value"
+                id="pickup">
             </span>
 
         </div>
+
+
+        <!-- DESTINATION -->
 
         <div class="detail">
 
@@ -496,11 +578,15 @@ button{
                 Delivery Location
             </span>
 
-            <span class="value"
-                  id="destination">
+            <span
+                class="value"
+                id="destination">
             </span>
 
         </div>
+
+
+        <!-- PACKAGE -->
 
         <div class="detail">
 
@@ -508,11 +594,15 @@ button{
                 Package / Goods
             </span>
 
-            <span class="value"
-                  id="package">
+            <span
+                class="value"
+                id="package">
             </span>
 
         </div>
+
+
+        <!-- TIME -->
 
         <div class="detail">
 
@@ -520,8 +610,9 @@ button{
                 Preferred Time
             </span>
 
-            <span class="value"
-                  id="preferredTime">
+            <span
+                class="value"
+                id="preferredTime">
             </span>
 
         </div>
@@ -535,14 +626,15 @@ button{
                 Delivery Fee
             </div>
 
-            <div class="fee"
-                 id="deliveryFee">
+            <div
+                class="fee"
+                id="deliveryFee">
             </div>
 
         </div>
 
 
-        <!-- APPROVAL -->
+        <!-- APPROVAL BOX -->
 
         <div class="approval-box">
 
@@ -555,24 +647,24 @@ button{
                 delivery fee above before confirming.
             </p>
 
+
             <div id="actionArea">
 
                 <div class="actions">
 
                     <button
                         class="approve-btn"
-                        onclick="approveRequest()">
-
+                        onclick="approveRequest()"
+                    >
                         ✓ Accept & Proceed
-
                     </button>
+
 
                     <button
                         class="decline-btn"
-                        onclick="declineRequest()">
-
+                        onclick="declineRequest()"
+                    >
                         Decline
-
                     </button>
 
                 </div>
@@ -582,30 +674,46 @@ button{
         </div>
 
 
-        <div class="success"
-             id="successBox">
+        <!-- SUCCESS MESSAGE -->
+
+        <div
+            class="success"
+            id="successBox">
         </div>
 
 
-        <div class="status-box status-pending"
-             id="statusBox">
+        <!-- APPROVAL STATUS -->
 
+        <div
+            class="status-box status-pending"
+            id="statusBox"
+        >
             Approval Status: Pending
-
         </div>
 
+
+        <!-- PAYMENT BUTTON -->
+
+        <div
+            class="payment-area"
+            id="paymentArea">
+        </div>
+
+
+        <!-- WHATSAPP -->
 
         <a
             class="whatsapp"
             href="https://wa.me/2349150798901"
-            target="_blank">
-
+            target="_blank"
+        >
             💬 Need Help? Contact NB Logistics Hub
-
         </a>
 
     </div>
 
+
+    <!-- FOOTER -->
 
     <div class="footer">
 
@@ -629,6 +737,10 @@ button{
 
 <script>
 
+/* ==========================================
+   SUPABASE
+========================================== */
+
 const SUPABASE_URL =
     "https://kygkgcpuiwawatugkfne.supabase.co";
 
@@ -641,27 +753,17 @@ const supabaseClient =
         SUPABASE_KEY
     );
 
+
+/* ==========================================
+   CURRENT REQUEST
+========================================== */
+
 let currentRequest = null;
 
 
-/* ==============================
-   HELPERS
-============================== */
-
-function escapeHtml(value){
-
-    if(value === null || value === undefined){
-        return "";
-    }
-
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-}
-
+/* ==========================================
+   FORMAT MONEY
+========================================== */
 
 function formatMoney(value){
 
@@ -670,31 +772,13 @@ function formatMoney(value){
 
     return "₦" +
         number.toLocaleString("en-NG");
+
 }
 
 
-function formatDate(value){
-
-    if(!value){
-        return "—";
-    }
-
-    const date =
-        new Date(value);
-
-    if(isNaN(date.getTime())){
-        return value;
-    }
-
-    return date.toLocaleString(
-        "en-NG",
-        {
-            dateStyle:"medium",
-            timeStyle:"short"
-        }
-    );
-}
-
+/* ==========================================
+   FORMAT TIME
+========================================== */
 
 function formatPreferredTime(value){
 
@@ -716,12 +800,13 @@ function formatPreferredTime(value){
             timeStyle:"short"
         }
     );
+
 }
 
 
-/* ==============================
-   URL REQUEST NUMBER
-============================== */
+/* ==========================================
+   GET REQUEST NUMBER FROM URL
+========================================== */
 
 function getRequestFromURL(){
 
@@ -731,39 +816,66 @@ function getRequestFromURL(){
         );
 
     return (
+
         params.get("request") ||
+
         params.get("request_number") ||
+
         params.get("requestCode") ||
+
         params.get("id") ||
+
         ""
-    ).trim().toUpperCase();
+
+    )
+    .trim()
+    .toUpperCase();
+
 }
 
 
-/* ==============================
+/* ==========================================
    LOAD REQUEST
-============================== */
+========================================== */
 
 async function loadRequest(){
 
     const input =
-        document.getElementById("requestInput");
+        document.getElementById(
+            "requestInput"
+        );
 
     const requestCode =
-        input.value.trim().toUpperCase();
+        input.value
+        .trim()
+        .toUpperCase();
+
 
     const errorBox =
-        document.getElementById("errorBox");
+        document.getElementById(
+            "errorBox"
+        );
+
 
     const loading =
-        document.getElementById("loading");
+        document.getElementById(
+            "loading"
+        );
+
 
     const requestCard =
-        document.getElementById("requestCard");
+        document.getElementById(
+            "requestCard"
+        );
 
-    errorBox.style.display = "none";
 
-    requestCard.style.display = "none";
+    errorBox.style.display =
+        "none";
+
+
+    requestCard.style.display =
+        "none";
+
 
     if(!requestCode){
 
@@ -772,26 +884,46 @@ async function loadRequest(){
         );
 
         return;
+
     }
 
-    loading.style.display = "block";
 
-    document.getElementById("searchBtn").disabled = true;
+    loading.style.display =
+        "block";
+
+
+    document.getElementById(
+        "searchBtn"
+    ).disabled = true;
+
 
     try{
 
         const {
+
             data,
             error
+
         } = await supabaseClient
+
             .from("delivery_requests")
+
             .select("*")
-            .ilike("request_code", requestCode)
+
+            .ilike(
+                "request_code",
+                requestCode
+            )
+
             .maybeSingle();
 
+
         if(error){
+
             throw error;
+
         }
+
 
         if(!data){
 
@@ -800,49 +932,69 @@ async function loadRequest(){
             );
 
             return;
+
         }
 
-        currentRequest = data;
 
-        displayRequest(data);
+        currentRequest =
+            data;
+
+
+        displayRequest(
+            data
+        );
+
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
+
 
         showError(
             "Unable to check your delivery request right now. Please try again."
         );
 
+
     }finally{
 
-        loading.style.display = "none";
+        loading.style.display =
+            "none";
 
-        document.getElementById("searchBtn").disabled = false;
+
+        document.getElementById(
+            "searchBtn"
+        ).disabled = false;
 
     }
+
 }
 
 
-/* ==============================
+/* ==========================================
    DISPLAY REQUEST
-============================== */
+========================================== */
 
 function displayRequest(data){
 
     document.getElementById(
         "requestCard"
-    ).style.display = "block";
+    ).style.display =
+        "block";
+
 
     document.getElementById(
         "requestNumber"
     ).textContent =
         data.request_code || "—";
 
+
     document.getElementById(
         "customerName"
     ).textContent =
         data.customer_name || "—";
+
 
     document.getElementById(
         "phone"
@@ -852,20 +1004,27 @@ function displayRequest(data){
         data.whatsapp ||
         "—";
 
+
     document.getElementById(
         "pickup"
     ).textContent =
-        data.pickup_location || "—";
+        data.pickup_location ||
+        "—";
+
 
     document.getElementById(
         "destination"
     ).textContent =
-        data.delivery_location || "—";
+        data.delivery_location ||
+        "—";
+
 
     document.getElementById(
         "package"
     ).textContent =
-        data.package_details || "—";
+        data.package_details ||
+        "—";
+
 
     document.getElementById(
         "preferredTime"
@@ -874,6 +1033,7 @@ function displayRequest(data){
             data.preferred_time
         );
 
+
     document.getElementById(
         "deliveryFee"
     ).textContent =
@@ -881,36 +1041,120 @@ function displayRequest(data){
             data.delivery_fee
         );
 
+
     updateApprovalDisplay(
         data.customer_approval_status
     );
+
 }
 
 
-/* ==============================
-   APPROVAL DISPLAY
-============================== */
+/* ==========================================
+   SHOW PAYMENT BUTTON
+========================================== */
 
-function updateApprovalDisplay(status){
+function showPaymentButton(){
+
+    const paymentArea =
+        document.getElementById(
+            "paymentArea"
+        );
+
+
+    if(!currentRequest){
+
+        return;
+
+    }
+
+
+    const requestCode =
+        currentRequest.request_code;
+
+
+    if(!requestCode){
+
+        return;
+
+    }
+
+
+    paymentArea.innerHTML = `
+
+        <a
+            class="payment-btn"
+            href="payment.html?request=${encodeURIComponent(requestCode)}"
+        >
+
+            💳 Proceed to Payment
+
+        </a>
+
+        <div class="payment-note">
+
+            Your request has been approved.
+            Click above to continue to payment.
+
+        </div>
+
+    `;
+
+}
+
+
+/* ==========================================
+   UPDATE APPROVAL DISPLAY
+========================================== */
+
+function updateApprovalDisplay(
+    status
+){
 
     const statusBox =
-        document.getElementById("statusBox");
+        document.getElementById(
+            "statusBox"
+        );
+
 
     const actionArea =
-        document.getElementById("actionArea");
+        document.getElementById(
+            "actionArea"
+        );
+
 
     const successBox =
-        document.getElementById("successBox");
+        document.getElementById(
+            "successBox"
+        );
+
+
+    const paymentArea =
+        document.getElementById(
+            "paymentArea"
+        );
+
 
     status =
-        (status || "Pending")
+        (
+            status ||
+            "Pending"
+        )
         .toLowerCase();
+
 
     statusBox.className =
         "status-box";
 
+
     successBox.style.display =
         "none";
+
+
+    paymentArea.innerHTML =
+        "";
+
+
+    /* APPROVED */
 
     if(status === "approved"){
 
@@ -918,40 +1162,72 @@ function updateApprovalDisplay(status){
             "status-approved"
         );
 
+
         statusBox.textContent =
             "✓ Approval Status: Approved";
 
-        actionArea.innerHTML = "";
+
+        actionArea.innerHTML =
+            "";
+
 
         successBox.style.display =
             "block";
 
+
         successBox.innerHTML =
-            "Your delivery request has been approved successfully.<br><br>" +
-            "<strong>Next step: Payment</strong><br>" +
-            "NB Logistics Hub can now proceed with the next stage of your delivery.";
+
+            "Your delivery request has been approved successfully." +
+
+            "<br><br>" +
+
+            "<strong>Next step: Payment</strong>" +
+
+            "<br>" +
+
+            "Please proceed to payment to continue your delivery.";
+
+
+        showPaymentButton();
 
     }
 
-    else if(status === "declined"){
+
+    /* DECLINED */
+
+    else if(
+        status === "declined"
+    ){
 
         statusBox.classList.add(
             "status-declined"
         );
 
+
         statusBox.textContent =
             "Approval Status: Declined";
 
-        actionArea.innerHTML = "";
+
+        actionArea.innerHTML =
+            "";
+
 
         successBox.style.display =
             "block";
 
+
         successBox.innerHTML =
-            "You have declined this delivery request.<br>" +
+
+            "You have declined this delivery request." +
+
+            "<br>" +
+
             "Please contact NB Logistics Hub if you would like to discuss the delivery.";
 
     }
+
+
+    /* PENDING */
 
     else{
 
@@ -959,183 +1235,276 @@ function updateApprovalDisplay(status){
             "status-pending"
         );
 
+
         statusBox.textContent =
             "Approval Status: Pending";
 
     }
+
 }
 
 
-/* ==============================
-   APPROVE
-============================== */
+/* ==========================================
+   APPROVE REQUEST
+========================================== */
 
 async function approveRequest(){
 
     if(!currentRequest){
+
         return;
+
     }
+
 
     const confirmed =
         confirm(
+
             "Do you approve the delivery fee of " +
-            formatMoney(currentRequest.delivery_fee) +
+
+            formatMoney(
+                currentRequest.delivery_fee
+            ) +
+
             " for this delivery?"
+
         );
 
+
     if(!confirmed){
+
         return;
+
     }
+
 
     const buttons =
         document.querySelectorAll(
             ".actions button"
         );
 
+
     buttons.forEach(
-        button => button.disabled = true
+        button => {
+
+            button.disabled =
+                true;
+
+        }
     );
+
 
     try{
 
         const {
+
             data,
             error
+
         } = await supabaseClient
+
             .from("delivery_requests")
+
             .update({
+
                 customer_approval_status:
                     "Approved",
 
                 customer_approved_at:
                     new Date().toISOString()
+
             })
+
             .eq(
                 "request_code",
                 currentRequest.request_code
             )
+
             .select()
             .single();
 
+
         if(error){
+
             throw error;
+
         }
 
-        currentRequest = data;
+
+        currentRequest =
+            data;
+
 
         updateApprovalDisplay(
             "Approved"
         );
 
+
     }catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
+
 
         alert(
             "We could not save your approval. Please try again."
         );
 
+
         buttons.forEach(
-            button => button.disabled = false
+            button => {
+
+                button.disabled =
+                    false;
+
+            }
         );
+
     }
+
 }
 
 
-/* ==============================
-   DECLINE
-============================== */
+/* ==========================================
+   DECLINE REQUEST
+========================================== */
 
 async function declineRequest(){
 
     if(!currentRequest){
+
         return;
+
     }
+
 
     const confirmed =
         confirm(
             "Are you sure you want to decline this delivery request?"
         );
 
+
     if(!confirmed){
+
         return;
+
     }
+
 
     const buttons =
         document.querySelectorAll(
             ".actions button"
         );
 
+
     buttons.forEach(
-        button => button.disabled = true
+        button => {
+
+            button.disabled =
+                true;
+
+        }
     );
+
 
     try{
 
         const {
+
             data,
             error
+
         } = await supabaseClient
+
             .from("delivery_requests")
+
             .update({
+
                 customer_approval_status:
                     "Declined",
 
                 customer_declined_at:
                     new Date().toISOString()
+
             })
+
             .eq(
                 "request_code",
                 currentRequest.request_code
             )
+
             .select()
             .single();
 
+
         if(error){
+
             throw error;
+
         }
 
-        currentRequest = data;
+
+        currentRequest =
+            data;
+
 
         updateApprovalDisplay(
             "Declined"
         );
 
+
     }catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
+
 
         alert(
             "We could not save your response. Please try again."
         );
 
+
         buttons.forEach(
-            button => button.disabled = false
+            button => {
+
+                button.disabled =
+                    false;
+
+            }
         );
+
     }
+
 }
 
 
-/* ==============================
-   ERROR
-============================== */
+/* ==========================================
+   ERROR MESSAGE
+========================================== */
 
 function showError(message){
 
     const errorBox =
-        document.getElementById("errorBox");
+        document.getElementById(
+            "errorBox"
+        );
+
 
     errorBox.textContent =
         message;
 
+
     errorBox.style.display =
         "block";
+
 }
 
 
-/* ==============================
-   AUTO LOAD REQUEST
-============================== */
+/* ==========================================
+   AUTO LOAD FROM URL
+========================================== */
 
 window.addEventListener(
     "DOMContentLoaded",
@@ -1144,6 +1513,7 @@ window.addEventListener(
         const requestCode =
             getRequestFromURL();
 
+
         if(requestCode){
 
             document.getElementById(
@@ -1151,7 +1521,9 @@ window.addEventListener(
             ).value =
                 requestCode;
 
+
             loadRequest();
+
         }
 
     }
@@ -1162,4 +1534,3 @@ window.addEventListener(
 </body>
 
 </html>
-```
