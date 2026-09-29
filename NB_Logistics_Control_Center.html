@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>NB Logistics Hub — Control Center</title>
+<title>NB Logistics Hub — Private Admin Control Center</title>
+
+<meta name="description"
+      content="Private NB Logistics Hub administration control center.">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -17,439 +20,692 @@
 body{
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
-    background:#eef1f5;
+    background:#f4f7fb;
     color:#172033;
 }
 
-header{
-    background:#071b33;
-    color:white;
-    padding:18px 24px;
+button,
+input,
+select,
+textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.hidden{
+    display:none !important;
+}
+
+/* =========================
+   LOGIN
+========================= */
+
+#loginScreen{
+    min-height:100vh;
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    gap:15px;
-    flex-wrap:wrap;
+    justify-content:center;
+    padding:20px;
+    background:
+        linear-gradient(135deg,#071d35,#0b5fa5);
+}
+
+.login-box{
+    width:100%;
+    max-width:430px;
+    background:white;
+    border-radius:22px;
+    padding:32px;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
 }
 
 .logo{
-    font-size:23px;
+    text-align:center;
+    font-size:42px;
+    margin-bottom:5px;
+}
+
+.login-box h1{
+    text-align:center;
+    margin:0;
+    color:#073b6d;
+}
+
+.login-subtitle{
+    text-align:center;
+    color:#667085;
+    margin:8px 0 25px;
+}
+
+.login-box label{
+    display:block;
+    font-weight:bold;
+    margin:15px 0 7px;
+}
+
+.login-box input{
+    width:100%;
+    padding:14px;
+    border:1px solid #ccd5e0;
+    border-radius:10px;
+    outline:none;
+}
+
+.login-box input:focus{
+    border-color:#0b75c9;
+}
+
+.primary-btn{
+    width:100%;
+    margin-top:20px;
+    padding:14px;
+    border:0;
+    border-radius:10px;
+    background:#0877c9;
+    color:white;
     font-weight:bold;
 }
 
-.logo span{
-    color:#f4c400;
+.primary-btn:hover{
+    background:#075fa0;
+}
+
+.login-error{
+    color:#b42318;
+    background:#fef3f2;
+    padding:10px;
+    border-radius:8px;
+    margin-top:15px;
+    display:none;
+}
+
+/* =========================
+   ADMIN HEADER
+========================= */
+
+#adminApp{
+    min-height:100vh;
+}
+
+.header{
+    background:linear-gradient(135deg,#062c52,#0877c9);
+    color:white;
+    padding:18px 20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.15);
+}
+
+.header-inner{
+    max-width:1250px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.brand-icon{
+    font-size:36px;
+}
+
+.brand h1{
+    margin:0;
+    font-size:22px;
+}
+
+.brand p{
+    margin:4px 0 0;
+    font-size:13px;
+    opacity:.85;
 }
 
 .header-right{
     display:flex;
     align-items:center;
     gap:10px;
-    flex-wrap:wrap;
 }
 
-.header-email{
+.admin-email{
     font-size:13px;
-    color:#dce5ef;
+    background:rgba(255,255,255,.12);
+    padding:9px 12px;
+    border-radius:8px;
 }
 
-button{
-    border:none;
-    cursor:pointer;
-    border-radius:7px;
-    padding:11px 15px;
-    font-weight:bold;
+.logout-btn{
+    border:1px solid rgba(255,255,255,.5);
+    background:transparent;
+    color:white;
+    padding:9px 13px;
+    border-radius:8px;
 }
 
-button:hover{
-    opacity:.92;
+.logout-btn:hover{
+    background:rgba(255,255,255,.15);
 }
 
-.logout{
-    background:#f4c400;
-    color:#071b33;
-}
+/* =========================
+   MAIN
+========================= */
 
-main{
+.container{
+    width:calc(100% - 30px);
     max-width:1250px;
-    margin:auto;
-    padding:25px;
+    margin:25px auto 50px;
 }
 
+/* =========================
+   PAGE TITLE
+========================= */
 
-/* =====================================================
-   LOGIN
-===================================================== */
-
-.login-screen{
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-    background:#071b33;
+.page-title{
+    margin-bottom:20px;
 }
 
-.login-card{
-    width:100%;
-    max-width:430px;
-    background:white;
-    border-radius:15px;
-    padding:35px;
-    box-shadow:0 15px 50px rgba(0,0,0,.25);
+.page-title h2{
+    margin:0 0 5px;
+    font-size:27px;
 }
 
-.login-card h1{
-    margin-top:0;
-    color:#071b33;
-}
-
-.login-card p{
+.page-title p{
+    margin:0;
     color:#667085;
 }
 
-input,
-select,
-textarea{
-    width:100%;
-    padding:12px;
-    border:1px solid #ccd3dd;
-    border-radius:7px;
-    margin-top:7px;
-    font-size:15px;
-}
-
-label{
-    display:block;
-    margin-top:15px;
-    font-weight:bold;
-}
-
-.login-btn{
-    width:100%;
-    margin-top:20px;
-    background:#f4c400;
-    color:#071b33;
-    font-size:16px;
-}
-
-.error{
-    background:#ffe5e5;
-    color:#a40000;
-    padding:12px;
-    border-radius:7px;
-    margin-top:15px;
-    display:none;
-}
-
-
-/* =====================================================
-   DASHBOARD
-===================================================== */
-
-.dashboard-title{
-    margin-bottom:5px;
-}
-
-.subtitle{
-    color:#667085;
-    margin-top:5px;
-}
-
-
-/* =====================================================
-   ADMIN CONTROL BUTTONS
-===================================================== */
-
-.admin-controls{
-    margin-top:25px;
-    margin-bottom:25px;
-}
-
-.admin-controls-title{
-    margin-bottom:6px;
-    color:#071b33;
-}
-
-.admin-controls-subtitle{
-    color:#667085;
-    margin-top:0;
-    margin-bottom:18px;
-}
-
-.admin-control-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:18px;
-}
-
-.admin-control-card{
-    background:white;
-    border-radius:14px;
-    padding:22px;
-    box-shadow:0 4px 16px rgba(0,0,0,.07);
-    border:1px solid #e5e7eb;
-}
-
-.admin-control-card.payment{
-    border-top:5px solid #16a34a;
-}
-
-.admin-control-card.delivery{
-    border-top:5px solid #2563eb;
-}
-
-.admin-control-icon{
-    font-size:32px;
-    margin-bottom:8px;
-}
-
-.admin-control-card h3{
-    margin:5px 0 8px;
-    color:#071b33;
-}
-
-.admin-control-card p{
-    color:#667085;
-    line-height:1.5;
-    margin-top:0;
-}
-
-.admin-control-btn{
-    width:100%;
-    margin-top:10px;
-    font-size:15px;
-}
-
-.payment-btn{
-    background:#16a34a;
-    color:white;
-}
-
-.delivery-btn{
-    background:#2563eb;
-    color:white;
-}
-
-
-/* =====================================================
+/* =========================
    STATS
-===================================================== */
+========================= */
 
 .stats{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:15px;
-    margin:25px 0;
+    margin-bottom:25px;
 }
 
-.stat{
+.stat-card{
     background:white;
-    border-radius:12px;
+    border-radius:16px;
     padding:20px;
-    box-shadow:0 3px 12px rgba(0,0,0,.06);
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
 }
 
-.stat h3{
-    margin:0;
-    font-size:14px;
+.stat-label{
     color:#667085;
+    font-size:14px;
 }
 
-.stat strong{
-    display:block;
-    font-size:30px;
-    margin-top:8px;
-    color:#071b33;
+.stat-number{
+    font-size:31px;
+    font-weight:bold;
+    margin-top:7px;
 }
 
+/* =========================
+   ADMIN CONTROLS
+========================= */
 
-/* =====================================================
-   REFRESH
-===================================================== */
+.admin-controls{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+    margin-bottom:25px;
+}
 
-.refresh{
-    background:#071b33;
+.control-card{
+    background:white;
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
+}
+
+.control-card h3{
+    margin:0 0 8px;
+}
+
+.control-card p{
+    color:#667085;
+    margin:0 0 15px;
+    line-height:1.5;
+}
+
+.control-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.control-btn{
+    border:0;
+    padding:11px 15px;
+    border-radius:9px;
+    font-weight:bold;
+}
+
+.payment-control{
+    background:#fff7e6;
+    border-left:5px solid #f79009;
+}
+
+.delivery-control{
+    background:#eef8ff;
+    border-left:5px solid #0877c9;
+}
+
+.btn-payment{
+    background:#f79009;
     color:white;
+}
+
+.btn-delivery{
+    background:#0877c9;
+    color:white;
+}
+
+.refresh-btn{
+    background:#344054;
+    color:white;
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+.section{
+    background:white;
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:25px;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
+}
+
+.section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
     margin-bottom:18px;
 }
 
+.section-header h2{
+    margin:0;
+    font-size:21px;
+}
 
-/* =====================================================
+/* =========================
+   PAYMENT SUMMARY
+========================= */
+
+.payment-summary{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.payment-stat{
+    padding:16px;
+    border-radius:12px;
+    text-align:center;
+    font-weight:bold;
+}
+
+.pending-stat{
+    background:#fff4db;
+    color:#9a6700;
+}
+
+.confirmed-stat{
+    background:#eaf8ef;
+    color:#18794e;
+}
+
+.rejected-stat{
+    background:#fdecec;
+    color:#b42318;
+}
+
+/* =========================
+   PAYMENT CARDS
+========================= */
+
+.payment-card{
+    border:1px solid #e4e7ec;
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:15px;
+}
+
+.payment-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.request-code{
+    font-size:18px;
+    font-weight:bold;
+    color:#075fa0;
+}
+
+.status-badge{
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.pending-badge{
+    background:#fff4db;
+    color:#9a6700;
+}
+
+.confirmed-badge{
+    background:#eaf8ef;
+    color:#18794e;
+}
+
+.rejected-badge{
+    background:#fdecec;
+    color:#b42318;
+}
+
+.payment-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    font-size:14px;
+}
+
+.info-label{
+    color:#667085;
+    font-size:12px;
+}
+
+.info-value{
+    font-weight:bold;
+    margin-top:3px;
+}
+
+.action-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:16px;
+}
+
+.confirm-btn{
+    background:#159947;
+    color:white;
+    border:0;
+    padding:11px 15px;
+    border-radius:9px;
+    font-weight:bold;
+}
+
+.reject-btn{
+    background:#d92d20;
+    color:white;
+    border:0;
+    padding:11px 15px;
+    border-radius:9px;
+    font-weight:bold;
+}
+
+.small-btn{
+    border:0;
+    padding:9px 12px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+/* =========================
+   DELIVERY CARDS
+========================= */
+
+.delivery-card{
+    border:1px solid #e4e7ec;
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:15px;
+}
+
+.delivery-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.delivery-name{
+    font-size:16px;
+    font-weight:bold;
+}
+
+.delivery-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:14px;
+}
+
+.delivery-actions{
+    margin-top:18px;
+}
+
+.delivery-actions select{
+    width:100%;
+    max-width:350px;
+    padding:12px;
+    border:1px solid #ccd5e0;
+    border-radius:9px;
+}
+
+.warning{
+    background:#fff4db;
+    color:#9a6700;
+    padding:12px;
+    border-radius:9px;
+    margin-top:12px;
+    font-size:14px;
+}
+
+/* =========================
    REQUEST CARDS
-===================================================== */
+========================= */
 
 .request-card{
-    background:white;
-    border-radius:13px;
-    margin-bottom:20px;
-    padding:20px;
-    box-shadow:0 3px 12px rgba(0,0,0,.07);
+    border:1px solid #e4e7ec;
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:15px;
 }
 
 .request-header{
     display:flex;
     justify-content:space-between;
+    gap:10px;
     align-items:center;
-    gap:15px;
-    flex-wrap:wrap;
-    border-bottom:1px solid #e5e7eb;
-    padding-bottom:15px;
 }
 
-.request-code{
-    font-weight:bold;
-    color:#071b33;
-    font-size:18px;
-}
-
-.status{
-    padding:7px 12px;
-    border-radius:20px;
-    font-size:13px;
-    font-weight:bold;
-}
-
-.status-New{
-    background:#fff3cd;
-    color:#856404;
-}
-
-.status-Accepted{
-    background:#dbeafe;
-    color:#1e40af;
-}
-
-.status-In-Progress{
-    background:#e0e7ff;
-    color:#3730a3;
-}
-
-.status-Completed{
-    background:#dcfce7;
-    color:#166534;
-}
-
-.details{
+.request-details{
     display:grid;
     grid-template-columns:repeat(2,1fr);
     gap:12px;
-    margin-top:18px;
-}
-
-.detail{
-    background:#f8fafc;
-    padding:12px;
-    border-radius:8px;
-}
-
-.detail b{
-    display:block;
-    color:#667085;
-    font-size:12px;
-    margin-bottom:4px;
-}
-
-.actions{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-top:18px;
-}
-
-.whatsapp{
-    background:#25d366;
-    color:white;
-}
-
-.call{
-    background:#071b33;
-    color:white;
-}
-
-.receipt{
-    background:#e5e7eb;
-    color:#172033;
-}
-
-.management{
-    border-top:1px solid #e5e7eb;
-    margin-top:18px;
-    padding-top:18px;
-}
-
-.management-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-}
-
-.save{
-    background:#f4c400;
-    color:#071b33;
     margin-top:15px;
 }
 
+.request-card input,
+.request-card select,
+.request-card textarea{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccd5e0;
+    border-radius:8px;
+    margin-top:5px;
+}
+
+.request-card textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+.save-btn{
+    margin-top:12px;
+    border:0;
+    background:#0877c9;
+    color:white;
+    padding:11px 15px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.whatsapp-btn{
+    background:#159947;
+    color:white;
+}
+
+.call-btn{
+    background:#344054;
+    color:white;
+}
+
+.receipt-btn{
+    background:#7f56d9;
+    color:white;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
 .empty{
     text-align:center;
-    background:white;
-    padding:40px;
-    border-radius:12px;
+    padding:25px;
     color:#667085;
+    background:#f8fafc;
+    border-radius:12px;
 }
 
-.loading{
-    text-align:center;
-    padding:30px;
+/* =========================
+   TOAST
+========================= */
+
+#toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    z-index:9999;
+    max-width:350px;
+    padding:14px 18px;
+    border-radius:10px;
+    color:white;
+    background:#172033;
+    box-shadow:0 8px 25px rgba(0,0,0,.25);
+    display:none;
 }
 
+#toast.success{
+    background:#159947;
+}
 
-/* =====================================================
+#toast.error{
+    background:#d92d20;
+}
+
+/* =========================
    MOBILE
-===================================================== */
+========================= */
 
-@media(max-width:850px){
+@media(max-width:800px){
+
+    .header-inner{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .header-right{
+        width:100%;
+        justify-content:space-between;
+    }
+
+    .admin-email{
+        max-width:70%;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+    }
 
     .stats{
         grid-template-columns:repeat(2,1fr);
     }
 
-    .details,
-    .management-grid{
+    .admin-controls{
         grid-template-columns:1fr;
     }
 
-    .admin-control-grid{
+    .payment-grid,
+    .request-details{
+        grid-template-columns:1fr;
+    }
+
+    .delivery-grid{
+        grid-template-columns:1fr;
+    }
+
+    .payment-summary{
         grid-template-columns:1fr;
     }
 
 }
 
-@media(max-width:550px){
+@media(max-width:500px){
 
-    header{
-        padding:15px;
+    .container{
+        width:calc(100% - 20px);
+        margin-top:15px;
     }
 
-    main{
+    .section{
         padding:15px;
     }
 
     .stats{
-        grid-template-columns:1fr 1fr;
-        gap:10px;
+        gap:9px;
     }
 
-    .stat{
-        padding:15px;
+    .stat-card{
+        padding:14px;
     }
 
-    .stat strong{
+    .stat-number{
         font-size:25px;
     }
 
-    .login-card{
-        padding:25px;
+    .brand h1{
+        font-size:18px;
+    }
+
+    .control-card{
+        padding:17px;
+    }
+
+    .payment-card,
+    .delivery-card,
+    .request-card{
+        padding:14px;
     }
 
 }
@@ -459,20 +715,21 @@ label{
 
 <body>
 
+<!-- =========================================================
+     LOGIN SCREEN
+========================================================= -->
 
-<!-- =====================================================
-     LOGIN
-===================================================== -->
+<div id="loginScreen">
 
-<div id="loginScreen" class="login-screen">
+    <div class="login-box">
 
-    <div class="login-card">
+        <div class="logo">🏍️</div>
 
         <h1>NB Logistics Hub</h1>
 
-        <p>
-            Private Delivery Control Center
-        </p>
+        <div class="login-subtitle">
+            Private Admin Control Center
+        </div>
 
         <label>Email</label>
 
@@ -480,6 +737,7 @@ label{
             type="email"
             id="loginEmail"
             placeholder="Admin email"
+            autocomplete="email"
         >
 
         <label>Password</label>
@@ -488,18 +746,19 @@ label{
             type="password"
             id="loginPassword"
             placeholder="Password"
+            autocomplete="current-password"
         >
 
         <button
-            class="login-btn"
+            class="primary-btn"
             onclick="login()"
         >
-            Sign In
+            🔐 Sign In
         </button>
 
         <div
             id="loginError"
-            class="error"
+            class="login-error"
         ></div>
 
     </div>
@@ -507,1106 +766,2190 @@ label{
 </div>
 
 
-
-<!-- =====================================================
-     CONTROL CENTER
-===================================================== -->
+<!-- =========================================================
+     ADMIN APPLICATION
+========================================================= -->
 
 <div
-    id="controlCenter"
-    style="display:none;"
+    id="adminApp"
+    class="hidden"
 >
 
-<header>
+    <!-- HEADER -->
 
-    <div class="logo">
-        NB <span>Logistics Hub</span>
-    </div>
+    <header class="header">
 
-    <div class="header-right">
+        <div class="header-inner">
 
-        <div
-            id="headerEmail"
-            class="header-email"
-        ></div>
+            <div class="brand">
 
-        <button
-            class="logout"
-            onclick="logout()"
+                <div class="brand-icon">🏍️</div>
+
+                <div>
+                    <h1>NB Logistics Hub</h1>
+                    <p>Private Admin Control Center</p>
+                </div>
+
+            </div>
+
+            <div class="header-right">
+
+                <div
+                    id="adminEmail"
+                    class="admin-email"
+                >
+                    Admin
+                </div>
+
+                <button
+                    class="logout-btn"
+                    onclick="logout()"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main class="container">
+
+
+        <!-- PAGE TITLE -->
+
+        <div class="page-title">
+
+            <h2>⚙️ Admin Control Center</h2>
+
+            <p>
+                Manage payments, deliveries and customer requests from one place.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             STATISTICS
+        ================================================== -->
+
+        <div class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Total Requests
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="totalRequests"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Accepted
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="acceptedRequests"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    In Progress
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="progressRequests"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    Completed
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="completedRequests"
+                >
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             QUICK ADMIN CONTROLS
+        ================================================== -->
+
+        <div class="admin-controls">
+
+
+            <div class="control-card payment-control">
+
+                <h3>💳 Payment Verification</h3>
+
+                <p>
+                    Review customer payment notifications and confirm or reject
+                    payments after checking the actual OPay transfer.
+                </p>
+
+                <div class="control-buttons">
+
+                    <button
+                        class="control-btn btn-payment"
+                        onclick="scrollToSection('paymentSection')"
+                    >
+                        💳 Manage Payments
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="control-card delivery-control">
+
+                <h3>🏍️ Delivery Management</h3>
+
+                <p>
+                    Move deliveries through Accepted → In Progress → Completed.
+                </p>
+
+                <div class="control-buttons">
+
+                    <button
+                        class="control-btn btn-delivery"
+                        onclick="scrollToSection('deliverySection')"
+                    >
+                        🏍️ Manage Deliveries
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             GLOBAL REFRESH
+        ================================================== -->
+
+        <div style="margin-bottom:20px;">
+
+            <button
+                class="control-btn refresh-btn"
+                onclick="refreshAll()"
+            >
+                🔄 Refresh Everything
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             PAYMENT VERIFICATION
+        ================================================== -->
+
+        <section
+            id="paymentSection"
+            class="section"
         >
-            Logout
-        </button>
 
-    </div>
+            <div class="section-header">
 
-</header>
-
-
-<main>
-
-    <h1 class="dashboard-title">
-        Delivery Control Center
-    </h1>
-
-    <p class="subtitle">
-        Manage your Ilorin motorcycle deliveries.
-    </p>
-
-
-
-    <!-- =================================================
-         ADMIN CONTROLS
-    ================================================== -->
-
-    <section class="admin-controls">
-
-        <h2 class="admin-controls-title">
-            ⚙️ Admin Controls
-        </h2>
-
-        <p class="admin-controls-subtitle">
-            Use these controls to verify payments and manage delivery progress.
-        </p>
-
-
-        <div class="admin-control-grid">
-
-
-            <!-- PAYMENT CONTROL -->
-
-            <div class="admin-control-card payment">
-
-                <div class="admin-control-icon">
-                    💳
-                </div>
-
-                <h3>
-                    Payment Verification
-                </h3>
-
-                <p>
-                    Review customer payment notifications and confirm or reject payments after verification.
-                </p>
+                <h2>
+                    💳 Payment Verification
+                </h2>
 
                 <button
-                    class="admin-control-btn payment-btn"
-                    onclick="openPaymentControl()"
+                    class="small-btn refresh-btn"
+                    onclick="loadPayments()"
                 >
-                    💳 Open Payment Verification
+                    🔄 Refresh
                 </button>
 
             </div>
 
 
+            <div class="payment-summary">
 
-            <!-- DELIVERY CONTROL -->
+                <div class="payment-stat pending-stat">
 
-            <div class="admin-control-card delivery">
+                    🟠 Pending
 
-                <div class="admin-control-icon">
-                    🏍️
+                    <div
+                        id="pendingPaymentCount"
+                        style="font-size:24px;margin-top:5px;"
+                    >
+                        0
+                    </div>
+
                 </div>
 
-                <h3>
-                    Delivery Management
-                </h3>
 
-                <p>
-                    Control delivery progress and move approved deliveries through Accepted, In Progress and Completed.
-                </p>
+                <div class="payment-stat confirmed-stat">
+
+                    🟢 Confirmed
+
+                    <div
+                        id="confirmedPaymentCount"
+                        style="font-size:24px;margin-top:5px;"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="payment-stat rejected-stat">
+
+                    🔴 Rejected
+
+                    <div
+                        id="rejectedPaymentCount"
+                        style="font-size:24px;margin-top:5px;"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <h3>
+                🟠 Payment Notifications Awaiting Verification
+            </h3>
+
+            <div id="pendingPayments">
+
+                <div class="empty">
+                    Loading...
+                </div>
+
+            </div>
+
+
+            <h3>
+                🟢 Confirmed Payments
+            </h3>
+
+            <div id="confirmedPayments">
+
+                <div class="empty">
+                    Loading...
+                </div>
+
+            </div>
+
+
+            <h3>
+                🔴 Rejected Payments
+            </h3>
+
+            <div id="rejectedPayments">
+
+                <div class="empty">
+                    Loading...
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             DELIVERY MANAGEMENT
+        ================================================== -->
+
+        <section
+            id="deliverySection"
+            class="section"
+        >
+
+            <div class="section-header">
+
+                <h2>
+                    🏍️ Delivery Management
+                </h2>
 
                 <button
-                    class="admin-control-btn delivery-btn"
-                    onclick="openDeliveryControl()"
+                    class="small-btn refresh-btn"
+                    onclick="loadDeliveries()"
                 >
-                    🏍️ Open Delivery Control
+                    🔄 Refresh
                 </button>
 
             </div>
 
-        </div>
 
-    </section>
-
-
-
-    <!-- =================================================
-         STATS
-    ================================================== -->
-
-    <div class="stats">
-
-        <div class="stat">
-
-            <h3>
-                Total Requests
-            </h3>
-
-            <strong id="totalCount">
-                0
-            </strong>
-
-        </div>
+            <p style="color:#667085;">
+                Delivery flow:
+                <strong>Accepted → In Progress → Completed</strong>.
+                Payment confirmation is handled separately.
+            </p>
 
 
-        <div class="stat">
+            <div id="deliveryList">
 
-            <h3>
-                New
-            </h3>
+                <div class="empty">
+                    Loading deliveries...
+                </div>
 
-            <strong id="newCount">
-                0
-            </strong>
+            </div>
 
-        </div>
+        </section>
 
 
-        <div class="stat">
+        <!-- =================================================
+             CUSTOMER REQUESTS
+        ================================================== -->
 
-            <h3>
-                In Progress
-            </h3>
+        <section class="section">
 
-            <strong id="progressCount">
-                0
-            </strong>
+            <div class="section-header">
 
-        </div>
+                <h2>
+                    📦 Customer Requests
+                </h2>
 
+                <button
+                    class="small-btn refresh-btn"
+                    onclick="loadRequests()"
+                >
+                    🔄 Refresh
+                </button>
 
-        <div class="stat">
-
-            <h3>
-                Completed
-            </h3>
-
-            <strong id="completedCount">
-                0
-            </strong>
-
-        </div>
-
-    </div>
+            </div>
 
 
+            <div id="requestList">
 
-    <!-- =================================================
-         REFRESH
-    ================================================== -->
+                <div class="empty">
+                    Loading requests...
+                </div>
 
-    <button
-        class="refresh"
-        onclick="loadRequests()"
-    >
-        🔄 Refresh Requests
-    </button>
+            </div>
+
+        </section>
 
 
-
-    <!-- =================================================
-         REQUESTS
-    ================================================== -->
-
-    <div id="requestsContainer">
-
-        <div class="loading">
-            Loading delivery requests...
-        </div>
-
-    </div>
-
-</main>
+    </main>
 
 </div>
 
+
+<div id="toast"></div>
 
 
 <script>
 
-
-/* =====================================================
+/* =========================================================
    SUPABASE
-===================================================== */
+========================================================= */
 
 const SUPABASE_URL =
-"https://kygkgcpuiwawatugkfne.supabase.co";
+    "https://kygkgcpuiwawatugkfne.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
+    "sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
 
 const supabaseClient =
-supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
+/* =========================================================
+   GLOBAL DATA
+========================================================= */
 
-/* =====================================================
-   DEFAULT CUSTOMER MESSAGES
-===================================================== */
-
-const defaultMessages = {
-
-    "New":
-    "Your delivery request has been received by NB Logistics Hub.",
-
-    "Accepted":
-    "Your delivery request has been accepted by NB Logistics Hub. Your delivery will be arranged shortly.",
-
-    "In Progress":
-    "Your delivery goods have been collected by NB Logistics Hub and are on the way to the delivery point.",
-
-    "Completed":
-    "Your delivery has been delivered to the final destination."
-
-};
+let allRequests = [];
 
 
-
-/* =====================================================
-   ADMIN NAVIGATION
-===================================================== */
-
-function openPaymentControl(){
-
-    window.location.href =
-        "NB_Logistics_Admin_Payments.html";
-
-}
-
-
-function openDeliveryControl(){
-
-    window.location.href =
-        "NB_Logistics_Admin_Delivery.html";
-
-}
-
-
-
-/* =====================================================
+/* =========================================================
    LOGIN
-===================================================== */
+========================================================= */
 
 async function login(){
 
     const email =
-        document.getElementById("loginEmail")
-        .value
-        .trim();
+        document.getElementById("loginEmail").value.trim();
 
     const password =
-        document.getElementById("loginPassword")
-        .value;
+        document.getElementById("loginPassword").value;
 
     const errorBox =
         document.getElementById("loginError");
 
-    errorBox.style.display =
-        "none";
-
+    errorBox.style.display = "none";
 
     if(!email || !password){
 
         errorBox.textContent =
             "Please enter your email and password.";
 
-        errorBox.style.display =
-            "block";
+        errorBox.style.display = "block";
 
         return;
     }
 
+    try{
 
-    const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
+        const { data, error } =
+            await supabaseClient.auth.signInWithPassword({
+                email:email,
+                password:password
+            });
 
-            email:
-                email,
+        if(error){
 
-            password:
-                password
+            errorBox.textContent =
+                error.message;
 
-        });
+            errorBox.style.display =
+                "block";
 
+            return;
+        }
 
-    if(error){
+        if(data && data.user){
+
+            showAdmin(data.user);
+
+        }
+
+    }catch(error){
 
         errorBox.textContent =
-            error.message;
+            error.message || "Login failed.";
 
         errorBox.style.display =
             "block";
-
-        return;
     }
-
-
-    showControlCenter(
-        data.user
-    );
-
 }
 
 
+/* =========================================================
+   CHECK SESSION
+========================================================= */
 
-/* =====================================================
+async function checkSession(){
+
+    try{
+
+        const { data } =
+            await supabaseClient.auth.getSession();
+
+        if(data.session){
+
+            showAdmin(data.session.user);
+
+        }else{
+
+            showLogin();
+
+        }
+
+    }catch(error){
+
+        showLogin();
+
+    }
+}
+
+
+/* =========================================================
+   SHOW LOGIN
+========================================================= */
+
+function showLogin(){
+
+    document
+        .getElementById("loginScreen")
+        .classList.remove("hidden");
+
+    document
+        .getElementById("adminApp")
+        .classList.add("hidden");
+}
+
+
+/* =========================================================
+   SHOW ADMIN
+========================================================= */
+
+function showAdmin(user){
+
+    document
+        .getElementById("loginScreen")
+        .classList.add("hidden");
+
+    document
+        .getElementById("adminApp")
+        .classList.remove("hidden");
+
+    document
+        .getElementById("adminEmail")
+        .textContent =
+            user.email || "Admin";
+
+    refreshAll();
+}
+
+
+/* =========================================================
    LOGOUT
-===================================================== */
+========================================================= */
 
 async function logout(){
 
     await supabaseClient.auth.signOut();
 
-
-    document.getElementById(
-        "controlCenter"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "loginScreen"
-    ).style.display =
-        "flex";
+    showLogin();
 
 }
 
 
+/* =========================================================
+   REFRESH EVERYTHING
+========================================================= */
 
-/* =====================================================
-   SHOW CONTROL CENTER
-===================================================== */
+async function refreshAll(){
 
-function showControlCenter(user){
-
-    document.getElementById(
-        "loginScreen"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "controlCenter"
-    ).style.display =
-        "block";
-
-
-    document.getElementById(
-        "headerEmail"
-    ).textContent =
-        "Signed in as " +
-        user.email;
-
-
-    loadRequests();
+    await Promise.all([
+        loadRequests(),
+        loadPayments(),
+        loadDeliveries()
+    ]);
 
 }
 
 
-
-/* =====================================================
-   SESSION
-===================================================== */
-
-async function checkSession(){
-
-    const { data } =
-        await supabaseClient.auth.getSession();
-
-
-    if(data.session){
-
-        showControlCenter(
-            data.session.user
-        );
-
-    }
-
-}
-
-
-
-/* =====================================================
+/* =========================================================
    LOAD REQUESTS
-===================================================== */
+========================================================= */
 
 async function loadRequests(){
 
-    const container =
-        document.getElementById(
-            "requestsContainer"
-        );
+    try{
 
+        const { data, error } =
+            await supabaseClient
+                .from("delivery_requests")
+                .select("*")
+                .order("created_at", {
+                    ascending:false
+                });
 
-    container.innerHTML =
-        '<div class="loading">' +
-        'Loading delivery requests...' +
-        '</div>';
+        if(error){
 
+            console.error(error);
 
-    const { data, error } =
-        await supabaseClient
-        .from("delivery_requests")
-        .select("*")
-        .order(
-            "created_at",
-            {
-                ascending:false
-            }
-        );
+            showToast(
+                "Could not load requests.",
+                "error"
+            );
 
+            return;
+        }
 
-    if(error){
+        allRequests = data || [];
 
-        container.innerHTML =
-            '<div class="empty">' +
-            'Unable to load delivery requests.<br><br>' +
-            error.message +
-            '</div>';
+        updateStats();
 
-        return;
+        renderRequests();
+
+    }catch(error){
+
+        console.error(error);
+
     }
-
-
-    updateStats(
-        data || []
-    );
-
-
-    renderRequests(
-        data || []
-    );
 
 }
 
 
-
-/* =====================================================
+/* =========================================================
    UPDATE STATS
-===================================================== */
+========================================================= */
 
-function updateStats(requests){
+function updateStats(){
 
-    document.getElementById(
-        "totalCount"
-    ).textContent =
-        requests.length;
+    const total =
+        allRequests.length;
 
-
-    document.getElementById(
-        "newCount"
-    ).textContent =
-        requests.filter(
-            r =>
-            r.status === "New"
+    const accepted =
+        allRequests.filter(
+            r => normalize(r.status) === "accepted"
         ).length;
 
-
-    document.getElementById(
-        "progressCount"
-    ).textContent =
-        requests.filter(
-            r =>
-            r.status === "In Progress"
+    const progress =
+        allRequests.filter(
+            r => normalize(r.status) === "in progress"
         ).length;
 
-
-    document.getElementById(
-        "completedCount"
-    ).textContent =
-        requests.filter(
-            r =>
-            r.status === "Completed"
+    const completed =
+        allRequests.filter(
+            r => normalize(r.status) === "completed"
         ).length;
+
+    document.getElementById("totalRequests")
+        .textContent = total;
+
+    document.getElementById("acceptedRequests")
+        .textContent = accepted;
+
+    document.getElementById("progressRequests")
+        .textContent = progress;
+
+    document.getElementById("completedRequests")
+        .textContent = completed;
 
 }
 
 
+/* =========================================================
+   PAYMENT STATUS HELPERS
+========================================================= */
 
-/* =====================================================
-   RENDER REQUESTS
-===================================================== */
+function normalize(value){
 
-function renderRequests(requests){
-
-    const container =
-        document.getElementById(
-            "requestsContainer"
-        );
+    return String(value || "")
+        .trim()
+        .toLowerCase();
+}
 
 
-    if(!requests.length){
+function isPaymentConfirmed(row){
 
-        container.innerHTML =
-            '<div class="empty">' +
-            'No delivery requests yet.' +
-            '</div>';
+    const paymentStatus =
+        normalize(row.payment_status);
 
-        return;
+    return (
+        paymentStatus === "confirmed" ||
+        !!row.payment_confirmed_at ||
+        !!row.paid_at
+    );
+}
+
+
+function paymentState(row){
+
+    if(isPaymentConfirmed(row)){
+
+        return "confirmed";
+
     }
 
+    const status =
+        normalize(row.payment_status);
+
+    if(status === "rejected"){
+
+        return "rejected";
+
+    }
+
+    if(
+        row.payment_submitted_at ||
+        status === "submitted" ||
+        status === "pending"
+    ){
+
+        return "pending";
+
+    }
+
+    return "none";
+}
+
+
+/* =========================================================
+   LOAD PAYMENTS
+========================================================= */
+
+async function loadPayments(){
+
+    const pendingBox =
+        document.getElementById("pendingPayments");
+
+    const confirmedBox =
+        document.getElementById("confirmedPayments");
+
+    const rejectedBox =
+        document.getElementById("rejectedPayments");
+
+    pendingBox.innerHTML =
+        '<div class="empty">Loading...</div>';
+
+    confirmedBox.innerHTML =
+        '<div class="empty">Loading...</div>';
+
+    rejectedBox.innerHTML =
+        '<div class="empty">Loading...</div>';
+
+    try{
+
+        const { data, error } =
+            await supabaseClient
+                .from("delivery_requests")
+                .select("*")
+                .not("payment_submitted_at", "is", null)
+                .order("payment_submitted_at", {
+                    ascending:false
+                });
+
+        if(error){
+
+            console.error(error);
+
+            pendingBox.innerHTML =
+                '<div class="empty">Unable to load payments.</div>';
+
+            confirmedBox.innerHTML =
+                '<div class="empty">Unable to load payments.</div>';
+
+            rejectedBox.innerHTML =
+                '<div class="empty">Unable to load payments.</div>';
+
+            return;
+        }
+
+        const rows = data || [];
+
+        const pending =
+            rows.filter(
+                r => paymentState(r) === "pending"
+            );
+
+        const confirmed =
+            rows.filter(
+                r => paymentState(r) === "confirmed"
+            );
+
+        const rejected =
+            rows.filter(
+                r => paymentState(r) === "rejected"
+            );
+
+
+        document.getElementById(
+            "pendingPaymentCount"
+        ).textContent = pending.length;
+
+        document.getElementById(
+            "confirmedPaymentCount"
+        ).textContent = confirmed.length;
+
+        document.getElementById(
+            "rejectedPaymentCount"
+        ).textContent = rejected.length;
+
+
+        pendingBox.innerHTML =
+            pending.length
+                ? pending.map(
+                    renderPendingPayment
+                  ).join("")
+                : '<div class="empty">No payments awaiting verification.</div>';
+
+
+        confirmedBox.innerHTML =
+            confirmed.length
+                ? confirmed.map(
+                    renderConfirmedPayment
+                  ).join("")
+                : '<div class="empty">No confirmed payments.</div>';
+
+
+        rejectedBox.innerHTML =
+            rejected.length
+                ? rejected.map(
+                    renderRejectedPayment
+                  ).join("")
+                : '<div class="empty">No rejected payments.</div>';
+
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =========================================================
+   PAYMENT CARD
+========================================================= */
+
+function renderPendingPayment(row){
+
+    return `
+        <div class="payment-card">
+
+            <div class="payment-top">
+
+                <div class="request-code">
+                    ${escapeHtml(row.request_code)}
+                </div>
+
+                <span class="status-badge pending-badge">
+                    🟠 PAYMENT PENDING
+                </span>
+
+            </div>
+
+            <div class="payment-grid">
+
+                <div>
+                    <div class="info-label">Customer</div>
+                    <div class="info-value">
+                        ${escapeHtml(row.customer_name)}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Phone</div>
+                    <div class="info-value">
+                        ${escapeHtml(row.phone || row.phone_number || "")}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Pickup</div>
+                    <div class="info-value">
+                        ${escapeHtml(row.pickup_location)}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Destination</div>
+                    <div class="info-value">
+                        ${escapeHtml(row.delivery_location)}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Package</div>
+                    <div class="info-value">
+                        ${escapeHtml(row.package_details)}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Delivery Fee</div>
+                    <div class="info-value">
+                        ${formatMoney(row.delivery_fee)}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Payment Method</div>
+                    <div class="info-value">
+                        ${escapeHtml(row.payment_method || "OPay")}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Payment Submitted</div>
+                    <div class="info-value">
+                        ${formatDate(row.payment_submitted_at)}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="action-row">
+
+                <button
+                    class="confirm-btn"
+                    onclick="confirmPayment('${escapeJs(row.request_code)}')"
+                >
+                    ✅ Confirm Payment
+                </button>
+
+                <button
+                    class="reject-btn"
+                    onclick="rejectPayment('${escapeJs(row.request_code)}')"
+                >
+                    ❌ Reject Payment
+                </button>
+
+            </div>
+
+        </div>
+    `;
+
+}
+
+
+/* =========================================================
+   CONFIRMED PAYMENT
+========================================================= */
+
+function renderConfirmedPayment(row){
+
+    return `
+        <div class="payment-card">
+
+            <div class="payment-top">
+
+                <div class="request-code">
+                    ${escapeHtml(row.request_code)}
+                </div>
+
+                <span class="status-badge confirmed-badge">
+                    🟢 PAYMENT CONFIRMED
+                </span>
+
+            </div>
+
+            <div class="payment-grid">
+
+                <div>
+                    <div class="info-label">Customer</div>
+                    <div class="info-value">
+                        ${escapeHtml(row.customer_name)}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Phone</div>
+                    <div class="info-value">
+                        ${escapeHtml(row.phone || row.phone_number || "")}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Delivery Fee</div>
+                    <div class="info-value">
+                        ${formatMoney(row.delivery_fee)}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Payment Method</div>
+                    <div class="info-value">
+                        ${escapeHtml(row.payment_method || "OPay")}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Payment Submitted</div>
+                    <div class="info-value">
+                        ${formatDate(row.payment_submitted_at)}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Payment Confirmed</div>
+                    <div class="info-value">
+                        ${formatDate(row.payment_confirmed_at)}
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="action-row">
+
+                <span
+                    style="
+                    background:#eaf8ef;
+                    color:#18794e;
+                    padding:9px 12px;
+                    border-radius:8px;
+                    font-weight:bold;
+                    "
+                >
+                    PAYMENT CONFIRMED
+                </span>
+
+            </div>
+
+        </div>
+    `;
+
+}
+
+
+/* =========================================================
+   REJECTED PAYMENT
+========================================================= */
+
+function renderRejectedPayment(row){
+
+    return `
+        <div class="payment-card">
+
+            <div class="payment-top">
+
+                <div class="request-code">
+                    ${escapeHtml(row.request_code)}
+                </div>
+
+                <span class="status-badge rejected-badge">
+                    🔴 PAYMENT REJECTED
+                </span>
+
+            </div>
+
+            <div class="payment-grid">
+
+                <div>
+                    <div class="info-label">Customer</div>
+                    <div class="info-value">
+                        ${escapeHtml(row.customer_name)}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Delivery Fee</div>
+                    <div class="info-value">
+                        ${formatMoney(row.delivery_fee)}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Payment Submitted</div>
+                    <div class="info-value">
+                        ${formatDate(row.payment_submitted_at)}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+}
+
+
+/* =========================================================
+   CONFIRM PAYMENT
+========================================================= */
+
+async function confirmPayment(requestCode){
+
+    const okay =
+        confirm(
+            "Confirm that you have actually verified the OPay transfer for " +
+            requestCode +
+            "?"
+        );
+
+    if(!okay) return;
+
+
+    try{
+
+        const now =
+            new Date().toISOString();
+
+        const { error } =
+            await supabaseClient
+                .from("delivery_requests")
+                .update({
+                    payment_status:"confirmed",
+                    payment_confirmed_at:now,
+                    paid_at:now
+                })
+                .eq(
+                    "request_code",
+                    requestCode
+                );
+
+        if(error){
+
+            console.error(error);
+
+            showToast(
+                "Payment confirmation failed: " +
+                error.message,
+                "error"
+            );
+
+            return;
+        }
+
+        showToast(
+            "Payment confirmed successfully.",
+            "success"
+        );
+
+        await refreshAll();
+
+    }catch(error){
+
+        showToast(
+            error.message || "Payment confirmation failed.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   REJECT PAYMENT
+========================================================= */
+
+async function rejectPayment(requestCode){
+
+    const okay =
+        confirm(
+            "Reject the payment notification for " +
+            requestCode +
+            "?"
+        );
+
+    if(!okay) return;
+
+
+    try{
+
+        const { error } =
+            await supabaseClient
+                .from("delivery_requests")
+                .update({
+                    payment_status:"rejected"
+                })
+                .eq(
+                    "request_code",
+                    requestCode
+                );
+
+        if(error){
+
+            console.error(error);
+
+            showToast(
+                "Payment rejection failed: " +
+                error.message,
+                "error"
+            );
+
+            return;
+        }
+
+        showToast(
+            "Payment rejected.",
+            "success"
+        );
+
+        await refreshAll();
+
+    }catch(error){
+
+        showToast(
+            error.message || "Payment rejection failed.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD DELIVERIES
+========================================================= */
+
+async function loadDeliveries(){
+
+    const container =
+        document.getElementById("deliveryList");
 
     container.innerHTML =
-        requests.map(
-            request => {
+        '<div class="empty">Loading deliveries...</div>';
 
-                const statusClass =
-                    String(
-                        request.status ||
-                        "New"
-                    )
-                    .replace(
-                        /\s+/g,
-                        "-"
-                    );
+    try{
+
+        const { data, error } =
+            await supabaseClient
+                .from("delivery_requests")
+                .select("*")
+                .order("created_at", {
+                    ascending:false
+                });
+
+        if(error){
+
+            console.error(error);
+
+            container.innerHTML =
+                '<div class="empty">Unable to load deliveries.</div>';
+
+            return;
+        }
+
+        if(!data || !data.length){
+
+            container.innerHTML =
+                '<div class="empty">No deliveries found.</div>';
+
+            return;
+        }
+
+        container.innerHTML =
+            data.map(
+                renderDelivery
+            ).join("");
+
+    }catch(error){
+
+        console.error(error);
+
+        container.innerHTML =
+            '<div class="empty">Unable to load deliveries.</div>';
+
+    }
+
+}
 
 
-                return `
+/* =========================================================
+   RENDER DELIVERY
+========================================================= */
 
-                <div class="request-card">
+function renderDelivery(row){
 
-                    <div class="request-header">
+    const status =
+        normalize(row.status);
 
-                        <div>
+    const confirmed =
+        isPaymentConfirmed(row);
 
-                            <div class="request-code">
-                                ${escapeHtml(
-                                    request.request_code ||
-                                    "No Request ID"
-                                )}
-                            </div>
+    let statusClass =
+        "pending-badge";
 
-                            <small>
-                                ${formatDate(
-                                    request.created_at
-                                )}
-                            </small>
+    if(status === "completed"){
+        statusClass = "confirmed-badge";
+    }
 
-                        </div>
+    const paymentBadge =
+        confirmed
+            ? `<span class="status-badge confirmed-badge">
+                    🟢 Payment Confirmed
+               </span>`
+            : `<span class="status-badge">
+                    ⚪ Payment Not Confirmed
+               </span>`;
 
-                        <div class="status status-${statusClass}">
-                            ${escapeHtml(
-                                request.status ||
-                                "New"
-                            )}
-                        </div>
 
+    let options = `
+        <option value="accepted"
+            ${status === "accepted" ? "selected" : ""}>
+            1️⃣ Accepted
+        </option>
+
+        <option value="in progress"
+            ${status === "in progress" ? "selected" : ""}
+            ${!confirmed ? "disabled" : ""}>
+            2️⃣ In Progress
+        </option>
+
+        <option value="completed"
+            ${status === "completed" ? "selected" : ""}
+            ${!confirmed || status === "accepted" ? "disabled" : ""}>
+            3️⃣ Completed
+        </option>
+    `;
+
+
+    return `
+        <div class="delivery-card">
+
+            <div class="delivery-top">
+
+                <div>
+
+                    <div class="request-code">
+                        ${escapeHtml(row.request_code)}
                     </div>
 
-
-                    <div class="details">
-
-                        <div class="detail">
-                            <b>CUSTOMER</b>
-                            ${escapeHtml(
-                                request.customer_name ||
-                                ""
-                            )}
-                        </div>
-
-
-                        <div class="detail">
-                            <b>PHONE</b>
-                            ${escapeHtml(
-                                request.phone ||
-                                ""
-                            )}
-                        </div>
-
-
-                        <div class="detail">
-                            <b>PICKUP</b>
-                            ${escapeHtml(
-                                request.pickup_location ||
-                                ""
-                            )}
-                        </div>
-
-
-                        <div class="detail">
-                            <b>DESTINATION</b>
-                            ${escapeHtml(
-                                request.delivery_location ||
-                                ""
-                            )}
-                        </div>
-
-
-                        <div class="detail">
-                            <b>PACKAGE / GOODS</b>
-                            ${escapeHtml(
-                                request.package_details ||
-                                ""
-                            )}
-                        </div>
-
-
-                        <div class="detail">
-                            <b>PREFERRED TIME</b>
-                            ${escapeHtml(
-                                request.preferred_time ||
-                                ""
-                            )}
-                        </div>
-
-
-                        <div class="detail">
-                            <b>DELIVERY FEE</b>
-                            ₦${Number(
-                                request.delivery_fee ||
-                                0
-                            ).toLocaleString()}
-                        </div>
-
-
-                        <div class="detail">
-                            <b>LAST UPDATED</b>
-                            ${formatDate(
-                                request.updated_at ||
-                                request.created_at
-                            )}
-                        </div>
-
-                    </div>
-
-
-                    <div class="actions">
-
-                        <button
-                            class="whatsapp"
-                            onclick="openWhatsApp(
-                                '${escapeJs(
-                                    request.phone ||
-                                    ""
-                                )}'
-                            )"
-                        >
-                            WhatsApp
-                        </button>
-
-
-                        <button
-                            class="call"
-                            onclick="callCustomer(
-                                '${escapeJs(
-                                    request.phone ||
-                                    ""
-                                )}'
-                            )"
-                        >
-                            📞 Call Customer
-                        </button>
-
-
-                        <button
-                            class="receipt"
-                            onclick="viewReceipt(
-                                '${escapeJs(
-                                    request.request_code ||
-                                    ""
-                                )}'
-                            )"
-                        >
-                            🧾 View Receipt
-                        </button>
-
-                    </div>
-
-
-                    <div class="management">
-
-                        <div class="management-grid">
-
-                            <div>
-
-                                <label>
-                                    Delivery Fee
-                                </label>
-
-                                <input
-                                    type="number"
-                                    id="fee-${request.id}"
-                                    value="${request.delivery_fee || ""}"
-                                    placeholder="Enter delivery fee"
-                                >
-
-                            </div>
-
-
-                            <div>
-
-                                <label>
-                                    Status
-                                </label>
-
-                                <select
-                                    id="status-${request.id}"
-                                    onchange="updateMessage(
-                                        '${escapeJs(
-                                            request.id
-                                        )}'
-                                    )"
-                                >
-
-                                    <option
-                                        value="New"
-                                        ${
-                                            request.status ===
-                                            "New"
-                                            ? "selected"
-                                            : ""
-                                        }
-                                    >
-                                        New
-                                    </option>
-
-
-                                    <option
-                                        value="Accepted"
-                                        ${
-                                            request.status ===
-                                            "Accepted"
-                                            ? "selected"
-                                            : ""
-                                        }
-                                    >
-                                        Accepted
-                                    </option>
-
-
-                                    <option
-                                        value="In Progress"
-                                        ${
-                                            request.status ===
-                                            "In Progress"
-                                            ? "selected"
-                                            : ""
-                                        }
-                                    >
-                                        In Progress
-                                    </option>
-
-
-                                    <option
-                                        value="Completed"
-                                        ${
-                                            request.status ===
-                                            "Completed"
-                                            ? "selected"
-                                            : ""
-                                        }
-                                    >
-                                        Completed
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-                        </div>
-
-
-                        <label>
-                            Customer Message
-                        </label>
-
-
-                        <textarea
-                            id="message-${request.id}"
-                            rows="3"
-                        >${escapeHtml(
-                            request.status_message ||
-                            defaultMessages[
-                                request.status
-                            ] ||
-                            ""
-                        )}</textarea>
-
-
-                        <button
-                            class="save"
-                            onclick="saveRequest(
-                                '${escapeJs(
-                                    request.id
-                                )}'
-                            )"
-                        >
-                            💾 Save Changes
-                        </button>
-
+                    <div class="delivery-name">
+                        Customer:
+                        ${escapeHtml(row.customer_name)}
                     </div>
 
                 </div>
 
-                `;
+                <div>
 
-            }
-        )
-        .join("");
+                    <span class="status-badge ${statusClass}">
+                        ${escapeHtml(
+                            row.status || "Accepted"
+                        )}
+                    </span>
+
+                    ${paymentBadge}
+
+                </div>
+
+            </div>
+
+
+            <div class="delivery-grid">
+
+                <div>
+                    <div class="info-label">Phone</div>
+                    <div class="info-value">
+                        ${escapeHtml(
+                            row.phone ||
+                            row.phone_number ||
+                            ""
+                        )}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Pickup</div>
+                    <div class="info-value">
+                        ${escapeHtml(
+                            row.pickup_location
+                        )}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Destination</div>
+                    <div class="info-value">
+                        ${escapeHtml(
+                            row.delivery_location
+                        )}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Package</div>
+                    <div class="info-value">
+                        ${escapeHtml(
+                            row.package_details
+                        )}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Delivery Fee</div>
+                    <div class="info-value">
+                        ${formatMoney(
+                            row.delivery_fee
+                        )}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Customer Approval</div>
+                    <div class="info-value">
+                        ${escapeHtml(
+                            row.customer_approval_status ||
+                            "Pending"
+                        )}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Payment Method</div>
+                    <div class="info-value">
+                        ${escapeHtml(
+                            row.payment_method ||
+                            "Not submitted"
+                        )}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="info-label">Last Updated</div>
+                    <div class="info-value">
+                        ${formatDate(
+                            row.updated_at
+                        )}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="delivery-actions">
+
+                <label>
+                    <strong>Change Delivery Status</strong>
+                </label>
+
+                <select
+                    id="delivery-${escapeHtml(row.id)}"
+                    onchange="changeDeliveryStatus(
+                        '${escapeJs(row.request_code)}',
+                        this.value
+                    )"
+                >
+
+                    ${options}
+
+                </select>
+
+
+                ${
+                    !confirmed &&
+                    status !== "completed"
+                    ?
+                    `
+                    <div class="warning">
+                        ⚠️ Payment has not been confirmed yet.
+                        The delivery should only be moved to
+                        <strong>In Progress</strong>
+                        after payment is verified.
+                    </div>
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+
+        </div>
+    `;
 
 }
 
 
+/* =========================================================
+   CHANGE DELIVERY STATUS
+========================================================= */
 
-/* =====================================================
-   UPDATE CUSTOMER MESSAGE
-===================================================== */
-
-function updateMessage(id){
+async function changeDeliveryStatus(
+    requestCode,
+    newStatus
+){
 
     const status =
-        document.getElementById(
-            "status-" + id
-        ).value;
+        normalize(newStatus);
 
 
-    const message =
-        document.getElementById(
-            "message-" + id
+    if(
+        status === "in progress" ||
+        status === "completed"
+    ){
+
+        const row =
+            allRequests.find(
+                r =>
+                    r.request_code === requestCode
+            );
+
+
+        if(row && !isPaymentConfirmed(row)){
+
+            alert(
+                "Payment must be confirmed before this delivery can move to In Progress or Completed."
+            );
+
+            await loadDeliveries();
+
+            return;
+        }
+
+    }
+
+
+    let statusMessage =
+        "Your delivery request has been accepted. We are preparing your delivery.";
+
+
+    if(status === "in progress"){
+
+        statusMessage =
+            "Your package is currently being delivered.";
+
+    }
+
+
+    if(status === "completed"){
+
+        statusMessage =
+            "Your delivery has been completed successfully.";
+
+    }
+
+
+    try{
+
+        const { error } =
+            await supabaseClient
+                .from("delivery_requests")
+                .update({
+
+                    status:
+                        status === "in progress"
+                            ? "In Progress"
+                            : status.charAt(0).toUpperCase() +
+                              status.slice(1),
+
+                    status_message:
+                        statusMessage,
+
+                    updated_at:
+                        new Date().toISOString()
+
+                })
+                .eq(
+                    "request_code",
+                    requestCode
+                );
+
+
+        if(error){
+
+            console.error(error);
+
+            showToast(
+                "Delivery update failed: " +
+                error.message,
+                "error"
+            );
+
+            await loadDeliveries();
+
+            return;
+        }
+
+
+        showToast(
+            "Delivery status updated successfully.",
+            "success"
         );
 
 
-    message.value =
-        defaultMessages[
-            status
-        ] ||
-        "";
+        await refreshAll();
+
+
+    }catch(error){
+
+        showToast(
+            error.message ||
+            "Delivery update failed.",
+            "error"
+        );
+
+        await loadDeliveries();
+
+    }
 
 }
 
 
+/* =========================================================
+   RENDER REQUESTS
+========================================================= */
 
-/* =====================================================
-   SAVE REQUEST
-===================================================== */
+function renderRequests(){
 
-async function saveRequest(id){
+    const container =
+        document.getElementById("requestList");
 
-    const fee =
-        document.getElementById(
-            "fee-" + id
-        ).value;
+    if(!allRequests.length){
 
-
-    const status =
-        document.getElementById(
-            "status-" + id
-        ).value;
-
-
-    const statusMessage =
-        document.getElementById(
-            "message-" + id
-        ).value;
-
-
-    const { error } =
-        await supabaseClient
-        .from("delivery_requests")
-        .update({
-
-            delivery_fee:
-                fee === ""
-                ? null
-                : Number(fee),
-
-            status:
-                status,
-
-            status_message:
-                statusMessage,
-
-            updated_at:
-                new Date().toISOString()
-
-        })
-        .eq(
-            "id",
-            id
-        );
-
-
-    if(error){
-
-        alert(
-            "Could not save changes:\n\n" +
-            error.message
-        );
+        container.innerHTML =
+            '<div class="empty">No customer requests found.</div>';
 
         return;
     }
 
 
-    alert(
-        "Delivery request updated successfully."
-    );
-
-
-    loadRequests();
+    container.innerHTML =
+        allRequests.map(
+            renderRequest
+        ).join("");
 
 }
 
 
+/* =========================================================
+   REQUEST CARD
+========================================================= */
 
-/* =====================================================
-   WHATSAPP
-===================================================== */
+function renderRequest(row){
 
-function openWhatsApp(phone){
+    const phone =
+        row.phone ||
+        row.phone_number ||
+        "";
 
-    let number =
-        String(phone)
-        .replace(
-            /\D/g,
-            ""
+
+    return `
+        <div class="request-card">
+
+            <div class="request-header">
+
+                <div>
+
+                    <div class="request-code">
+                        ${escapeHtml(row.request_code)}
+                    </div>
+
+                    <strong>
+                        ${escapeHtml(row.customer_name)}
+                    </strong>
+
+                </div>
+
+                <span class="status-badge confirmed-badge">
+                    ${escapeHtml(
+                        row.status ||
+                        "New"
+                    )}
+                </span>
+
+            </div>
+
+
+            <div class="request-details">
+
+                <div>
+
+                    <div class="info-label">
+                        Phone
+                    </div>
+
+                    <div class="info-value">
+                        ${escapeHtml(phone)}
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="info-label">
+                        Pickup
+                    </div>
+
+                    <div class="info-value">
+                        ${escapeHtml(
+                            row.pickup_location
+                        )}
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="info-label">
+                        Destination
+                    </div>
+
+                    <div class="info-value">
+                        ${escapeHtml(
+                            row.delivery_location
+                        )}
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="info-label">
+                        Package
+                    </div>
+
+                    <div class="info-value">
+                        ${escapeHtml(
+                            row.package_details
+                        )}
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Delivery Fee
+                    </label>
+
+                    <input
+                        id="fee-${escapeHtml(row.id)}"
+                        type="number"
+                        min="0"
+                        step="100"
+                        value="${escapeHtml(
+                            row.delivery_fee ?? ""
+                        )}"
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Status
+                    </label>
+
+                    <select
+                        id="status-${escapeHtml(row.id)}"
+                    >
+
+                        <option
+                            value="New"
+                            ${normalize(row.status) === "new" ? "selected" : ""}
+                        >
+                            New
+                        </option>
+
+                        <option
+                            value="Accepted"
+                            ${normalize(row.status) === "accepted" ? "selected" : ""}
+                        >
+                            Accepted
+                        </option>
+
+                        <option
+                            value="In Progress"
+                            ${normalize(row.status) === "in progress" ? "selected" : ""}
+                        >
+                            In Progress
+                        </option>
+
+                        <option
+                            value="Completed"
+                            ${normalize(row.status) === "completed" ? "selected" : ""}
+                        >
+                            Completed
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div style="margin-top:15px;">
+
+                <label>
+                    Customer Message
+                </label>
+
+                <textarea
+                    id="message-${escapeHtml(row.id)}"
+                >${escapeHtml(
+                    row.status_message || ""
+                )}</textarea>
+
+            </div>
+
+
+            <div class="action-row">
+
+                ${
+                    phone
+                    ?
+                    `
+                    <button
+                        class="small-btn whatsapp-btn"
+                        onclick="openWhatsApp('${escapeJs(phone)}')"
+                    >
+                        WhatsApp
+                    </button>
+
+                    <button
+                        class="small-btn call-btn"
+                        onclick="callCustomer('${escapeJs(phone)}')"
+                    >
+                        Call
+                    </button>
+                    `
+                    :
+                    ""
+                }
+
+
+                <button
+                    class="small-btn receipt-btn"
+                    onclick="viewReceipt('${escapeJs(row.request_code)}')"
+                >
+                    Receipt
+                </button>
+
+
+                <button
+                    class="save-btn"
+                    onclick="saveRequest('${escapeJs(row.id)}')"
+                >
+                    💾 Save Changes
+                </button>
+
+            </div>
+
+        </div>
+    `;
+
+}
+
+
+/* =========================================================
+   SAVE REQUEST
+========================================================= */
+
+async function saveRequest(id){
+
+    const feeInput =
+        document.getElementById(
+            "fee-" + id
+        );
+
+    const statusInput =
+        document.getElementById(
+            "status-" + id
+        );
+
+    const messageInput =
+        document.getElementById(
+            "message-" + id
         );
 
 
-    if(number.startsWith("0")){
+    const fee =
+        feeInput.value
+            ? Number(feeInput.value)
+            : null;
 
-        number =
+
+    const status =
+        statusInput.value;
+
+
+    const message =
+        messageInput.value.trim();
+
+
+    try{
+
+        const { error } =
+            await supabaseClient
+                .from("delivery_requests")
+                .update({
+
+                    delivery_fee:
+                        fee,
+
+                    status:
+                        status,
+
+                    status_message:
+                        message,
+
+                    updated_at:
+                        new Date().toISOString()
+
+                })
+                .eq(
+                    "id",
+                    id
+                );
+
+
+        if(error){
+
+            console.error(error);
+
+            showToast(
+                "Could not save changes: " +
+                error.message,
+                "error"
+            );
+
+            return;
+        }
+
+
+        showToast(
+            "Request updated successfully.",
+            "success"
+        );
+
+
+        await refreshAll();
+
+
+    }catch(error){
+
+        showToast(
+            error.message ||
+            "Could not save changes.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   WHATSAPP
+========================================================= */
+
+function openWhatsApp(phone){
+
+    let clean =
+        String(phone)
+            .replace(/\D/g,"");
+
+
+    if(clean.startsWith("0")){
+
+        clean =
             "234" +
-            number.substring(1);
+            clean.substring(1);
 
     }
 
 
     window.open(
-        "https://wa.me/" +
-        number,
+        "https://wa.me/" + clean,
         "_blank"
     );
 
 }
 
 
-
-/* =====================================================
+/* =========================================================
    CALL
-===================================================== */
+========================================================= */
 
 function callCustomer(phone){
 
     window.location.href =
-        "tel:" +
-        phone;
+        "tel:" + phone;
 
 }
 
 
-
-/* =====================================================
+/* =========================================================
    RECEIPT
-===================================================== */
+========================================================= */
 
 function viewReceipt(requestCode){
 
     window.open(
-
         "NB_Logistics_Receipt.html?request=" +
-        encodeURIComponent(
-            requestCode
-        ),
-
+        encodeURIComponent(requestCode),
         "_blank"
-
     );
 
 }
 
 
+/* =========================================================
+   SCROLL TO SECTION
+========================================================= */
 
-/* =====================================================
-   DATE
-===================================================== */
+function scrollToSection(id){
 
-function formatDate(date){
+    const element =
+        document.getElementById(id);
 
-    if(!date)
-        return "";
+    if(element){
 
+        element.scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
 
-    return new Date(date)
-        .toLocaleString();
+    }
 
 }
 
 
+/* =========================================================
+   FORMAT MONEY
+========================================================= */
 
-/* =====================================================
-   HTML ESCAPE
-===================================================== */
+function formatMoney(value){
+
+    if(
+        value === null ||
+        value === undefined ||
+        value === ""
+    ){
+
+        return "Not specified";
+
+    }
+
+
+    const number =
+        Number(value);
+
+
+    if(
+        Number.isNaN(number)
+    ){
+
+        return escapeHtml(value);
+
+    }
+
+
+    return "₦" +
+        number.toLocaleString(
+            "en-NG"
+        );
+
+}
+
+
+/* =========================================================
+   FORMAT DATE
+========================================================= */
+
+function formatDate(value){
+
+    if(!value){
+
+        return "Not available";
+
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if(
+        Number.isNaN(
+            date.getTime()
+        )
+    ){
+
+        return escapeHtml(value);
+
+    }
+
+
+    return date.toLocaleString(
+        "en-NG",
+        {
+            day:"2-digit",
+            month:"short",
+            year:"numeric",
+            hour:"2-digit",
+            minute:"2-digit"
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
 function escapeHtml(value){
 
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
 
 
-
-/* =====================================================
-   JAVASCRIPT ESCAPE
-===================================================== */
+/* =========================================================
+   ESCAPE JAVASCRIPT
+========================================================= */
 
 function escapeJs(value){
 
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /\\/g,
-        "\\\\"
-    )
-    .replace(
-        /'/g,
-        "\\'"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /\n/g,
-        "\\n"
-    )
-    .replace(
-        /\r/g,
-        "\\r"
+    return String(value ?? "")
+        .replace(/\\/g,"\\\\")
+        .replace(/'/g,"\\'")
+        .replace(/"/g,'\\"')
+        .replace(/\n/g,"\\n")
+        .replace(/\r/g,"\\r");
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(
+    message,
+    type=""
+){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent =
+        message;
+
+    toast.className = "";
+
+    if(type){
+
+        toast.classList.add(type);
+
+    }
+
+    toast.style.display =
+        "block";
+
+
+    setTimeout(
+        () => {
+
+            toast.style.display =
+                "none";
+
+        },
+        3500
     );
 
 }
 
 
-
-/* =====================================================
+/* =========================================================
    START
-===================================================== */
+========================================================= */
 
 checkSession();
 
