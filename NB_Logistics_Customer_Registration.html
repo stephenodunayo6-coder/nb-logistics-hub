@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NB Logistics Hub — Customer Registration</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+
+header{
+    background:#071a33;
+    color:white;
+    padding:22px 20px;
+    text-align:center;
+}
+
+header h1{
+    margin:0;
+    font-size:28px;
+}
+
+header p{
+    margin:7px 0 0;
+    color:#ffd21c;
+    font-weight:bold;
+}
+
+.container{
+    max-width:700px;
+    margin:30px auto;
+    padding:20px;
+}
+
+.back{
+    display:inline-block;
+    margin-bottom:20px;
+    color:#071a33;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+h2{
+    margin-top:0;
+    color:#071a33;
+}
+
+.intro{
+    line-height:1.7;
+    color:#667085;
+}
+
+label{
+    display:block;
+    margin-top:20px;
+    margin-bottom:7px;
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    border:1px solid #d7dce5;
+    border-radius:10px;
+    font-size:16px;
+    outline:none;
+}
+
+input:focus{
+    border-color:#071a33;
+}
+
+button{
+    width:100%;
+    margin-top:25px;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#ffd21c;
+    color:#071a33;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:disabled{
+    opacity:.7;
+    cursor:not-allowed;
+}
+
+.error{
+    display:none;
+    margin-top:20px;
+    padding:15px;
+    border-radius:10px;
+    background:#ffe9e9;
+    color:#a40000;
+    line-height:1.6;
+}
+
+.success{
+    display:none;
+    margin-top:25px;
+    padding:25px;
+    border-radius:14px;
+    background:#e8fff0;
+    border:1px solid #9be7b2;
+}
+
+.success h3{
+    margin-top:0;
+    color:#137333;
+}
+
+.customer-number{
+    margin:20px 0;
+    padding:18px;
+    background:#071a33;
+    color:#ffd21c;
+    border-radius:12px;
+    text-align:center;
+    font-size:26px;
+    font-weight:bold;
+    letter-spacing:1px;
+    word-break:break-word;
+}
+
+.profile{
+    margin-top:15px;
+    padding:15px;
+    background:#f7f9fc;
+    border-radius:10px;
+    line-height:1.8;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+.actions a{
+    flex:1;
+    min-width:200px;
+    text-align:center;
+    padding:14px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.delivery{
+    background:#ffd21c;
+    color:#071a33;
+}
+
+.home{
+    background:#071a33;
+    color:white;
+}
+
+footer{
+    text-align:center;
+    padding:25px;
+    color:#667085;
+    font-size:14px;
+}
+
+.small{
+    font-size:13px;
+    color:#667085;
+    margin-top:7px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <h1>
+        NB Logistics Hub
+    </h1>
+
+    <p>
+        Fast • Simple • Reliable
+    </p>
+
+</header>
+
+
+<div class="container">
+
+    <a href="index.html" class="back">
+        ← Back to Home
+    </a>
+
+
+    <div class="card">
+
+        <h2>
+            Customer Registration
+        </h2>
+
+        <p class="intro">
+
+            Register once with NB Logistics Hub.
+            You will receive a unique customer number
+            which you can use whenever you want to place
+            a delivery.
+
+        </p>
+
+
+        <form id="registrationForm">
+
+
+            <label for="fullName">
+                Full Name
+            </label>
+
+            <input
+                type="text"
+                id="fullName"
+                placeholder="Enter your full name"
+                autocomplete="name"
+                required
+            >
+
+
+            <label for="phone">
+                Phone Number
+            </label>
+
+            <input
+                type="tel"
+                id="phone"
+                placeholder="e.g. 09150798901"
+                autocomplete="tel"
+                required
+            >
+
+
+            <label for="email">
+                Email Address
+                <span
+                    style="
+                        font-weight:normal;
+                        color:#667085;
+                    "
+                >
+                    (Optional)
+                </span>
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="your@email.com"
+                autocomplete="email"
+            >
+
+
+            <button
+                type="submit"
+                id="registerBtn"
+            >
+
+                Create My Customer Profile
+
+            </button>
+
+        </form>
+
+
+        <div
+            class="error"
+            id="errorBox">
+        </div>
+
+
+        <div
+            class="success"
+            id="successBox">
+
+            <h3>
+                ✓ Registration Successful
+            </h3>
+
+            <p>
+                Welcome to
+                <strong>NB Logistics Hub.</strong>
+            </p>
+
+            <p>
+                Your unique NB Logistics customer number is:
+            </p>
+
+
+            <div
+                class="customer-number"
+                id="customerNumber">
+            </div>
+
+
+            <p>
+                <strong>
+                    Please save this number.
+                </strong>
+            </p>
+
+            <p>
+                You will use this customer number
+                whenever you want to place another
+                delivery.
+            </p>
+
+
+            <div
+                class="profile"
+                id="profileDetails">
+            </div>
+
+
+            <div class="actions">
+
+                <a
+                    href="NB_Logistics_Request.html"
+                    class="delivery"
+                >
+                    🚚 Request a Delivery
+                </a>
+
+
+                <a
+                    href="index.html"
+                    class="home"
+                >
+                    ← Back to Home
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    © 2026 NB Logistics Hub — Ilorin, Kwara State, Nigeria
+
+</footer>
+
+
+<script>
+
+const SUPABASE_URL =
+    "https://kygkgcpuiwawatugkfne.supabase.co";
+
+
+const SUPABASE_KEY =
+    "sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+const form =
+    document.getElementById(
+        "registrationForm"
+    );
+
+
+const registerBtn =
+    document.getElementById(
+        "registerBtn"
+    );
+
+
+const successBox =
+    document.getElementById(
+        "successBox"
+    );
+
+
+const errorBox =
+    document.getElementById(
+        "errorBox"
+    );
+
+
+form.addEventListener(
+    "submit",
+    async function(event){
+
+        event.preventDefault();
+
+
+        errorBox.style.display =
+            "none";
+
+        successBox.style.display =
+            "none";
+
+
+        registerBtn.disabled =
+            true;
+
+        registerBtn.textContent =
+            "Creating Profile...";
+
+
+        const fullName =
+            document
+            .getElementById(
+                "fullName"
+            )
+            .value
+            .trim();
+
+
+        const phone =
+            document
+            .getElementById(
+                "phone"
+            )
+            .value
+            .trim();
+
+
+        const email =
+            document
+            .getElementById(
+                "email"
+            )
+            .value
+            .trim();
+
+
+        try{
+
+
+            const {
+                data,
+                error
+            } = await supabaseClient
+            .rpc(
+                "register_customer",
+                {
+                    p_full_name:
+                        fullName,
+
+                    p_phone:
+                        phone,
+
+                    p_email:
+                        email || null
+                }
+            );
+
+
+            if(error){
+
+                console.error(
+                    "CUSTOMER REGISTRATION ERROR:",
+                    error
+                );
+
+                throw error;
+
+            }
+
+
+            console.log(
+                "CUSTOMER REGISTRATION RESULT:",
+                data
+            );
+
+
+            if(
+                !data ||
+                !data.success
+            ){
+
+                throw new Error(
+                    data?.message ||
+                    "Customer registration failed."
+                );
+
+            }
+
+
+            const customer =
+                data.customer;
+
+
+            document
+            .getElementById(
+                "customerNumber"
+            )
+            .textContent =
+                data.registration_number;
+
+
+            document
+            .getElementById(
+                "profileDetails"
+            )
+            .innerHTML = `
+
+                <strong>
+                    Customer Profile
+                </strong>
+
+                <br><br>
+
+                <strong>Name:</strong>
+                ${escapeHtml(
+                    customer.full_name
+                )}
+
+                <br>
+
+                <strong>Phone:</strong>
+                ${escapeHtml(
+                    customer.phone
+                )}
+
+                ${
+                    customer.email
+                    ?
+                    `
+                    <br>
+                    <strong>Email:</strong>
+                    ${escapeHtml(
+                        customer.email
+                    )}
+                    `
+                    :
+                    ""
+                }
+
+                <br>
+
+                <strong>Customer Number:</strong>
+                ${escapeHtml(
+                    customer.registration_number
+                )}
+
+            `;
+
+
+            successBox.style.display =
+                "block";
+
+
+            form.style.display =
+                "none";
+
+
+        }
+        catch(error){
+
+            console.error(
+                "REGISTRATION ERROR:",
+                error
+            );
+
+
+            errorBox.innerHTML = `
+
+                <strong>
+                    We could not create your customer profile.
+                </strong>
+
+                <br><br>
+
+                Please check your information
+                and try again.
+
+                <br><br>
+
+                <small>
+                    Technical error:
+                    ${escapeHtml(
+                        error.message ||
+                        String(error)
+                    )}
+                </small>
+
+            `;
+
+
+            errorBox.style.display =
+                "block";
+
+
+        }
+        finally{
+
+            registerBtn.disabled =
+                false;
+
+            registerBtn.textContent =
+                "Create My Customer Profile";
+
+        }
+
+    }
+);
+
+
+function escapeHtml(value){
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+</script>
+
+</body>
+</html>
