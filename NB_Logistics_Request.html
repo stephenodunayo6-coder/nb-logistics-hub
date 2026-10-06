@@ -4,11 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>NB Logistics Hub — Request Delivery</title>
+<title>Request a Delivery — NB Logistics Hub</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta name="description"
+content="Request a fast and reliable delivery in Ilorin with NB Logistics Hub.">
 
 <style>
+
 *{
     box-sizing:border-box;
 }
@@ -21,62 +23,98 @@ body{
 }
 
 header{
-    background:#071a33;
+    background:#062b63;
     color:white;
-    padding:20px;
-    text-align:center;
+    padding:18px 20px;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
 }
 
-header h1{
-    margin:0;
-    font-size:28px;
+.header-inner{
+    max-width:950px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
 }
 
-header p{
-    margin:7px 0 0;
-    color:#ffd21c;
+.logo{
+    font-size:22px;
+    font-weight:800;
+}
+
+.tagline{
+    font-size:12px;
+    color:#ffd400;
+    margin-top:3px;
+}
+
+.header-link{
+    color:white;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:bold;
 }
 
 .container{
     max-width:850px;
     margin:30px auto;
-    padding:20px;
+    padding:0 16px 50px;
 }
 
 .card{
     background:white;
     border-radius:18px;
-    padding:28px;
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    padding:25px;
+    box-shadow:0 5px 25px rgba(0,0,0,.08);
+    margin-bottom:20px;
+}
+
+h1{
+    margin-top:0;
+    color:#062b63;
+    font-size:30px;
 }
 
 h2{
+    color:#062b63;
+    font-size:21px;
     margin-top:0;
-    color:#071a33;
+}
+
+.subtitle{
+    color:#667085;
+    line-height:1.6;
 }
 
 label{
     display:block;
-    margin-top:18px;
-    margin-bottom:7px;
     font-weight:bold;
+    margin-bottom:8px;
+    color:#172033;
 }
 
 input,
 textarea,
-select{
+button{
     width:100%;
-    padding:14px;
-    border:1px solid #d7dce5;
-    border-radius:10px;
+    font-family:inherit;
     font-size:16px;
+}
+
+input,
+textarea{
+    padding:14px;
+    border:1px solid #d5dbe5;
+    border-radius:10px;
     outline:none;
+    background:#fff;
 }
 
 input:focus,
-textarea:focus,
-select:focus{
-    border-color:#071a33;
+textarea:focus{
+    border-color:#062b63;
+    box-shadow:0 0 0 3px rgba(6,43,99,.08);
 }
 
 textarea{
@@ -84,99 +122,218 @@ textarea{
     resize:vertical;
 }
 
+.form-group{
+    margin-bottom:20px;
+}
+
 button{
-    width:100%;
-    margin-top:25px;
-    padding:15px;
     border:none;
     border-radius:10px;
-    background:#ffd21c;
-    color:#071a33;
-    font-size:17px;
-    font-weight:bold;
+    padding:15px;
+    font-weight:800;
     cursor:pointer;
 }
 
-button:hover{
-    opacity:.9;
+.primary-btn{
+    background:#ffd400;
+    color:#062b63;
+}
+
+.primary-btn:hover{
+    background:#f1c600;
+}
+
+.secondary-btn{
+    background:#062b63;
+    color:white;
+}
+
+.secondary-btn:hover{
+    background:#041f49;
 }
 
 button:disabled{
-    opacity:.7;
+    opacity:.55;
     cursor:not-allowed;
 }
 
-.back{
-    display:inline-block;
-    margin-bottom:20px;
-    color:#071a33;
-    text-decoration:none;
-    font-weight:bold;
+.customer-search{
+    display:flex;
+    gap:10px;
 }
 
-.success{
+.customer-search input{
+    flex:1;
+}
+
+.customer-search button{
+    width:auto;
+    min-width:150px;
+}
+
+.customer-box{
     display:none;
-    margin-top:25px;
-    padding:20px;
+    margin-top:15px;
+    background:#edf8ef;
+    border:1px solid #b7dfbd;
     border-radius:12px;
-    background:#e8fff0;
-    border:1px solid #9be7b2;
+    padding:16px;
 }
 
-.success h3{
-    margin-top:0;
-    color:#137333;
+.customer-box strong{
+    color:#166534;
 }
 
-.request-number{
+.customer-row{
+    margin:7px 0;
+}
+
+.success-icon{
     font-size:24px;
-    font-weight:bold;
-    color:#071a33;
-    word-break:break-word;
+}
+
+.location-note{
+    font-size:13px;
+    color:#667085;
+    margin-top:6px;
+}
+
+.map-box{
+    height:280px;
+    border-radius:14px;
+    overflow:hidden;
+    margin-top:12px;
+    border:1px solid #d5dbe5;
+    background:#eef2f7;
+}
+
+#map{
+    width:100%;
+    height:100%;
+}
+
+.price-card{
+    background:#062b63;
+    color:white;
+    border-radius:16px;
+    padding:22px;
+    margin-top:20px;
+}
+
+.price-row{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    padding:7px 0;
+}
+
+.price-total{
+    border-top:1px solid rgba(255,255,255,.25);
+    margin-top:10px;
+    padding-top:15px;
+    font-size:27px;
+    font-weight:900;
+    color:#ffd400;
+}
+
+.status-box{
+    display:none;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:20px;
 }
 
 .error{
-    display:none;
-    margin-top:20px;
-    padding:15px;
-    border-radius:10px;
-    background:#ffe9e9;
+    background:#fff0f0;
     color:#a40000;
+    border:1px solid #f2b8b8;
 }
 
-.actions{
+.info{
+    background:#eef5ff;
+    color:#164e91;
+    border:1px solid #bfd4f4;
+}
+
+.success{
+    background:#edf8ef;
+    color:#166534;
+    border:1px solid #b7dfbd;
+}
+
+.order-summary{
+    display:none;
+}
+
+.summary-item{
     display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-top:20px;
+    justify-content:space-between;
+    gap:20px;
+    padding:10px 0;
+    border-bottom:1px solid #edf0f4;
 }
 
-.actions a{
-    flex:1;
-    min-width:180px;
-    text-align:center;
-    padding:13px;
-    border-radius:9px;
-    text-decoration:none;
+.summary-item:last-child{
+    border-bottom:none;
+}
+
+.summary-label{
+    color:#667085;
+}
+
+.summary-value{
+    text-align:right;
     font-weight:bold;
 }
 
-.track{
-    background:#071a33;
-    color:white;
+.payment-note{
+    background:#fff9df;
+    border:1px solid #f0df8a;
+    border-radius:12px;
+    padding:15px;
+    color:#695700;
+    margin-top:15px;
+    line-height:1.6;
 }
 
-.whatsapp{
-    background:#25D366;
-    color:white;
+.hidden{
+    display:none !important;
 }
 
-footer{
+.footer{
     text-align:center;
-    padding:25px;
     color:#667085;
-    font-size:14px;
+    font-size:13px;
+    padding:20px;
 }
+
+@media(max-width:650px){
+
+    .header-inner{
+        align-items:flex-start;
+    }
+
+    .customer-search{
+        flex-direction:column;
+    }
+
+    .customer-search button{
+        width:100%;
+    }
+
+    .card{
+        padding:20px;
+    }
+
+    h1{
+        font-size:25px;
+    }
+
+    .price-total{
+        font-size:24px;
+    }
+}
+
 </style>
 </head>
 
@@ -184,98 +341,224 @@ footer{
 
 <header>
 
-    <h1>
-        NB Logistics Hub
-    </h1>
+    <div class="header-inner">
 
-    <p>
-        Reliable Motorcycle Delivery in Ilorin
-    </p>
+        <div>
+            <div class="logo">NB LOGISTICS HUB</div>
+            <div class="tagline">Fast • Simple • Reliable</div>
+        </div>
+
+        <a class="header-link"
+           href="index.html">
+            Home
+        </a>
+
+    </div>
 
 </header>
 
 
 <div class="container">
 
-    <a href="index.html" class="back">
-        ← Back to Home
-    </a>
-
+    <!-- INTRODUCTION -->
 
     <div class="card">
 
-        <h2>
-            Request a Delivery
-        </h2>
+        <h1>Request a Delivery</h1>
 
-        <p>
-            Fill in your delivery details below.
-            NB Logistics Hub will review your request
-            and arrange your delivery.
+        <p class="subtitle">
+            Send your package anywhere within Ilorin and surrounding areas.
+            Our delivery fee is calculated automatically from the driving
+            distance between your pickup location and destination.
         </p>
 
+    </div>
 
-        <form id="deliveryForm">
 
+    <!-- CUSTOMER IDENTIFICATION -->
 
-            <label for="customerName">
-                Customer Name
+    <div class="card">
+
+        <h2>1. Your Customer Profile</h2>
+
+        <p class="subtitle">
+            Enter your NB Logistics customer number to continue.
+            You only need to register once.
+        </p>
+
+        <div class="form-group">
+
+            <label for="customerNumber">
+                Customer Number
             </label>
 
-            <input
-                type="text"
-                id="customerName"
-                placeholder="Enter your full name"
-                required
-            >
+            <div class="customer-search">
+
+                <input
+                    type="text"
+                    id="customerNumber"
+                    placeholder="Example: NB-CUST-000001"
+                    autocomplete="off"
+                >
+
+                <button
+                    type="button"
+                    class="secondary-btn"
+                    id="findCustomerBtn"
+                    onclick="findCustomer()"
+                >
+                    FIND MY PROFILE
+                </button>
+
+            </div>
+
+        </div>
 
 
-            <label for="phone">
-                Phone Number
+        <div id="customerStatus"
+             class="status-box">
+        </div>
+
+
+        <div id="customerBox"
+             class="customer-box">
+
+            <div class="success-icon">
+                ✓
+            </div>
+
+            <div class="customer-row">
+                <strong>Customer Found</strong>
+            </div>
+
+            <div class="customer-row">
+                <span>Name:</span>
+                <strong id="customerName"></strong>
+            </div>
+
+            <div class="customer-row">
+                <span>Phone:</span>
+                <strong id="customerPhone"></strong>
+            </div>
+
+            <div class="customer-row"
+                 id="customerEmailRow">
+                <span>Email:</span>
+                <strong id="customerEmail"></strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- DELIVERY FORM -->
+
+    <div id="deliverySection"
+         class="card hidden">
+
+        <h2>2. Delivery Details</h2>
+
+        <div class="form-group">
+
+            <label for="packageDetails">
+                What are you delivering?
             </label>
 
-            <input
-                type="tel"
-                id="phone"
-                placeholder="e.g. 09150798901"
-                required
-            >
+            <textarea
+                id="packageDetails"
+                placeholder="Example: Food stuff, documents, clothes, birthday gift..."
+            ></textarea>
+
+        </div>
 
 
-            <label for="pickup">
+        <div class="form-group">
+
+            <label for="pickupLocation">
                 Pickup Location
             </label>
 
             <input
                 type="text"
-                id="pickup"
-                placeholder="Where should we collect the goods?"
-                required
+                id="pickupLocation"
+                placeholder="Search pickup address"
+                autocomplete="off"
             >
 
+            <div class="location-note">
+                Start typing the pickup address and select the correct
+                location from the suggestions.
+            </div>
 
-            <label for="destination">
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="deliveryLocation">
                 Delivery Destination
             </label>
 
             <input
                 type="text"
-                id="destination"
-                placeholder="Where should we deliver the goods?"
-                required
+                id="deliveryLocation"
+                placeholder="Search delivery address"
+                autocomplete="off"
             >
 
+            <div class="location-note">
+                Start typing the destination and select the correct
+                location from the suggestions.
+            </div>
 
-            <label for="packageDetails">
-                Package / Goods Details
-            </label>
+        </div>
 
-            <textarea
-                id="packageDetails"
-                placeholder="Describe the goods or package"
-                required
-            ></textarea>
 
+        <div class="map-box">
+
+            <div id="map"></div>
+
+        </div>
+
+
+        <!-- PRICE -->
+
+        <div class="price-card">
+
+            <div class="price-row">
+                <span>Driving Distance</span>
+                <strong id="distanceDisplay">
+                    — km
+                </strong>
+            </div>
+
+            <div class="price-row">
+                <span>Rate</span>
+                <strong>
+                    ₦600 / km
+                </strong>
+            </div>
+
+            <div class="price-row">
+                <span>Billing Distance</span>
+                <strong id="billingDistanceDisplay">
+                    — km
+                </strong>
+            </div>
+
+            <div class="price-row price-total">
+                <span>DELIVERY FEE</span>
+                <span id="feeDisplay">
+                    ₦0
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="form-group"
+             style="margin-top:25px;">
 
             <label for="preferredTime">
                 Preferred Delivery Time
@@ -284,97 +567,69 @@ footer{
             <input
                 type="datetime-local"
                 id="preferredTime"
-                required
             >
 
-
-            <button
-                type="submit"
-                id="submitBtn">
-
-                Submit Delivery Request
-
-            </button>
-
-        </form>
-
-
-        <div
-            class="error"
-            id="errorBox">
         </div>
 
 
-        <div
-            class="success"
-            id="successBox">
-
-            <h3>
-                Delivery Request Received!
-            </h3>
+        <div id="deliveryStatus"
+             class="status-box">
+        </div>
 
 
-            <p>
-                Your delivery request has been received by
-                <strong>NB Logistics Hub.</strong>
-            </p>
+        <button
+            type="button"
+            class="primary-btn"
+            id="continueBtn"
+            onclick="createDeliveryOrder()"
+            disabled
+        >
+            CONTINUE TO PAYMENT
+        </button>
+
+    </div>
 
 
-            <p>
-                Your Request Number:
-            </p>
+    <!-- ORDER SUMMARY -->
 
+    <div id="orderSummary"
+         class="card order-summary">
 
-            <div
-                class="request-number"
-                id="requestNumber">
-            </div>
+        <h2>Delivery Order Created</h2>
 
+        <div id="summaryContent"></div>
 
-            <p>
-                Please keep this request number.
-                You can use it to track your delivery.
-            </p>
+        <div class="payment-note">
 
+            <strong>Next Step</strong><br>
 
-            <div id="requestDetails"></div>
+            Your delivery details have been prepared successfully.
 
+            <br><br>
 
-            <div class="actions">
+            The secure payment stage will open once the NB Logistics
+            payment gateway is connected.
 
-                <a
-                    href="NB_Logistics_Track.html"
-                    class="track">
+            <br><br>
 
-                    Track Delivery
-
-                </a>
-
-
-                <a
-                    href="https://wa.me/2349150798901"
-                    target="_blank"
-                    rel="noopener"
-                    class="whatsapp">
-
-                    WhatsApp NB Logistics
-
-                </a>
-
-            </div>
+            <strong>
+                Please keep your delivery request number.
+            </strong>
 
         </div>
 
     </div>
 
+
 </div>
 
 
-<footer>
+<div class="footer">
 
-    © 2026 NB Logistics Hub — Ilorin, Kwara State, Nigeria
+    NB Logistics Hub — Ilorin Delivery Service<br>
+    Fast • Simple • Reliable
 
-</footer>
+</div>
 
 
 <script>
@@ -386,388 +641,1175 @@ const SUPABASE_KEY =
     "sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
 
 
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+/*
+==================================================
+GOOGLE MAPS API KEY
+==================================================
+
+Replace this value when your Google Maps API key
+has been created and restricted to your website.
+
+Example:
+
+const GOOGLE_MAPS_API_KEY = "AIza....";
+
+==================================================
+*/
+
+const GOOGLE_MAPS_API_KEY =
+    "YOUR_GOOGLE_MAPS_API_KEY";
 
 
-function generateRequestCode(){
+const RATE_PER_KM = 600;
 
-    const now = new Date();
 
-    const year =
-        now.getFullYear();
+let customerProfile = null;
 
-    const month =
-        String(
-            now.getMonth() + 1
-        ).padStart(2,"0");
+let map = null;
 
-    const day =
-        String(
-            now.getDate()
-        ).padStart(2,"0");
+let pickupAutocomplete = null;
 
-    const random =
-        Math.floor(
-            1000 + Math.random() * 9000
-        );
+let deliveryAutocomplete = null;
 
-    return `NB-${year}${month}${day}-${random}`;
+let pickupPlace = null;
+
+let deliveryPlace = null;
+
+let pickupMarker = null;
+
+let deliveryMarker = null;
+
+let calculatedDistanceKm = null;
+
+let billingDistanceKm = null;
+
+let calculatedFee = null;
+
+
+/* ================================================
+   HELPER
+================================================ */
+
+function showStatus(elementId, message, type){
+
+    const element =
+        document.getElementById(elementId);
+
+    element.className =
+        "status-box " + type;
+
+    element.innerHTML =
+        message;
+
+    element.style.display =
+        "block";
 }
 
 
-const form =
-    document.getElementById(
-        "deliveryForm"
-    );
+function hideStatus(elementId){
+
+    const element =
+        document.getElementById(elementId);
+
+    element.style.display =
+        "none";
+}
 
 
-const submitBtn =
-    document.getElementById(
-        "submitBtn"
-    );
+function formatNaira(amount){
+
+    return "₦" +
+        Number(amount).toLocaleString("en-NG");
+}
 
 
-const successBox =
-    document.getElementById(
-        "successBox"
-    );
+function normalizeCustomerNumber(value){
+
+    return String(value || "")
+        .trim()
+        .toUpperCase();
+}
 
 
-const errorBox =
-    document.getElementById(
-        "errorBox"
-    );
+/* ================================================
+   FIND CUSTOMER
+================================================ */
+
+async function findCustomer(){
+
+    const input =
+        document.getElementById("customerNumber");
+
+    const button =
+        document.getElementById("findCustomerBtn");
+
+    const registrationNumber =
+        normalizeCustomerNumber(input.value);
 
 
-form.addEventListener(
-    "submit",
-    async function(event){
+    if(!registrationNumber){
 
-        event.preventDefault();
+        showStatus(
+            "customerStatus",
+            "Please enter your customer number.",
+            "error"
+        );
+
+        return;
+    }
 
 
-        errorBox.style.display =
+    button.disabled = true;
+
+    button.innerText =
+        "SEARCHING...";
+
+    hideStatus("customerStatus");
+
+
+    try{
+
+        const response =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/rpc/get_customer_by_registration_number",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "apikey":SUPABASE_KEY,
+                        "Authorization":
+                            "Bearer " + SUPABASE_KEY,
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+                        p_registration_number:
+                            registrationNumber
+                    })
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if(!response.ok){
+
+            throw new Error(
+                result.message ||
+                result.error_description ||
+                "Unable to find customer."
+            );
+
+        }
+
+
+        if(!result){
+
+            throw new Error(
+                "Customer number was not found."
+            );
+
+        }
+
+
+        customerProfile = result;
+
+
+        document.getElementById(
+            "customerName"
+        ).textContent =
+            result.full_name || "";
+
+
+        document.getElementById(
+            "customerPhone"
+        ).textContent =
+            result.phone || "";
+
+
+        const emailRow =
+            document.getElementById(
+                "customerEmailRow"
+            );
+
+
+        if(result.email){
+
+            document.getElementById(
+                "customerEmail"
+            ).textContent =
+                result.email;
+
+            emailRow.style.display =
+                "block";
+
+        }else{
+
+            emailRow.style.display =
+                "none";
+
+        }
+
+
+        document.getElementById(
+            "customerBox"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "deliverySection"
+        ).classList.remove("hidden");
+
+
+        showStatus(
+            "customerStatus",
+            "✓ Customer profile verified successfully.",
+            "success"
+        );
+
+
+        initializeMap();
+
+
+        document.getElementById(
+            "deliverySection"
+        ).scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+
+
+    }catch(error){
+
+        console.error(error);
+
+        customerProfile = null;
+
+        document.getElementById(
+            "customerBox"
+        ).style.display =
             "none";
 
-        successBox.style.display =
-            "none";
+
+        document.getElementById(
+            "deliverySection"
+        ).classList.add("hidden");
 
 
-        submitBtn.disabled =
-            true;
+        showStatus(
+            "customerStatus",
+            "Unable to find this customer number. Please check the number and try again.",
+            "error"
+        );
 
-        submitBtn.textContent =
-            "Submitting Request...";
+    }finally{
 
+        button.disabled = false;
 
-        const customerName =
-            document
-            .getElementById(
-                "customerName"
-            )
-            .value
-            .trim();
+        button.innerText =
+            "FIND MY PROFILE";
 
+    }
 
-        const phone =
-            document
-            .getElementById(
-                "phone"
-            )
-            .value
-            .trim();
+}
 
 
-        const pickup =
-            document
-            .getElementById(
-                "pickup"
-            )
-            .value
-            .trim();
+/* ================================================
+   GOOGLE MAP
+================================================ */
+
+function initializeMap(){
+
+    if(typeof google === "undefined" ||
+       !google.maps){
+
+        document.getElementById(
+            "map"
+        ).innerHTML = `
+            <div style="
+                padding:25px;
+                text-align:center;
+                color:#667085;
+                line-height:1.6;
+            ">
+                <strong>Google Maps is not connected yet.</strong>
+                <br><br>
+                Please add your Google Maps API key to this page.
+            </div>
+        `;
+
+        return;
+    }
 
 
-        const destination =
-            document
-            .getElementById(
-                "destination"
-            )
-            .value
-            .trim();
+    if(map){
+
+        return;
+
+    }
 
 
-        const packageDetails =
-            document
-            .getElementById(
-                "packageDetails"
-            )
-            .value
-            .trim();
+    map = new google.maps.Map(
+        document.getElementById("map"),
+        {
+            center:{
+                lat:8.4966,
+                lng:4.5421
+            },
+
+            zoom:12,
+
+            mapTypeControl:false,
+
+            streetViewControl:false,
+
+            fullscreenControl:true
+        }
+    );
 
 
-        const preferredTime =
-            document
-            .getElementById(
-                "preferredTime"
-            )
-            .value;
+    const pickupInput =
+        document.getElementById(
+            "pickupLocation"
+        );
+
+
+    const deliveryInput =
+        document.getElementById(
+            "deliveryLocation"
+        );
+
+
+    pickupAutocomplete =
+        new google.maps.places.Autocomplete(
+            pickupInput,
+            {
+                fields:[
+                    "formatted_address",
+                    "geometry",
+                    "name"
+                ],
+
+                componentRestrictions:{
+                    country:"ng"
+                }
+            }
+        );
+
+
+    deliveryAutocomplete =
+        new google.maps.places.Autocomplete(
+            deliveryInput,
+            {
+                fields:[
+                    "formatted_address",
+                    "geometry",
+                    "name"
+                ],
+
+                componentRestrictions:{
+                    country:"ng"
+                }
+            }
+        );
+
+
+    pickupAutocomplete.addListener(
+        "place_changed",
+        function(){
+
+            pickupPlace =
+                pickupAutocomplete.getPlace();
+
+
+            if(!pickupPlace.geometry){
+
+                alert(
+                    "Please select a pickup location from the Google suggestions."
+                );
+
+                return;
+            }
+
+
+            pickupInput.value =
+                pickupPlace.formatted_address ||
+                pickupPlace.name ||
+                "";
+
+
+            if(pickupMarker){
+
+                pickupMarker.setMap(null);
+
+            }
+
+
+            pickupMarker =
+                new google.maps.Marker({
+                    map:map,
+
+                    position:
+                        pickupPlace.geometry.location,
+
+                    title:"Pickup Location"
+                });
+
+
+            map.setCenter(
+                pickupPlace.geometry.location
+            );
+
+
+            map.setZoom(14);
+
+
+            calculateDrivingDistance();
+
+        }
+    );
+
+
+    deliveryAutocomplete.addListener(
+        "place_changed",
+        function(){
+
+            deliveryPlace =
+                deliveryAutocomplete.getPlace();
+
+
+            if(!deliveryPlace.geometry){
+
+                alert(
+                    "Please select a delivery destination from the Google suggestions."
+                );
+
+                return;
+            }
+
+
+            deliveryInput.value =
+                deliveryPlace.formatted_address ||
+                deliveryPlace.name ||
+                "";
+
+
+            if(deliveryMarker){
+
+                deliveryMarker.setMap(null);
+
+            }
+
+
+            deliveryMarker =
+                new google.maps.Marker({
+                    map:map,
+
+                    position:
+                        deliveryPlace.geometry.location,
+
+                    title:"Delivery Destination"
+                });
+
+
+            map.setCenter(
+                deliveryPlace.geometry.location
+            );
+
+
+            map.setZoom(12);
+
+
+            calculateDrivingDistance();
+
+        }
+    );
+
+}
+
+
+/* ================================================
+   CALCULATE DRIVING DISTANCE
+================================================ */
+
+function calculateDrivingDistance(){
+
+    if(!pickupPlace ||
+       !pickupPlace.geometry ||
+       !deliveryPlace ||
+       !deliveryPlace.geometry){
+
+        return;
+    }
+
+
+    const service =
+        new google.maps.DistanceMatrixService();
+
+
+    service.getDistanceMatrix(
+        {
+            origins:[
+                pickupPlace.geometry.location
+            ],
+
+            destinations:[
+                deliveryPlace.geometry.location
+            ],
+
+            travelMode:
+                google.maps.TravelMode.DRIVING,
+
+            unitSystem:
+                google.maps.UnitSystem.METRIC,
+
+            avoidHighways:false,
+
+            avoidTolls:false
+        },
+
+        function(response,status){
+
+            if(status !== "OK"){
+
+                console.error(
+                    "Distance Matrix error:",
+                    status
+                );
+
+                showStatus(
+                    "deliveryStatus",
+                    "We could not calculate the driving distance. Please try selecting the locations again.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            const element =
+                response.rows[0].elements[0];
+
+
+            if(!element ||
+               element.status !== "OK"){
+
+                showStatus(
+                    "deliveryStatus",
+                    "Driving distance could not be calculated for these locations.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            const meters =
+                element.distance.value;
+
+
+            const actualKm =
+                meters / 1000;
+
+
+            /*
+             * Billing rule:
+             * Any decimal distance is rounded UP
+             * to the next whole kilometre.
+             *
+             * Example:
+             * 7.1 km → 8 km
+             * 7.9 km → 8 km
+             * 8.0 km → 8 km
+             */
+
+            billingDistanceKm =
+                Math.ceil(actualKm);
+
+
+            calculatedDistanceKm =
+                Number(actualKm.toFixed(2));
+
+
+            calculatedFee =
+                billingDistanceKm *
+                RATE_PER_KM;
+
+
+            document.getElementById(
+                "distanceDisplay"
+            ).textContent =
+                calculatedDistanceKm +
+                " km";
+
+
+            document.getElementById(
+                "billingDistanceDisplay"
+            ).textContent =
+                billingDistanceKm +
+                " km";
+
+
+            document.getElementById(
+                "feeDisplay"
+            ).textContent =
+                formatNaira(
+                    calculatedFee
+                );
+
+
+            document.getElementById(
+                "continueBtn"
+            ).disabled =
+                false;
+
+
+            showStatus(
+                "deliveryStatus",
+                "✓ Driving distance calculated successfully.",
+                "success"
+            );
+
+        }
+    );
+
+}
+
+
+/* ================================================
+   CREATE DELIVERY ORDER
+================================================ */
+
+async function createDeliveryOrder(){
+
+    if(!customerProfile){
+
+        alert(
+            "Please verify your customer number first."
+        );
+
+        return;
+
+    }
+
+
+    const packageDetails =
+        document.getElementById(
+            "packageDetails"
+        ).value.trim();
+
+
+    const pickupLocation =
+        document.getElementById(
+            "pickupLocation"
+        ).value.trim();
+
+
+    const deliveryLocation =
+        document.getElementById(
+            "deliveryLocation"
+        ).value.trim();
+
+
+    const preferredTime =
+        document.getElementById(
+            "preferredTime"
+        ).value;
+
+
+    if(!packageDetails){
+
+        alert(
+            "Please describe what you are delivering."
+        );
+
+        return;
+
+    }
+
+
+    if(!pickupPlace ||
+       !pickupPlace.geometry){
+
+        alert(
+            "Please select the pickup location from the Google Maps suggestions."
+        );
+
+        return;
+
+    }
+
+
+    if(!deliveryPlace ||
+       !deliveryPlace.geometry){
+
+        alert(
+            "Please select the delivery destination from the Google Maps suggestions."
+        );
+
+        return;
+
+    }
+
+
+    if(!calculatedFee ||
+       !calculatedDistanceKm){
+
+        alert(
+            "Please wait for the driving distance and delivery fee to be calculated."
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "continueBtn"
+        );
+
+
+    button.disabled = true;
+
+    button.innerText =
+        "CREATING ORDER...";
+
+
+    hideStatus("deliveryStatus");
+
+
+    try{
+
+        /*
+         * Generate request number locally.
+         */
+
+        const now =
+            new Date();
+
+
+        const year =
+            now.getFullYear();
+
+
+        const month =
+            String(
+                now.getMonth() + 1
+            ).padStart(2,"0");
+
+
+        const day =
+            String(
+                now.getDate()
+            ).padStart(2,"0");
+
+
+        const randomNumber =
+            Math.floor(
+                1000 +
+                Math.random() * 9000
+            );
 
 
         const requestCode =
-            generateRequestCode();
+            `NB-${year}${month}${day}-${randomNumber}`;
 
 
-        /*
-         * IMPORTANT:
-         *
-         * The form says "destination",
-         * but the Supabase column is
-         * "delivery_location".
-         *
-         * The form does not ask the customer
-         * for a delivery fee, so we leave
-         * delivery_fee as null.
-         */
-
-
-        const requestData = {
+        const payload = {
 
             request_code:
                 requestCode,
 
             customer_name:
-                customerName,
+                customerProfile.full_name,
 
             phone:
-                phone,
+                customerProfile.phone,
 
             pickup_location:
-                pickup,
+                pickupLocation,
 
             delivery_location:
-                destination,
+                deliveryLocation,
 
             package_details:
                 packageDetails,
 
             preferred_time:
-                preferredTime,
-
-            delivery_fee:
+                preferredTime ||
                 null,
 
+            delivery_fee:
+                calculatedFee,
+
+            calculated_fee:
+                calculatedFee,
+
+            distance_km:
+                calculatedDistanceKm,
+
+            rate_per_km:
+                RATE_PER_KM,
+
+            customer_registration_number:
+                customerProfile.registration_number,
+
             status:
-                "New",
+                "Awaiting Payment",
 
             status_message:
-                "Your delivery request has been received by NB Logistics Hub."
+                "Delivery order created. Awaiting payment.",
+
+            payment_status:
+                "pending"
 
         };
 
 
-        console.log(
-            "NB Logistics request:",
-            requestData
-        );
+        const response =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/delivery_requests",
+                {
+                    method:"POST",
 
+                    headers:{
+                        "apikey":
+                            SUPABASE_KEY,
 
-        try{
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY,
 
+                        "Content-Type":
+                            "application/json",
 
-            /*
-             * IMPORTANT:
-             *
-             * We intentionally DO NOT use
-             * .select() after insert.
-             *
-             * This avoids requiring a public
-             * SELECT policy.
-             */
+                        "Prefer":
+                            "return=minimal"
+                    },
 
-
-            const { error } =
-                await supabaseClient
-                .from("delivery_requests")
-                .insert([
-                    requestData
-                ]);
-
-
-            if(error){
-
-                console.error(
-                    "SUPABASE ERROR:",
-                    error
-                );
-
-                throw error;
-            }
-
-
-            document
-            .getElementById(
-                "requestNumber"
-            )
-            .textContent =
-                requestCode;
-
-
-            document
-            .getElementById(
-                "requestDetails"
-            )
-            .innerHTML = `
-
-                <div style="
-                    margin-top:15px;
-                    padding:15px;
-                    background:#f7f9fc;
-                    border-radius:10px;
-                    line-height:1.7;
-                ">
-
-                    <strong>Customer:</strong>
-                    ${escapeHtml(customerName)}
-                    <br>
-
-                    <strong>Phone:</strong>
-                    ${escapeHtml(phone)}
-                    <br>
-
-                    <strong>Pickup:</strong>
-                    ${escapeHtml(pickup)}
-                    <br>
-
-                    <strong>Destination:</strong>
-                    ${escapeHtml(destination)}
-                    <br>
-
-                    <strong>Package:</strong>
-                    ${escapeHtml(packageDetails)}
-                    <br>
-
-                    <strong>Status:</strong>
-                    New
-
-                </div>
-
-            `;
-
-
-            successBox.style.display =
-                "block";
-
-
-            form.reset();
-
-
-            submitBtn.disabled =
-                false;
-
-
-            submitBtn.textContent =
-                "Submit Delivery Request";
-
-
-        }
-        catch(error){
-
-
-            console.error(
-                "DELIVERY REQUEST ERROR:",
-                error
+                    body:
+                        JSON.stringify(payload)
+                }
             );
 
 
-            /*
-             * During testing, show the actual
-             * Supabase error so we can identify
-             * any remaining database problem.
-             */
+        if(!response.ok){
+
+            const errorData =
+                await response.json()
+                .catch(() => ({}));
 
 
-            errorBox.innerHTML = `
-
-                <strong>
-                    We could not submit your request.
-                </strong>
-
-                <br><br>
-
-                Please try again or contact
-                NB Logistics Hub on WhatsApp.
-
-                <br><br>
-
-                <small style="
-                    display:block;
-                    padding:10px;
-                    background:#fff;
-                    border-radius:6px;
-                    color:#700;
-                    word-break:break-word;
-                ">
-                    Technical error:
-                    ${escapeHtml(
-                        error.message ||
-                        String(error)
-                    )}
-                </small>
-
-            `;
+            console.error(
+                "Supabase error:",
+                errorData
+            );
 
 
-            errorBox.style.display =
-                "block";
-
-
-            submitBtn.disabled =
-                false;
-
-
-            submitBtn.textContent =
-                "Submit Delivery Request";
+            throw new Error(
+                errorData.message ||
+                errorData.error_description ||
+                errorData.hint ||
+                "Unable to create delivery order."
+            );
 
         }
 
-    }
-);
 
+        showOrderSummary(
+            requestCode,
+            payload
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showStatus(
+            "deliveryStatus",
+            "Unable to create the delivery order. " +
+            error.message,
+            "error"
+        );
+
+
+        button.disabled = false;
+
+        button.innerText =
+            "CONTINUE TO PAYMENT";
+
+    }
+
+}
+
+
+/* ================================================
+   SHOW ORDER SUMMARY
+================================================ */
+
+function showOrderSummary(
+    requestCode,
+    payload
+){
+
+    document.getElementById(
+        "deliverySection"
+    ).classList.add("hidden");
+
+
+    const summary =
+        document.getElementById(
+            "orderSummary"
+        );
+
+
+    const content =
+        document.getElementById(
+            "summaryContent"
+        );
+
+
+    content.innerHTML = `
+
+        <div class="summary-item">
+            <span class="summary-label">
+                Request Number
+            </span>
+
+            <span class="summary-value">
+                ${escapeHtml(requestCode)}
+            </span>
+        </div>
+
+
+        <div class="summary-item">
+            <span class="summary-label">
+                Customer
+            </span>
+
+            <span class="summary-value">
+                ${escapeHtml(payload.customer_name)}
+            </span>
+        </div>
+
+
+        <div class="summary-item">
+            <span class="summary-label">
+                Customer Number
+            </span>
+
+            <span class="summary-value">
+                ${escapeHtml(
+                    payload.customer_registration_number
+                )}
+            </span>
+        </div>
+
+
+        <div class="summary-item">
+            <span class="summary-label">
+                Pickup
+            </span>
+
+            <span class="summary-value">
+                ${escapeHtml(
+                    payload.pickup_location
+                )}
+            </span>
+        </div>
+
+
+        <div class="summary-item">
+            <span class="summary-label">
+                Destination
+            </span>
+
+            <span class="summary-value">
+                ${escapeHtml(
+                    payload.delivery_location
+                )}
+            </span>
+        </div>
+
+
+        <div class="summary-item">
+            <span class="summary-label">
+                Driving Distance
+            </span>
+
+            <span class="summary-value">
+                ${calculatedDistanceKm} km
+            </span>
+        </div>
+
+
+        <div class="summary-item">
+            <span class="summary-label">
+                Billing Distance
+            </span>
+
+            <span class="summary-value">
+                ${billingDistanceKm} km
+            </span>
+        </div>
+
+
+        <div class="summary-item">
+            <span class="summary-label">
+                Rate
+            </span>
+
+            <span class="summary-value">
+                ₦600 / km
+            </span>
+        </div>
+
+
+        <div class="summary-item">
+            <span class="summary-label">
+                Delivery Fee
+            </span>
+
+            <span class="summary-value"
+                  style="color:#062b63;font-size:20px;">
+                ${formatNaira(
+                    calculatedFee
+                )}
+            </span>
+        </div>
+
+    `;
+
+
+    summary.style.display =
+        "block";
+
+
+    summary.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+    });
+
+}
+
+
+/* ================================================
+   HTML ESCAPE
+================================================ */
 
 function escapeHtml(value){
 
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
+    return String(value || "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+/* ================================================
+   ENTER KEY
+================================================ */
+
+document
+    .getElementById("customerNumber")
+    .addEventListener(
+        "keydown",
+        function(event){
+
+            if(event.key === "Enter"){
+
+                event.preventDefault();
+
+                findCustomer();
+
+            }
+
+        }
+    );
+
+
+/* ================================================
+   GOOGLE MAPS SCRIPT
+================================================ */
+
+function loadGoogleMaps(){
+
+    if(
+        !GOOGLE_MAPS_API_KEY ||
+        GOOGLE_MAPS_API_KEY ===
+            "YOUR_GOOGLE_MAPS_API_KEY"
+    ){
+
+        console.warn(
+            "Google Maps API key has not been configured."
+        );
+
+        return;
+
+    }
+
+
+    const script =
+        document.createElement("script");
+
+
+    script.src =
+        "https://maps.googleapis.com/maps/api/js" +
+        "?key=" +
+        encodeURIComponent(
+            GOOGLE_MAPS_API_KEY
+        ) +
+        "&libraries=places" +
+        "&callback=googleMapsReady";
+
+
+    script.async = true;
+
+    script.defer = true;
+
+
+    script.onerror =
+        function(){
+
+            console.error(
+                "Google Maps failed to load."
+            );
+
+        };
+
+
+    document.head.appendChild(
+        script
     );
 
 }
+
+
+window.googleMapsReady =
+    function(){
+
+        console.log(
+            "Google Maps loaded successfully."
+        );
+
+    };
+
+
+loadGoogleMaps();
 
 </script>
 
 </body>
 </html>
-```
