@@ -654,7 +654,7 @@ async function startPaystackPayment() {
   button.textContent = "CONNECTING TO PAYSTACK...";
   hideStatus("paymentActionStatus");
   try {
-    const response = await fetch(SUPABASE_URL + "/functions/v1/paystack-payments", {
+    const response = await fetch(SUPABASE_URL + "/functions/v1/smart-endpoint", {
       method:"POST",
       headers:{
         "apikey":SUPABASE_KEY,
