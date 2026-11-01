@@ -20,8 +20,8 @@ h1{margin-top:0;color:#062b63;font-size:30px}h2{color:#062b63;font-size:21px;mar
 .subtitle{color:#667085;line-height:1.6}
 label{display:block;font-weight:bold;margin-bottom:8px;color:#172033}
 input,textarea,button{width:100%;font-family:inherit;font-size:16px}
-input,textarea{padding:14px;border:1px solid #d5dbe5;border-radius:10px;outline:none;background:#fff}
-input:focus,textarea:focus{border-color:#062b63;box-shadow:0 0 0 3px rgba(6,43,99,.08)}
+input,textarea,select{padding:14px;border:1px solid #d5dbe5;border-radius:10px;outline:none;background:#fff}
+input:focus,textarea:focus,select:focus{border-color:#062b63;box-shadow:0 0 0 3px rgba(6,43,99,.08)}
 textarea{min-height:110px;resize:vertical}.form-group{margin-bottom:20px}
 button{border:none;border-radius:10px;padding:15px;font-weight:800;cursor:pointer}
 .primary-btn{background:#ffd400;color:#062b63}.primary-btn:hover{background:#f1c600}
@@ -65,7 +65,7 @@ button:disabled{opacity:.55;cursor:not-allowed}
 <div class="container">
   <div class="card">
     <h1>Request a Delivery</h1>
-    <p class="subtitle">Send your package anywhere within Ilorin and surrounding areas. Your delivery fee is calculated automatically from the driving distance between your pickup location and destination.</p>
+    <p class="subtitle">Choose local motorcycle delivery within Ilorin or request a quotation for deliveries to other states and heavy transport. Nationwide routes and fees are confirmed by NB Logistics Hub before payment.</p>
   </div>
 
   <div class="card">
@@ -124,7 +124,29 @@ button:disabled{opacity:.55;cursor:not-allowed}
   <div id="deliverySection" class="card hidden">
     <h2>2. Delivery Details</h2>
     <div class="form-group">
-      <label for="paymentEmail">Email for Paystack payment receipt</label>
+      <label for="serviceType">Service Category</label>
+      <select id="serviceType">
+        <option value="Parcels & Packages">Parcels & Packages</option>
+        <option value="Documents">Documents</option>
+        <option value="Food & Groceries">Food & Groceries</option>
+        <option value="Clothes & Fashion">Clothes & Fashion</option>
+        <option value="Shopping & Errands">Shopping & Errands</option>
+        <option value="Machines & Equipment">Machines & Equipment</option>
+        <option value="Cars & Vehicles">Cars & Vehicles</option>
+        <option value="Trucks & Trailers">Trucks & Trailers</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="serviceArea">Delivery Coverage</label>
+      <select id="serviceArea">
+        <option value="local">Local motorcycle delivery — Ilorin</option>
+        <option value="nationwide">Inter-state / nationwide — request a quotation</option>
+      </select>
+      <div class="location-note">Local deliveries are priced at ₦300 per kilometre. Nationwide and heavy-transport requests are quoted after review.</div>
+    </div>
+    <div class="form-group">
+      <label for="paymentEmail">Email for Paystack payment receipt (local delivery)</label>
       <input type="email" id="paymentEmail" placeholder="you@example.com" autocomplete="email" required>
       <div class="location-note">We use this email for your secure payment checkout and receipt.</div>
     </div>
@@ -144,10 +166,11 @@ button:disabled{opacity:.55;cursor:not-allowed}
       <div id="deliverySuggestions" class="suggestion-list"></div>
       <div class="location-note">Choose the correct result from the suggestions.</div>
     </div>
+    <div id="localMapSection">
     <div class="map-box"><div id="map"></div></div>
     <div class="map-attribution">Map data © OpenStreetMap contributors; driving route by openrouteservice. Please check the pin locations before submitting.</div>
 
-    <div class="price-card">
+    <div class="price-card" id="priceCard">
       <div class="price-row"><span>Driving Distance</span><strong id="distanceDisplay">— km</strong></div>
       <div class="price-row"><span>Rate</span><strong>₦300 / km</strong></div>
       <div class="price-row"><span>Billing Distance (rounded up)</span><strong id="billingDistanceDisplay">— km</strong></div>
@@ -279,7 +302,7 @@ function activateCustomerProfile(profile) {
   $("paymentEmail").value = profile.email || "";
   $("customerBox").style.display = "block";
   $("deliverySection").classList.remove("hidden");
-  initializeMap();
+  configureServiceMode();
   $("deliverySection").scrollIntoView({behavior:"smooth", block:"start"});
 }
 
@@ -368,6 +391,24 @@ async function findCustomer() {
     button.disabled = false;
     button.textContent = "FIND MY PROFILE";
   }
+}
+
+function configureServiceMode() {
+  const area = $("serviceArea").value;
+  const category = $("serviceType").value;
+  const quotationOnly = area === "nationwide" || ["Machines & Equipment","Cars & Vehicles","Trucks & Trailers"].includes(category);
+  $("localMapSection").style.display = quotationOnly ? "none" : "block";
+  $("priceCard").style.display = quotationOnly ? "none" : "block";
+  $("paymentEmail").closest(".form-group").style.display = quotationOnly ? "none" : "block";
+  $("pickupLocation").placeholder = quotationOnly ? "Enter full pickup address, town and state" : "Type an address, area or landmark in Ilorin";
+  $("deliveryLocation").placeholder = quotationOnly ? "Enter full destination address, town and state" : "Type the destination address, area or landmark";
+  $("continueBtn").textContent = quotationOnly ? "SUBMIT QUOTATION REQUEST" : "CONTINUE TO PAYMENT";
+  resetRoute();
+  if (!quotationOnly) initializeMap();
+  showStatus("deliveryStatus", quotationOnly ? "Enter both full addresses. NB Logistics Hub will review your request and contact you with a quotation. No payment is due yet." : "Local motorcycle delivery selected. Choose both Ilorin locations on the map to calculate the fee.", "info");
+}
+function isQuotationRequest() {
+  return $("serviceArea").value === "nationwide" || ["Machines & Equipment","Cars & Vehicles","Trucks & Trailers"].includes($("serviceType").value);
 }
 
 function initializeMap() {
@@ -563,7 +604,9 @@ async function createDeliveryOrder() {
   const deliveryLocation = $("deliveryLocation").value.trim();
   const preferredTime = $("preferredTime").value;
   const paymentEmail = $("paymentEmail").value.trim();
-  if (!paymentEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(paymentEmail)) {
+  const quotationOnly = isQuotationRequest();
+  const serviceType = $("serviceType").value;
+  if (!quotationOnly && (!paymentEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(paymentEmail))) {
     showStatus("deliveryStatus", "Please enter a valid email address for Paystack checkout.", "error");
     return;
   }
@@ -571,11 +614,15 @@ async function createDeliveryOrder() {
     showStatus("deliveryStatus", "Please describe what you are delivering.", "error");
     return;
   }
-  if (!pickupFeature || !deliveryFeature) {
-    showStatus("deliveryStatus", "Please choose both pickup and destination from the location suggestions.", "error");
+  if (!pickupLocation || !deliveryLocation) {
+    showStatus("deliveryStatus", "Please enter both pickup and destination addresses.", "error");
     return;
   }
-  if (!calculatedFee || !calculatedDistanceKm) {
+  if (!quotationOnly && (!pickupFeature || !deliveryFeature)) {
+    showStatus("deliveryStatus", "Please choose both Ilorin locations from the map suggestions.", "error");
+    return;
+  }
+  if (!quotationOnly && (!calculatedFee || !calculatedDistanceKm)) {
     showStatus("deliveryStatus", "Please wait for the driving distance and delivery fee to be calculated.", "error");
     return;
   }
@@ -591,18 +638,18 @@ async function createDeliveryOrder() {
     phone:customerProfile.phone,
     pickup_location:pickupLocation,
     delivery_location:deliveryLocation,
-    package_details:packageDetails,
+    package_details:"[" + serviceType + "] " + packageDetails,
     preferred_time:preferredTime || null,
-    delivery_fee:calculatedFee,
-    calculated_fee:calculatedFee,
-    distance_km:calculatedDistanceKm,
-    rate_per_km:RATE_PER_KM,
+    delivery_fee:quotationOnly ? 0 : calculatedFee,
+    calculated_fee:quotationOnly ? 0 : calculatedFee,
+    distance_km:quotationOnly ? null : calculatedDistanceKm,
+    rate_per_km:quotationOnly ? null : RATE_PER_KM,
     customer_registration_number:customerProfile.registration_number,
     status:"New",
-    status_message:"Delivery request created. Awaiting payment.",
+    status_message:quotationOnly ? "Quotation requested. Awaiting NB Logistics Hub review; no payment is due yet." : "Delivery request created. Awaiting payment.",
     payment_status:"pending"
   };
-  currentOrder = {requestCode, payload, paymentEmail};
+  currentOrder = {requestCode, payload, paymentEmail, quotationOnly};
   try {
     const response = await fetch(SUPABASE_URL + "/rest/v1/delivery_requests", {
       method:"POST",
@@ -620,7 +667,13 @@ async function createDeliveryOrder() {
       throw new Error(errorData.message || errorData.details || errorData.hint || "Unable to save the delivery request.");
     }
     showOrderSummary(requestCode, payload);
-    try { await startPaystackPayment(); } catch (_) { /* Retry button remains available. */ }
+    if (quotationOnly) {
+      $("retryPaymentBtn").style.display = "none";
+      showStatus("paymentActionStatus", "Your quotation request has been received. NB Logistics Hub will review the details and contact you with the delivery price and next steps. No payment has been requested.", "info");
+    } else {
+      $("retryPaymentBtn").style.display = "block";
+      try { await startPaystackPayment(); } catch (_) { /* Retry button remains available. */ }
+    }
   } catch (error) {
     console.error(error);
     showStatus("deliveryStatus", "Unable to create the delivery order. " + (error.message || ""), "error");
@@ -636,13 +689,10 @@ function showOrderSummary(requestCode, payload) {
     <div class="summary-item"><span class="summary-label">Request Number</span><span class="summary-value">${escapeHtml(requestCode)}</span></div>
     <div class="summary-item"><span class="summary-label">Customer</span><span class="summary-value">${escapeHtml(payload.customer_name)}</span></div>
     <div class="summary-item"><span class="summary-label">Customer Number</span><span class="summary-value">${escapeHtml(payload.customer_registration_number)}</span></div>
+    <div class="summary-item"><span class="summary-label">Service</span><span class="summary-value">${escapeHtml(payload.package_details.split("]")[0].replace("[",""))}</span></div>
     <div class="summary-item"><span class="summary-label">Pickup</span><span class="summary-value">${escapeHtml(payload.pickup_location)}</span></div>
     <div class="summary-item"><span class="summary-label">Destination</span><span class="summary-value">${escapeHtml(payload.delivery_location)}</span></div>
-    <div class="summary-item"><span class="summary-label">Driving Distance</span><span class="summary-value">${calculatedDistanceKm} km</span></div>
-    <div class="summary-item"><span class="summary-label">Billing Distance</span><span class="summary-value">${billingDistanceKm} km</span></div>
-    <div class="summary-item"><span class="summary-label">Rate</span><span class="summary-value">${formatNaira(RATE_PER_KM)} / km</span></div>
-    <div class="summary-item"><span class="summary-label">Delivery Fee</span><span class="summary-value" style="color:#062b63;font-size:20px">${formatNaira(calculatedFee)}</span></div>
-    <div class="summary-item"><span class="summary-label">Payment Status</span><span class="summary-value">Awaiting Paystack payment</span></div>`;
+    ${currentOrder.quotationOnly ? '<div class="summary-item"><span class="summary-label">Quotation</span><span class="summary-value">Awaiting review</span></div><div class="summary-item"><span class="summary-label">Payment</span><span class="summary-value">Not due yet</span></div>' : '<div class="summary-item"><span class="summary-label">Driving Distance</span><span class="summary-value">' + calculatedDistanceKm + ' km</span></div><div class="summary-item"><span class="summary-label">Billing Distance</span><span class="summary-value">' + billingDistanceKm + ' km</span></div><div class="summary-item"><span class="summary-label">Rate</span><span class="summary-value">' + formatNaira(RATE_PER_KM) + ' / km</span></div><div class="summary-item"><span class="summary-label">Delivery Fee</span><span class="summary-value" style="color:#062b63;font-size:20px">' + formatNaira(calculatedFee) + '</span></div><div class="summary-item"><span class="summary-label">Payment Status</span><span class="summary-value">Awaiting Paystack payment</span></div>'}`;
   $("orderSummary").style.display = "block";
   $("orderSummary").scrollIntoView({behavior:"smooth", block:"start"});
 }
@@ -683,6 +733,8 @@ async function retryPayment() {
   try { await startPaystackPayment(); } catch (_) { /* Error is displayed above. */ }
 }
 
+$("serviceArea").addEventListener("change", configureServiceMode);
+$("serviceType").addEventListener("change", configureServiceMode);
 $("customerNumber").addEventListener("keydown", event => {
   if (event.key === "Enter") {
     event.preventDefault();
