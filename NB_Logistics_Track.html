@@ -1657,6 +1657,10 @@ function updatePaymentStatus(data) {
             data.payment_status
         );
 
+    const quotationPending =
+        Number(data.delivery_fee || 0) <= 0 &&
+        String(data.status_message || "").toLowerCase().includes("quotation");
+
 
     const submittedAt =
         data.payment_submitted_at;
@@ -1721,6 +1725,14 @@ function updatePaymentStatus(data) {
         return;
     }
 
+
+    if (quotationPending) {
+        box.classList.add("payment-not-submitted");
+        icon.textContent = "📝";
+        value.textContent = "Quotation Under Review";
+        message.textContent = "Your request has been received. NB Logistics Hub will review the route and send you a delivery quotation. No payment is due yet.";
+        return;
+    }
 
     /* -----------------------------------------------
        PAYMENT SUBMITTED
@@ -1908,6 +1920,17 @@ function updateActionArea(data) {
         return;
     }
 
+
+    if (
+        Number(data.delivery_fee || 0) <= 0 &&
+        String(data.status_message || "").toLowerCase().includes("quotation")
+    ) {
+        actionTitle.textContent = "Quotation Under Review";
+        actionDescription.textContent = "Your request has been received. We will review your pickup and destination details and send you a quotation. No payment is due yet.";
+        approvalLink.style.display = "none";
+        receiptLink.style.display = "none";
+        return;
+    }
 
     /* -----------------------------------------------
        PAYMENT SUBMITTED

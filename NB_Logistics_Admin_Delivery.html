@@ -454,6 +454,16 @@ function showMessage(text,type="notice"){
   },5000);
 }
 
+function isQuotationRequest(row){
+  const message = normalize(row.status_message);
+  const packageDetails = String(row.package_details || "").toLowerCase();
+  return message.includes("quotation") ||
+    packageDetails.startsWith("[machines & equipment]") ||
+    packageDetails.startsWith("[cars & vehicles]") ||
+    packageDetails.startsWith("[trucks & trailers]") ||
+    Number(row.delivery_fee || 0) === 0;
+}
+
 function isPaymentConfirmed(row){
 
   const paymentStatus =
@@ -568,6 +578,8 @@ function createCard(row){
   const paymentConfirmed =
     isPaymentConfirmed(row);
 
+  const quotationRequest = isQuotationRequest(row);
+
   const approval =
     normalize(row.customer_approval_status);
 
@@ -618,6 +630,15 @@ function createCard(row){
       </div>
 
 
+      <div class="payment-info">
+        <strong>Request Type:</strong>
+        ${quotationRequest ? "Nationwide / Heavy Transport Quotation" : "Local / Standard Delivery"}
+        <br><br>
+        <strong>Next Step:</strong>
+        ${quotationRequest && fee <= 0 ? "Review the route and enter a quotation. No payment is due yet." : quotationRequest ? "Send the customer the quotation approval link." : "Follow the normal delivery and payment workflow."}
+        ${row.status_message ? "<br><br><strong>System Note:</strong> " + escapeHtml(row.status_message) : ""}
+      </div>
+
       <div class="details">
 
         <div class="detail">
@@ -665,7 +686,7 @@ function createCard(row){
 
       <div class="fee-section">
 
-        <strong>💰 Delivery Fee</strong>
+        <strong>💰 ${quotationRequest ? "Quotation / Delivery Fee" : "Delivery Fee"}</strong>
 
         <div class="fee-row">
 
@@ -674,13 +695,13 @@ function createCard(row){
             id="fee-${escapeHtml(row.id)}"
             value="${fee || ""}"
             min="0"
-            placeholder="Enter delivery fee"
+            placeholder="${quotationRequest ? "Enter quotation amount" : "Enter delivery fee"}"
           >
 
           <button
             class="save-fee"
             onclick="saveFee('${row.id}')">
-            💾 Save Fee
+            💾 ${quotationRequest ? "Save Quotation" : "Save Fee"}
           </button>
 
         </div>
@@ -764,12 +785,31 @@ async function saveFee(id){
     return;
   }
 
+  const { data: currentRow, error: loadError } = await supabaseClient
+    .from("delivery_requests")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if(loadError){
+    alert("Could not load request:\n\n" + loadError.message);
+    return;
+  }
+
+  const quotationRequest = isQuotationRequest(currentRow);
+  const updateData = {
+    delivery_fee: fee,
+    updated_at: new Date().toISOString()
+  };
+
+  if(quotationRequest){
+    updateData.status = "Accepted";
+    updateData.status_message = "Quotation prepared. Awaiting customer approval and payment.";
+  }
+
   const { error } = await supabaseClient
     .from("delivery_requests")
-    .update({
-      delivery_fee: fee,
-      updated_at: new Date().toISOString()
-    })
+    .update(updateData)
     .eq("id", id);
 
   if(error){
@@ -783,7 +823,9 @@ async function saveFee(id){
   }
 
   showMessage(
-    "Delivery fee saved successfully. You can now send the customer the approval message."
+    quotationRequest
+      ? "Quotation saved. The request is ready for customer approval. Use WhatsApp Customer to send the approval link."
+      : "Delivery fee saved successfully. You can now send the customer the approval message."
   );
 
   await loadDeliveries();
