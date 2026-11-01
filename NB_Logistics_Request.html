@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Request a Delivery — NB Logistics Hub</title>
-<meta name="description" content="Request a fast and reliable delivery in Ilorin with NB Logistics Hub.">
+<meta name="description" content="Request fast, reliable local and nationwide deliveries with NB Logistics Hub.">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <style>
 *{box-sizing:border-box}
@@ -65,7 +65,7 @@ button:disabled{opacity:.55;cursor:not-allowed}
 <div class="container">
   <div class="card">
     <h1>Request a Delivery</h1>
-    <p class="subtitle">Choose local motorcycle delivery within Ilorin or request a quotation for deliveries to other states and heavy transport. Nationwide routes and fees are confirmed by NB Logistics Hub before payment.</p>
+    <p class="subtitle">Request motorcycle and standard parcel deliveries anywhere in Nigeria. Your delivery fee is calculated automatically from the road-driving distance at ₦300 per rounded-up kilometre. Cars, trucks, trailers and heavy equipment require a quotation.</p>
   </div>
 
   <div class="card">
@@ -141,14 +141,14 @@ button:disabled{opacity:.55;cursor:not-allowed}
       <label for="serviceArea">Delivery Coverage</label>
       <select id="serviceArea">
         <option value="local">Local motorcycle delivery — Ilorin</option>
-        <option value="nationwide">Inter-state / nationwide — request a quotation</option>
+        <option value="nationwide">Inter-state / nationwide — automatic road-distance pricing</option>
       </select>
-      <div class="location-note">Local deliveries are priced at ₦300 per kilometre. Nationwide and heavy-transport requests are quoted after review.</div>
+      <div class="location-note">Standard deliveries within Ilorin and across Nigeria are priced automatically at ₦300 per rounded-up kilometre of road-driving distance. Cars, trucks, trailers and heavy equipment require a quotation.</div>
     </div>
     <div class="form-group">
-      <label for="paymentEmail">Email for Paystack payment receipt (local delivery)</label>
+      <label for="paymentEmail">Email for Paystack payment receipt</label>
       <input type="email" id="paymentEmail" placeholder="you@example.com" autocomplete="email" required>
-      <div class="location-note">We use this email for your secure payment checkout and receipt.</div>
+      <div class="location-note">We use this email for secure Paystack checkout and your payment receipt.</div>
     </div>
     <div class="form-group">
       <label for="packageDetails">What are you delivering?</label>
@@ -156,15 +156,15 @@ button:disabled{opacity:.55;cursor:not-allowed}
     </div>
     <div class="form-group suggestions">
       <label for="pickupLocation">Pickup Location</label>
-      <input type="text" id="pickupLocation" placeholder="Type an address, area or landmark in Ilorin" autocomplete="off">
+      <input type="text" id="pickupLocation" placeholder="Search an address, town or landmark in Ilorin" autocomplete="off">
       <div id="pickupSuggestions" class="suggestion-list"></div>
-      <div class="location-note">Choose the correct result from the suggestions so the route can be calculated.</div>
+      <div class="location-note">Choose the correct pickup result so the road route can be calculated.</div>
     </div>
     <div class="form-group suggestions">
       <label for="deliveryLocation">Delivery Destination</label>
-      <input type="text" id="deliveryLocation" placeholder="Type the destination address, area or landmark" autocomplete="off">
+      <input type="text" id="deliveryLocation" placeholder="Search the destination address, town or landmark" autocomplete="off">
       <div id="deliverySuggestions" class="suggestion-list"></div>
-      <div class="location-note">Choose the correct result from the suggestions.</div>
+      <div class="location-note">Choose the correct destination result so the road route can be calculated.</div>
     </div>
     <div id="localMapSection">
     <div class="map-box"><div id="map"></div></div>
