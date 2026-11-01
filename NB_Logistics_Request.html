@@ -397,20 +397,20 @@ async function findCustomer() {
 function configureServiceMode() {
   const area = $("serviceArea").value;
   const category = $("serviceType").value;
-  const quotationOnly = area === "nationwide" || ["Machines & Equipment","Cars & Vehicles","Trucks & Trailers"].includes(category);
-  $("localMapSection").style.display = quotationOnly ? "none" : "block";
+  const quotationOnly = ["Machines & Equipment","Cars & Vehicles","Trucks & Trailers"].includes(category);
+  $("localMapSection").style.display = "block";
   $("priceCard").style.display = quotationOnly ? "none" : "block";
   $("paymentEmail").closest(".form-group").style.display = quotationOnly ? "none" : "block";
-  $("pickupLocation").placeholder = quotationOnly ? "Enter full pickup address, town and state" : "Type an address, area or landmark in Ilorin";
-  $("deliveryLocation").placeholder = quotationOnly ? "Enter full destination address, town and state" : "Type the destination address, area or landmark";
-  $("continueBtn").textContent = quotationOnly ? "SUBMIT QUOTATION REQUEST" : "CONTINUE TO PAYMENT";
+  $("pickupLocation").placeholder = area === "nationwide" ? "Search pickup town, address or landmark anywhere in Nigeria (e.g. Egbe, Kogi State)" : "Type an address, area or landmark in Ilorin";
+  $("deliveryLocation").placeholder = area === "nationwide" ? "Search destination town, address or landmark anywhere in Nigeria" : "Type the destination address, area or landmark in Ilorin";
+  $("continueBtn").textContent = quotationOnly ? "SUBMIT TRANSPORT QUOTATION" : "CONTINUE TO PAYMENT";
   resetRoute();
-  $("continueBtn").disabled = !quotationOnly;
-  if (!quotationOnly) initializeMap();
-  showStatus("deliveryStatus", quotationOnly ? "Enter both full addresses. NB Logistics Hub will review your request and contact you with a quotation. No payment is due yet." : "Local motorcycle delivery selected. Choose both Ilorin locations on the map to calculate the fee.", "info");
+  $("continueBtn").disabled = quotationOnly;
+  initializeMap();
+  showStatus("deliveryStatus", quotationOnly ? "Heavy transport requires a reviewed quotation. Select both locations on the map to provide accurate route details." : area === "nationwide" ? "Nationwide delivery selected. Choose pickup and destination anywhere in Nigeria; the driving route is priced at ₦300 per kilometre." : "Local motorcycle delivery selected. Choose both Ilorin locations on the map to calculate the fee.", "info");
 }
 function isQuotationRequest() {
-  return $("serviceArea").value === "nationwide" || ["Machines & Equipment","Cars & Vehicles","Trucks & Trailers"].includes($("serviceType").value);
+  return ["Machines & Equipment","Cars & Vehicles","Trucks & Trailers"].includes($("serviceType").value);
 }
 
 function initializeMap() {
@@ -464,9 +464,13 @@ async function searchLocations(which, query) {
   const controller = new AbortController();
   searchControllers[which] = controller;
   const url = new URL("https://photon.komoot.io/api/");
-  url.searchParams.set("q", query + ", Ilorin, Kwara, Nigeria");
-  url.searchParams.set("lat", String(ILORIN_CENTER[1]));
-  url.searchParams.set("lon", String(ILORIN_CENTER[0]));
+  const nationwideSearch = $("serviceArea").value === "nationwide";
+  url.searchParams.set("q", nationwideSearch ? (query.toLowerCase().includes("nigeria") ? query : query + ", Nigeria") : query + ", Ilorin, Kwara, Nigeria");
+  // Ilorin is only a search bias for local deliveries. Nationwide searches are not restricted to Ilorin.
+  if (!nationwideSearch) {
+    url.searchParams.set("lat", String(ILORIN_CENTER[1]));
+    url.searchParams.set("lon", String(ILORIN_CENTER[0]));
+  }
   url.searchParams.set("limit", "6");
   try {
     const response = await fetch(url.toString(), {signal:controller.signal, headers:{"Accept":"application/json"}});
