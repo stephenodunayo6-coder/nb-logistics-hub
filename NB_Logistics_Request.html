@@ -405,6 +405,7 @@ function configureServiceMode() {
   $("deliveryLocation").placeholder = quotationOnly ? "Enter full destination address, town and state" : "Type the destination address, area or landmark";
   $("continueBtn").textContent = quotationOnly ? "SUBMIT QUOTATION REQUEST" : "CONTINUE TO PAYMENT";
   resetRoute();
+  $("continueBtn").disabled = !quotationOnly;
   if (!quotationOnly) initializeMap();
   showStatus("deliveryStatus", quotationOnly ? "Enter both full addresses. NB Logistics Hub will review your request and contact you with a quotation. No payment is due yet." : "Local motorcycle delivery selected. Choose both Ilorin locations on the map to calculate the fee.", "info");
 }
