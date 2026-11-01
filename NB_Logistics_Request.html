@@ -640,7 +640,7 @@ function showOrderSummary(requestCode, payload) {
     <div class="summary-item"><span class="summary-label">Destination</span><span class="summary-value">${escapeHtml(payload.delivery_location)}</span></div>
     <div class="summary-item"><span class="summary-label">Driving Distance</span><span class="summary-value">${calculatedDistanceKm} km</span></div>
     <div class="summary-item"><span class="summary-label">Billing Distance</span><span class="summary-value">${billingDistanceKm} km</span></div>
-    <div class="summary-item"><span class="summary-label">Rate</span><span class="summary-value">₦600 / km</span></div>
+    <div class="summary-item"><span class="summary-label">Rate</span><span class="summary-value">${formatNaira(RATE_PER_KM)} / km</span></div>
     <div class="summary-item"><span class="summary-label">Delivery Fee</span><span class="summary-value" style="color:#062b63;font-size:20px">${formatNaira(calculatedFee)}</span></div>
     <div class="summary-item"><span class="summary-label">Payment Status</span><span class="summary-value">Awaiting Paystack payment</span></div>`;
   $("orderSummary").style.display = "block";
