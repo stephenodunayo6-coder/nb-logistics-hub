@@ -295,7 +295,6 @@ function activateCustomerProfile(profile) {
   $("customerPhone").textContent = profile.phone || "";
   $("customerEmail").textContent = profile.email || "";
   $("customerEmailRow").style.display = profile.email ? "block" : "none";
-  $("paymentEmail").value = profile.email || "";
   $("customerBox").style.display = "block";
   $("deliverySection").classList.remove("hidden");
   configureServiceMode();
