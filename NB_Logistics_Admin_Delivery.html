@@ -1183,6 +1183,8 @@ async function callCustomer(id){
 -------------------------------- */
 
 loadDeliveries();
+// Keep the admin delivery board current while it remains open.
+setInterval(loadDeliveries, 30000);
 
 </script>
 
