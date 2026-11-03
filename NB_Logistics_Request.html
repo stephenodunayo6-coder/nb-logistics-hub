@@ -405,7 +405,7 @@ function configureServiceMode() {
   $("deliveryLocation").placeholder = area === "nationwide" ? "Search destination town, address or landmark anywhere in Nigeria" : "Type the destination address, area or landmark in Ilorin";
   $("continueBtn").textContent = quotationOnly ? "REQUEST A QUOTATION" : "SUBMIT DELIVERY REQUEST";
   resetRoute();
-  $("continueBtn").disabled = quotationOnly;
+  $("continueBtn").disabled = !quotationOnly;
   initializeMap();
   showStatus("deliveryStatus", quotationOnly ? (area === "nationwide" ? "Inter-state delivery is quotation-based. Enter the pickup and destination; NB Logistics Hub will review the route and send you the cost." : "Heavy transport requires a reviewed quotation. Enter the pickup and destination details.") : "Local motorcycle delivery selected. Choose both Ilorin locations from the suggestions to calculate the fee automatically at ₦300 per rounded-up kilometre.", "info");
 }
@@ -681,7 +681,7 @@ async function createDeliveryOrder() {
     console.error(error);
     showStatus("deliveryStatus", "Unable to create the delivery order. " + (error.message || ""), "error");
     button.disabled = false;
-    button.textContent = "CONTINUE TO PAYMENT";
+    button.textContent = isQuotationRequest() ? "REQUEST A QUOTATION" : "SUBMIT DELIVERY REQUEST";
   }
 }
 
