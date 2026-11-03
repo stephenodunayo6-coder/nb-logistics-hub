@@ -750,7 +750,7 @@ function createCard(row){
         <button
           class="action whatsapp"
           onclick="sendWhatsApp('${row.id}')">
-          📱 WhatsApp Customer
+          📱 ${quotationRequest ? 'Send Quotation / Approval' : 'WhatsApp Customer'}
         </button>
 
         <button
