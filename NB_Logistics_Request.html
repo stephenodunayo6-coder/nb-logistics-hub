@@ -146,11 +146,6 @@ button:disabled{opacity:.55;cursor:not-allowed}
       <div class="location-note">Deliveries within Ilorin are priced automatically at ₦300 per rounded-up kilometre of road-driving distance. Inter-state deliveries and cars, trucks, trailers or heavy equipment require a quotation.</div>
     </div>
     <div class="form-group">
-      <label for="paymentEmail">Email for Paystack payment receipt</label>
-      <input type="email" id="paymentEmail" placeholder="you@example.com" autocomplete="email" required>
-      <div class="location-note">We use this email for secure Paystack checkout and your payment receipt.</div>
-    </div>
-    <div class="form-group">
       <label for="packageDetails">What are you delivering?</label>
       <textarea id="packageDetails" placeholder="Example: Food stuff, documents, clothes, birthday gift..."></textarea>
     </div>
@@ -189,8 +184,8 @@ button:disabled{opacity:.55;cursor:not-allowed}
     <h2>Delivery Order Created</h2>
     <div id="summaryContent"></div>
     <div id="paymentActionStatus" class="status-box"></div>
-    <button type="button" class="primary-btn" id="retryPaymentBtn" onclick="retryPayment()">PROCEED TO PAYSTACK</button>
-    <div class="payment-note"><strong>Important</strong><br>Your payment is confirmed only after Paystack verifies it securely. Do not make a second payment if your bank has already debited you; contact NB Logistics Hub with your request number.</div>
+    <button type="button" class="primary-btn" id="notifyNBBtn" onclick="notifyNBOnWhatsApp()">SEND REQUEST DETAILS TO NB LOGISTICS HUB ON WHATSAPP</button>
+    <div class="payment-note"><strong>Next step</strong><br>Your request has been saved. Tap the WhatsApp button and press Send so NB Logistics Hub receives your request. For inter-state deliveries, we will review the route and send you a quotation. No payment is due until the quotation is approved.</div>
   </div>
 </div>
 <div class="footer">NB Logistics Hub — Ilorin Delivery Service<br>Fast • Simple • Reliable</div>
@@ -400,7 +395,6 @@ function configureServiceMode() {
   const quotationOnly = area === "nationwide" || ["Machines & Equipment","Cars & Vehicles","Trucks & Trailers"].includes(category);
   $("localMapSection").style.display = "block";
   $("priceCard").style.display = quotationOnly ? "none" : "block";
-  $("paymentEmail").closest(".form-group").style.display = "none";
   $("pickupLocation").placeholder = area === "nationwide" ? "Search pickup town, address or landmark anywhere in Nigeria (e.g. Egbe, Kogi State)" : "Type an address, area or landmark in Ilorin";
   $("deliveryLocation").placeholder = area === "nationwide" ? "Search destination town, address or landmark anywhere in Nigeria" : "Type the destination address, area or landmark in Ilorin";
   $("continueBtn").textContent = quotationOnly ? "REQUEST A QUOTATION" : "SUBMIT DELIVERY REQUEST";
@@ -609,7 +603,6 @@ async function createDeliveryOrder() {
   const pickupLocation = $("pickupLocation").value.trim();
   const deliveryLocation = $("deliveryLocation").value.trim();
   const preferredTime = $("preferredTime").value;
-  const paymentEmail = $("paymentEmail").value.trim();
   const quotationOnly = isQuotationRequest();
   const serviceType = $("serviceType").value;
   
@@ -652,7 +645,7 @@ async function createDeliveryOrder() {
     status_message:quotationOnly ? "Inter-state/heavy transport quotation requested. Awaiting NB Logistics Hub review; no payment is due yet." : "Ilorin delivery request received. NB Logistics Hub will confirm the request and provide payment instructions; no online payment is currently enabled.",
     payment_status:"pending"
   };
-  currentOrder = {requestCode, payload, paymentEmail, quotationOnly};
+  currentOrder = {requestCode, payload, quotationOnly};
   try {
     const response = await fetch(SUPABASE_URL + "/rest/v1/delivery_requests", {
       method:"POST",
@@ -671,11 +664,9 @@ async function createDeliveryOrder() {
     }
     showOrderSummary(requestCode, payload);
     if (quotationOnly) {
-      $("retryPaymentBtn").style.display = "none";
-      showStatus("paymentActionStatus", "Your quotation request has been received. NB Logistics Hub will review the pickup and destination and contact you with the delivery cost. No payment is due until the price is confirmed.", "info");
+      showStatus("paymentActionStatus", "Your quotation request has been saved. Send the request details to NB Logistics Hub on WhatsApp using the button below. No payment is due until the price is confirmed.", "info");
     } else {
-      $("retryPaymentBtn").style.display = "none";
-      showStatus("paymentActionStatus", "Your Ilorin delivery request has been saved. The fee was calculated automatically. NB Logistics Hub will contact you with confirmation and payment instructions. Online payment is temporarily unavailable.", "info");
+      showStatus("paymentActionStatus", "Your Ilorin delivery request has been saved. The fee was calculated automatically. Send the request details to NB Logistics Hub on WhatsApp using the button below. Payment instructions will follow.", "info");
     }
   } catch (error) {
     console.error(error);
@@ -700,40 +691,32 @@ function showOrderSummary(requestCode, payload) {
   $("orderSummary").scrollIntoView({behavior:"smooth", block:"start"});
 }
 
-async function startPaystackPayment() {
-  if (!currentOrder) throw new Error("No delivery request is ready for payment.");
-  const button = $("retryPaymentBtn");
-  button.disabled = true;
-  button.textContent = "CONNECTING TO PAYSTACK...";
-  hideStatus("paymentActionStatus");
-  try {
-    const response = await fetch(SUPABASE_URL + "/functions/v1/smart-endpoint", {
-      method:"POST",
-      headers:{
-        "apikey":SUPABASE_KEY,
-        "Authorization":"Bearer " + SUPABASE_KEY,
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({request_code:currentOrder.requestCode, email:currentOrder.paymentEmail})
-    });
-    const result = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(result.error || result.message || "Paystack could not start the payment. Please try again.");
-    if (!result.authorization_url || !/^https:\/\/checkout\.paystack\.com\//i.test(result.authorization_url)) {
-      throw new Error("Paystack did not return a valid checkout link. Please contact NB Logistics Hub.");
-    }
-    button.textContent = "OPENING SECURE CHECKOUT...";
-    window.location.assign(result.authorization_url);
-  } catch (error) {
-    console.error("Paystack initialization error:", error);
-    showStatus("paymentActionStatus", (error.message || "Payment could not be started.") + " Your request is saved. You can retry payment below.", "error");
-    button.disabled = false;
-    button.textContent = "RETRY PAYSTACK PAYMENT";
-    throw error;
+function notifyNBOnWhatsApp() {
+  if (!currentOrder) {
+    showStatus("paymentActionStatus", "Your request details are not available. Please contact NB Logistics Hub.", "error");
+    return;
   }
-}
+  const p = currentOrder.payload;
+  const phone = "2349150798901";
+  const feeText = currentOrder.quotationOnly
+    ? "Quotation: Awaiting NB Logistics Hub review (no payment due yet)"
+    : "Automatically calculated delivery fee: " + formatNaira(p.delivery_fee);
+  const message =
+`NEW NB LOGISTICS HUB DELIVERY REQUEST
 
-async function retryPayment() {
-  try { await startPaystackPayment(); } catch (_) { /* Error is displayed above. */ }
+Request number: ${currentOrder.requestCode}
+Customer: ${p.customer_name}
+Customer phone: ${p.phone}
+Service: ${p.package_details}
+Pickup: ${p.pickup_location}
+Destination: ${p.delivery_location}
+Package details: ${p.package_details}
+Preferred time: ${p.preferred_time || "Not specified"}
+${feeText}
+
+Please review this request and contact the customer.`;
+  const url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(message);
+  window.open(url, "_blank", "noopener");
 }
 
 $("serviceArea").addEventListener("change", configureServiceMode);
