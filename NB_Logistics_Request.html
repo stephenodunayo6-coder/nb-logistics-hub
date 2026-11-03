@@ -65,7 +65,7 @@ button:disabled{opacity:.55;cursor:not-allowed}
 <div class="container">
   <div class="card">
     <h1>Request a Delivery</h1>
-    <p class="subtitle">Request motorcycle and standard parcel deliveries anywhere in Nigeria. Your delivery fee is calculated automatically from the road-driving distance at ₦300 per rounded-up kilometre. Cars, trucks, trailers and heavy equipment require a quotation.</p>
+    <p class="subtitle">Request motorcycle and standard parcel deliveries within Ilorin with automatic road-distance pricing at ₦300 per rounded-up kilometre. Inter-state deliveries and heavy transport are quotation-based; NB Logistics Hub will confirm the cost before payment.</p>
   </div>
 
   <div class="card">
@@ -141,9 +141,9 @@ button:disabled{opacity:.55;cursor:not-allowed}
       <label for="serviceArea">Delivery Coverage</label>
       <select id="serviceArea">
         <option value="local">Local motorcycle delivery — Ilorin</option>
-        <option value="nationwide">Inter-state / nationwide — automatic road-distance pricing</option>
+        <option value="nationwide">Inter-state delivery — quotation required</option>
       </select>
-      <div class="location-note">Standard deliveries within Ilorin and across Nigeria are priced automatically at ₦300 per rounded-up kilometre of road-driving distance. Cars, trucks, trailers and heavy equipment require a quotation.</div>
+      <div class="location-note">Deliveries within Ilorin are priced automatically at ₦300 per rounded-up kilometre of road-driving distance. Inter-state deliveries and cars, trucks, trailers or heavy equipment require a quotation.</div>
     </div>
     <div class="form-group">
       <label for="paymentEmail">Email for Paystack payment receipt</label>
@@ -397,20 +397,20 @@ async function findCustomer() {
 function configureServiceMode() {
   const area = $("serviceArea").value;
   const category = $("serviceType").value;
-  const quotationOnly = ["Machines & Equipment","Cars & Vehicles","Trucks & Trailers"].includes(category);
+  const quotationOnly = area === "nationwide" || ["Machines & Equipment","Cars & Vehicles","Trucks & Trailers"].includes(category);
   $("localMapSection").style.display = "block";
   $("priceCard").style.display = quotationOnly ? "none" : "block";
-  $("paymentEmail").closest(".form-group").style.display = quotationOnly ? "none" : "block";
+  $("paymentEmail").closest(".form-group").style.display = "none";
   $("pickupLocation").placeholder = area === "nationwide" ? "Search pickup town, address or landmark anywhere in Nigeria (e.g. Egbe, Kogi State)" : "Type an address, area or landmark in Ilorin";
   $("deliveryLocation").placeholder = area === "nationwide" ? "Search destination town, address or landmark anywhere in Nigeria" : "Type the destination address, area or landmark in Ilorin";
-  $("continueBtn").textContent = quotationOnly ? "SUBMIT TRANSPORT QUOTATION" : "CONTINUE TO PAYMENT";
+  $("continueBtn").textContent = quotationOnly ? "REQUEST A QUOTATION" : "SUBMIT DELIVERY REQUEST";
   resetRoute();
-  $("continueBtn").disabled = quotationOnly;
+  $("continueBtn").disabled = !quotationOnly ? true : false;
   initializeMap();
-  showStatus("deliveryStatus", quotationOnly ? "Heavy transport requires a reviewed quotation. Select both locations on the map to provide accurate route details." : area === "nationwide" ? "Nationwide delivery selected. Choose pickup and destination anywhere in Nigeria; the driving route is priced at ₦300 per kilometre." : "Local motorcycle delivery selected. Choose both Ilorin locations on the map to calculate the fee.", "info");
+  showStatus("deliveryStatus", quotationOnly ? (area === "nationwide" ? "Inter-state delivery is quotation-based. Enter the pickup and destination; NB Logistics Hub will review the route and send you the cost." : "Heavy transport requires a reviewed quotation. Enter the pickup and destination details.") : "Local motorcycle delivery selected. Choose both Ilorin locations from the suggestions to calculate the fee automatically at ₦300 per rounded-up kilometre.", "info");
 }
 function isQuotationRequest() {
-  return ["Machines & Equipment","Cars & Vehicles","Trucks & Trailers"].includes($("serviceType").value);
+  return $("serviceArea").value === "nationwide" || ["Machines & Equipment","Cars & Vehicles","Trucks & Trailers"].includes($("serviceType").value);
 }
 
 function initializeMap() {
@@ -612,10 +612,7 @@ async function createDeliveryOrder() {
   const paymentEmail = $("paymentEmail").value.trim();
   const quotationOnly = isQuotationRequest();
   const serviceType = $("serviceType").value;
-  if (!quotationOnly && (!paymentEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(paymentEmail))) {
-    showStatus("deliveryStatus", "Please enter a valid email address for Paystack checkout.", "error");
-    return;
-  }
+  
   if (!packageDetails) {
     showStatus("deliveryStatus", "Please describe what you are delivering.", "error");
     return;
@@ -625,7 +622,7 @@ async function createDeliveryOrder() {
     return;
   }
   if (!quotationOnly && (!pickupFeature || !deliveryFeature)) {
-    showStatus("deliveryStatus", "Please choose both Ilorin locations from the map suggestions.", "error");
+    showStatus("deliveryStatus", "Please choose both Ilorin locations from the map suggestions so we can calculate the road distance.", "error");
     return;
   }
   if (!quotationOnly && (!calculatedFee || !calculatedDistanceKm)) {
@@ -652,7 +649,7 @@ async function createDeliveryOrder() {
     rate_per_km:quotationOnly ? null : RATE_PER_KM,
     customer_registration_number:customerProfile.registration_number,
     status:"New",
-    status_message:quotationOnly ? "Quotation requested. Awaiting NB Logistics Hub review; no payment is due yet." : "Delivery request created. Awaiting payment.",
+    status_message:quotationOnly ? "Inter-state/heavy transport quotation requested. Awaiting NB Logistics Hub review; no payment is due yet." : "Ilorin delivery request received. NB Logistics Hub will confirm the request and provide payment instructions; no online payment is currently enabled.",
     payment_status:"pending"
   };
   currentOrder = {requestCode, payload, paymentEmail, quotationOnly};
@@ -675,16 +672,16 @@ async function createDeliveryOrder() {
     showOrderSummary(requestCode, payload);
     if (quotationOnly) {
       $("retryPaymentBtn").style.display = "none";
-      showStatus("paymentActionStatus", "Your quotation request has been received. NB Logistics Hub will review the details and contact you with the delivery price and next steps. No payment has been requested.", "info");
+      showStatus("paymentActionStatus", "Your quotation request has been received. NB Logistics Hub will review the pickup and destination and contact you with the delivery cost. No payment is due until the price is confirmed.", "info");
     } else {
-      $("retryPaymentBtn").style.display = "block";
-      try { await startPaystackPayment(); } catch (_) { /* Retry button remains available. */ }
+      $("retryPaymentBtn").style.display = "none";
+      showStatus("paymentActionStatus", "Your Ilorin delivery request has been saved. The fee was calculated automatically. NB Logistics Hub will contact you with confirmation and payment instructions. Online payment is temporarily unavailable.", "info");
     }
   } catch (error) {
     console.error(error);
     showStatus("deliveryStatus", "Unable to create the delivery order. " + (error.message || ""), "error");
     button.disabled = false;
-    button.textContent = "CONTINUE TO PAYMENT";
+    button.textContent = isQuotationRequest() ? "REQUEST A QUOTATION" : "SUBMIT DELIVERY REQUEST";
   }
 }
 
@@ -698,7 +695,7 @@ function showOrderSummary(requestCode, payload) {
     <div class="summary-item"><span class="summary-label">Service</span><span class="summary-value">${escapeHtml(payload.package_details.split("]")[0].replace("[",""))}</span></div>
     <div class="summary-item"><span class="summary-label">Pickup</span><span class="summary-value">${escapeHtml(payload.pickup_location)}</span></div>
     <div class="summary-item"><span class="summary-label">Destination</span><span class="summary-value">${escapeHtml(payload.delivery_location)}</span></div>
-    ${currentOrder.quotationOnly ? '<div class="summary-item"><span class="summary-label">Quotation</span><span class="summary-value">Awaiting review</span></div><div class="summary-item"><span class="summary-label">Payment</span><span class="summary-value">Not due yet</span></div>' : '<div class="summary-item"><span class="summary-label">Driving Distance</span><span class="summary-value">' + calculatedDistanceKm + ' km</span></div><div class="summary-item"><span class="summary-label">Billing Distance</span><span class="summary-value">' + billingDistanceKm + ' km</span></div><div class="summary-item"><span class="summary-label">Rate</span><span class="summary-value">' + formatNaira(RATE_PER_KM) + ' / km</span></div><div class="summary-item"><span class="summary-label">Delivery Fee</span><span class="summary-value" style="color:#062b63;font-size:20px">' + formatNaira(calculatedFee) + '</span></div><div class="summary-item"><span class="summary-label">Payment Status</span><span class="summary-value">Awaiting Paystack payment</span></div>'}`;
+    ${currentOrder.quotationOnly ? '<div class="summary-item"><span class="summary-label">Quotation</span><span class="summary-value">Awaiting review</span></div><div class="summary-item"><span class="summary-label">Payment</span><span class="summary-value">Not due yet</span></div>' : '<div class="summary-item"><span class="summary-label">Driving Distance</span><span class="summary-value">' + calculatedDistanceKm + ' km</span></div><div class="summary-item"><span class="summary-label">Billing Distance</span><span class="summary-value">' + billingDistanceKm + ' km</span></div><div class="summary-item"><span class="summary-label">Rate</span><span class="summary-value">' + formatNaira(RATE_PER_KM) + ' / km</span></div><div class="summary-item"><span class="summary-label">Delivery Fee</span><span class="summary-value" style="color:#062b63;font-size:20px">' + formatNaira(calculatedFee) + '</span></div><div class="summary-item"><span class="summary-label">Payment Status</span><span class="summary-value">Payment instructions to follow</span></div>'}`;
   $("orderSummary").style.display = "block";
   $("orderSummary").scrollIntoView({behavior:"smooth", block:"start"});
 }
