@@ -695,6 +695,7 @@ function showOrderSummary(requestCode, payload) {
     <div class="summary-item"><span class="summary-label">Request Number</span><span class="summary-value">${escapeHtml(requestCode)}</span></div>
     <div class="summary-item"><span class="summary-label">Customer</span><span class="summary-value">${escapeHtml(payload.customer_name)}</span></div>
     <div class="summary-item"><span class="summary-label">Customer Number</span><span class="summary-value">${escapeHtml(payload.customer_registration_number)}</span></div>
+    <div class="summary-item"><span class="summary-label">Recipient</span><span class="summary-value">${escapeHtml(payload.recipient_name)} · ${escapeHtml(payload.recipient_phone)}</span></div>
     <div class="summary-item"><span class="summary-label">Service</span><span class="summary-value">${escapeHtml(payload.package_details.split("]")[0].replace("[",""))}</span></div>
     <div class="summary-item"><span class="summary-label">Pickup</span><span class="summary-value">${escapeHtml(payload.pickup_location)}</span></div>
     <div class="summary-item"><span class="summary-label">Destination</span><span class="summary-value">${escapeHtml(payload.delivery_location)}</span></div>
@@ -719,6 +720,8 @@ function notifyNBOnWhatsApp() {
 Request number: ${currentOrder.requestCode}
 Customer: ${p.customer_name}
 Customer phone: ${p.phone}
+Recipient: ${p.recipient_name}
+Recipient phone: ${p.recipient_phone}
 Service: ${p.package_details}
 Pickup: ${p.pickup_location}
 Destination: ${p.delivery_location}
