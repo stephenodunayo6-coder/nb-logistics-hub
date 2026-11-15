@@ -471,9 +471,17 @@ body{
     </div>
 
 
+    <div id="receiptAccess" class="content">
+      <h2 style="color:#071b3a">Verify your receipt</h2>
+      <p>For your privacy, enter the phone number used when booking this delivery.</p>
+      <label for="receiptPhone" style="display:block;font-weight:700;margin:14px 0 7px">Booking phone number</label>
+      <input id="receiptPhone" type="tel" placeholder="e.g. 08012345678" autocomplete="tel" style="width:100%;padding:14px;border:1px solid #cbd5e1;border-radius:9px;font-size:16px">
+      <button class="btn btn-track" style="width:100%;margin-top:14px" onclick="loadReceipt()">VIEW MY RECEIPT</button>
+    </div>
+
     <!-- LOADING -->
 
-    <div id="loading" class="loading">
+    <div id="loading" class="loading" style="display:none">
 
         <div class="spinner"></div>
 
@@ -1276,24 +1284,18 @@ async function loadReceipt(){
 
     try{
 
-        const {
-            data,
-            error
-        } =
-        await supabaseClient
-
-            .from(
-                "delivery_requests"
-            )
-
-            .select("*")
-
-            .ilike(
-                "request_code",
-                requestCode
-            )
-
-            .maybeSingle();
+        const phone = document.getElementById("receiptPhone").value.trim();
+        if (!phone || phone.replace(/\\D/g, "").length < 10) {
+            showError("Please enter the phone number used when booking.");
+            return;
+        }
+        document.getElementById("receiptAccess").style.display = "none";
+        document.getElementById("loading").style.display = "block";
+        const { data: rows, error } = await supabaseClient.rpc("track_delivery", {
+            p_request_code: requestCode,
+            p_phone: phone
+        });
+        const data = Array.isArray(rows) ? rows[0] : rows;
 
 
         console.log(
@@ -1314,9 +1316,9 @@ async function loadReceipt(){
 
         if(error){
 
-            showError(
-                "Unable to load this delivery receipt right now. Please try again."
-            );
+            document.getElementById("receiptAccess").style.display = "block";
+            document.getElementById("loading").style.display = "none";
+            showError("Unable to load this delivery receipt right now. Please try again.");
 
             return;
         }
@@ -1324,11 +1326,9 @@ async function loadReceipt(){
 
         if(!data){
 
-            showError(
-                "We could not find delivery request " +
-                requestCode +
-                ". Please check the request number and try again."
-            );
+            document.getElementById("receiptAccess").style.display = "block";
+            document.getElementById("loading").style.display = "none";
+            showError("We could not verify this request and phone number. Please check and try again.");
 
             return;
         }
@@ -1506,7 +1506,7 @@ async function loadReceipt(){
    START
 ===================================================== */
 
-loadReceipt();
+document.getElementById("loading").style.display = "none";
 
 </script>
 
