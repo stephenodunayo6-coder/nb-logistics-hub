@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Confirm Delivery Receipt — NB Logistics Hub</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:22px;background:#07182d;font-family:Arial,sans-serif;display:grid;place-items:center;color:#172033}
+.card{width:100%;max-width:520px;background:#fff;border-radius:20px;padding:28px;box-shadow:0 18px 50px #0004}
+.brand{font-size:22px;font-weight:900;color:#082b5b}.tag{font-size:12px;color:#a17b00;font-weight:800;letter-spacing:1px;margin-top:5px}
+h1{font-size:26px;color:#082b5b;margin:28px 0 10px}p{line-height:1.65;color:#526174}
+button{width:100%;padding:16px;border:0;border-radius:11px;background:#ffd400;color:#082b5b;font-size:16px;font-weight:800;cursor:pointer;margin-top:18px}
+button:disabled{opacity:.6;cursor:wait}.notice{padding:14px;border-radius:10px;background:#eef5ff;margin-top:16px;color:#29466a}.error{background:#fff0f0;color:#9b1c1c}.success{background:#eaf9ef;color:#176534}
+.small{text-align:center;font-size:12px;margin-top:22px}
+</style>
+</head>
+<body><main class="card">
+<div class="brand">🏍️ NB Logistics Hub</div><div class="tag">FAST • SIMPLE • RELIABLE</div>
+<h1>Confirm You Received the Delivery</h1>
+<p>Please confirm only if the goods have physically been handed over to you. Your acknowledgement will complete the delivery record.</p>
+<div id="status" class="notice">Checking your secure acknowledgement link…</div>
+<button id="confirmBtn" disabled>CONFIRM RECEIPT OF GOODS</button>
+<div class="small">If you did not receive this delivery, do not confirm. Contact NB Logistics Hub on WhatsApp: 09150798901.</div>
+</main>
+<script>
+"use strict";
+const API="https://kygkgcpuiwawatugkfne.supabase.co/functions/v1/recipient-acknowledgement";
+const KEY="sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
+const token=new URLSearchParams(location.search).get("token")||"";
+const statusBox=document.getElementById("status");
+const button=document.getElementById("confirmBtn");
+function message(text,kind){statusBox.textContent=text;statusBox.className="notice "+(kind||"");}
+if(!/^[a-f0-9]{64}$/.test(token)){message("This acknowledgement link is invalid or incomplete.","error");}
+else{message("Your secure link is ready. Tap the button below only after receiving the goods.");button.disabled=false;}
+button.addEventListener("click",async()=>{
+ button.disabled=true;button.textContent="CONFIRMING…";
+ try{
+  const response=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json","apikey":KEY},body:JSON.stringify({action:"confirm",token})});
+  const result=await response.json();
+  if(!response.ok)throw new Error(result.error||"Could not confirm receipt.");
+  message("Thank you. Receipt of the delivery has been confirmed successfully. You may close this page.","success");
+  button.textContent="RECEIPT CONFIRMED";
+ }catch(error){message(error.message||"An error occurred. Please contact NB Logistics Hub.","error");button.disabled=false;button.textContent="TRY AGAIN";}
+});
+</script></body></html>
