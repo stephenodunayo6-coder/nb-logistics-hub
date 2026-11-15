@@ -1561,20 +1561,8 @@ async function approveDelivery() {
            request data.
         */
 
-        if (data) {
-
-            currentRequest =
-                data;
-
-        } else {
-
-            currentRequest.customer_approval_status =
-                "Approved";
-
-            currentRequest.customer_approved_at =
-                approvalTime;
-
-        }
+        currentRequest.customer_approval_status = "Approved";
+        currentRequest.customer_approved_at = approvalTime;
 
 
         showSuccess();
@@ -1712,20 +1700,8 @@ async function declineDelivery() {
         }
 
 
-        if (data) {
-
-            currentRequest =
-                data;
-
-        } else {
-
-            currentRequest.customer_approval_status =
-                "Declined";
-
-            currentRequest.customer_declined_at =
-                declinedTime;
-
-        }
+        currentRequest.customer_approval_status = "Declined";
+        currentRequest.customer_declined_at = declinedTime;
 
 
         showSuccess();
