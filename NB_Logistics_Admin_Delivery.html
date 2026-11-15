@@ -1112,7 +1112,7 @@ async function sendRecipientAcknowledgement(id){
     let phone = String(result.recipient_phone || '').replace(/\D/g,'');
     if(phone.startsWith('0')) phone = '234' + phone.slice(1);
     const message = 'Hello ' + result.recipient_name + ', NB Logistics Hub has delivered your goods for request ' + row.request_code + '. Please confirm physical receipt using this secure link (valid for 72 hours): ' + result.link + '\n\nIf you have not received the goods, please do not confirm.';
-    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(message),'_blank');
+    window.location.href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(message);
     showMessage('Secure acknowledgement link created and opened in WhatsApp for the recipient.');
   }catch(error){ alert(error.message || 'Unable to send recipient acknowledgement.'); }
 }
