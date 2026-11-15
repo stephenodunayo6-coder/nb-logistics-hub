@@ -619,6 +619,16 @@ footer strong {
             autocomplete="off"
         >
 
+        <label for="customerPhone" style="display:block;margin-top:16px">
+            Phone Number Used When Booking
+        </label>
+        <input
+            type="tel"
+            id="customerPhone"
+            placeholder="e.g. 08012345678"
+            autocomplete="tel"
+        >
+
 
         <button
             class="track-btn"
@@ -2317,18 +2327,17 @@ async function trackDelivery() {
 
     try {
 
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("delivery_requests")
-                .select("*")
-                .ilike(
-                    "request_code",
-                    requestCode
-                )
-                .maybeSingle();
+        const phone = document.getElementById("customerPhone").value.trim();
+        if (!phone || phone.replace(/\\D/g, "").length < 10) {
+            showError("Please enter the phone number used when you booked this delivery.");
+            return;
+        }
+
+        const { data: rows, error } = await supabaseClient.rpc("track_delivery", {
+            p_request_code: requestCode,
+            p_phone: phone
+        });
+        const data = Array.isArray(rows) ? rows[0] : rows;
 
 
         if (error) {
@@ -2361,10 +2370,7 @@ async function trackDelivery() {
 
         const newURL =
             window.location.pathname +
-            "?request=" +
-            encodeURIComponent(
-                data.request_code
-            );
+            "?request=" + encodeURIComponent(data.request_code);
 
 
         window.history.replaceState(
