@@ -1050,6 +1050,11 @@ footer strong {
 
             </div>
 
+            <div class="detail-row">
+                <div class="detail-label">Recipient Acknowledgement</div>
+                <div id="detailRecipientAck" class="detail-value">Awaiting recipient confirmation</div>
+            </div>
+
         </div>
 
 
@@ -2213,6 +2218,11 @@ function displayDelivery(data) {
             data.updated_at ||
             data.created_at
         );
+
+    document.getElementById("detailRecipientAck").textContent =
+        data.recipient_acknowledgement_status === "acknowledged"
+            ? "Confirmed by recipient on " + formatDate(data.recipient_acknowledged_at)
+            : "Awaiting recipient confirmation";
 
 
     /* -----------------------------------------------
