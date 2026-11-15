@@ -163,7 +163,7 @@ button:disabled{opacity:.55;cursor:not-allowed}
     </div>
     <div id="localMapSection">
     <div class="map-box"><div id="map"></div></div>
-    <div class="map-attribution">Map data © OpenStreetMap contributors; driving route by openrouteservice. Please check the pin locations before submitting.</div>
+    <div class="map-attribution">Map data © OpenStreetMap contributors; road routing by OSRM. Please check the pin locations before submitting.</div>
 
     <div class="price-card" id="priceCard">
       <div class="price-row"><span>Driving Distance</span><strong id="distanceDisplay">— km</strong></div>
@@ -209,7 +209,7 @@ button:disabled{opacity:.55;cursor:not-allowed}
 /* NB Logistics Hub configuration */
 const SUPABASE_URL = "https://kygkgcpuiwawatugkfne.supabase.co";
 const SUPABASE_KEY = "sb_publishable_Lq53TPVZ_i6z4nzQ8pYF6A_0NJdu-eH";
-const OPENROUTESERVICE_API_KEY = "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImRiY2U4ZjgxZWUxNTQ1OGI4ZjdkZDJlZGM1ZWI1ZTMxIiwiaCI6Im11cm11cjY0In0=";
+
 
 const RATE_PER_KM = 300;
 const ILORIN_CENTER = [4.5421, 8.4966];
@@ -548,31 +548,24 @@ function selectLocation(which, feature, label) {
 
 async function calculateDrivingDistance() {
   if (!pickupFeature || !deliveryFeature) return;
-  if (!OPENROUTESERVICE_API_KEY || OPENROUTESERVICE_API_KEY.startsWith("PASTE_")) {
-    showStatus("deliveryStatus", "Location pins are ready. Add the free OpenRouteService API key to enable driving-distance pricing.", "error");
-    return;
-  }
   const requestId = ++routeRequestId;
   setPriceToWaiting();
-  showStatus("deliveryStatus", "Calculating driving route and delivery fee...", "info");
+  showStatus("deliveryStatus", "Calculating the road route and delivery fee...", "info");
   const start = pickupFeature.geometry.coordinates;
   const end = deliveryFeature.geometry.coordinates;
-  const url = "https://api.openrouteservice.org/v2/directions/driving-car/geojson";
+  const url = "https://router.project-osrm.org/route/v1/driving/" +
+    encodeURIComponent(start[0] + "," + start[1] + ";" + end[0] + "," + end[1]) +
+    "?overview=full&geometries=geojson&steps=false";
   try {
-    const response = await fetch(url, {
-      method:"POST",
-      headers:{"Authorization":OPENROUTESERVICE_API_KEY,"Content-Type":"application/json","Accept":"application/geo+json, application/json"},
-      body:JSON.stringify({coordinates:[start,end], instructions:false})
-    });
+    const response = await fetch(url, {headers:{"Accept":"application/json"}});
     const data = await response.json().catch(() => ({}));
     if (requestId !== routeRequestId) return;
-    if (!response.ok) {
-      const detail = data.error?.message || data.error || data.message || "Routing service returned HTTP " + response.status;
-      throw new Error(typeof detail === "string" ? detail : JSON.stringify(detail));
+    if (!response.ok || data.code !== "Ok") {
+      throw new Error(data.message || "The road-routing service could not find a route.");
     }
-    const route = data.features?.[0];
-    const distanceMeters = route?.properties?.summary?.distance;
-    if (!route || !Number.isFinite(distanceMeters) || distanceMeters <= 0) {
+    const routeData = data.routes?.[0];
+    const distanceMeters = routeData?.distance;
+    if (!routeData?.geometry || !Number.isFinite(distanceMeters) || distanceMeters <= 0) {
       throw new Error("No driving route was found between these locations.");
     }
     const actualKm = distanceMeters / 1000;
@@ -581,20 +574,19 @@ async function calculateDrivingDistance() {
     calculatedFee = billingDistanceKm * RATE_PER_KM;
 
     if (routeLayer) map.removeLayer(routeLayer);
-    routeLayer = L.geoJSON(route, {style:{color:"#062b63",weight:5,opacity:0.85}}).addTo(map);
-    const bounds = L.latLngBounds([[start[1],start[0]],[end[1],end[0]]]);
-    if (routeLayer.getBounds().isValid()) map.fitBounds(routeLayer.getBounds(), {padding:[35,35]});
-    else map.fitBounds(bounds, {padding:[35,35]});
+    routeLayer = L.geoJSON(routeData.geometry, {style:{color:"#062b63",weight:5,opacity:0.85}}).addTo(map);
+    if (routeLayer.getBounds().isValid()) map.fitBounds(routeLayer.getBounds().pad(0.15));
     $("distanceDisplay").textContent = calculatedDistanceKm + " km";
     $("billingDistanceDisplay").textContent = billingDistanceKm + " km";
     $("feeDisplay").textContent = formatNaira(calculatedFee);
+    showStatus("deliveryStatus", "Road distance calculated successfully. Your delivery fee is " + formatNaira(calculatedFee) + ".", "success");
     $("continueBtn").disabled = false;
-    showStatus("deliveryStatus", "Driving distance calculated. Please confirm that both map pins are correct before continuing.", "success");
   } catch (error) {
     if (requestId !== routeRequestId) return;
-    console.error("OpenRouteService routing error:", error);
+    console.error("Road routing error:", error);
     setPriceToWaiting();
-    showStatus("deliveryStatus", error.message || "We could not calculate the driving distance. Please select the locations again.", "error");
+    $("continueBtn").disabled = true;
+    showStatus("deliveryStatus", "We could not calculate a reliable road route. Please adjust the locations or contact NB Logistics Hub on WhatsApp for assistance.", "error");
   }
 }
 
