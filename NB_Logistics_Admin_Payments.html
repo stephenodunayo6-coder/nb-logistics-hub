@@ -1013,7 +1013,7 @@ async function confirmPayment(
 
     const confirmed =
         confirm(
-            "Have you verified the actual OPay transfer for " +
+            "Have you verified the actual payment for " +
             requestCode +
             "?"
         );
@@ -1066,11 +1066,36 @@ async function confirmPayment(
         }
 
 
-        alert(
-            "Payment confirmed successfully."
-        );
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        let notificationMessage = "Payment confirmed successfully.";
+        if (session?.access_token) {
+            try {
+                const notifyResponse = await fetch(
+                    SUPABASE_URL + "/functions/v1/notify-new-delivery",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "apikey": SUPABASE_KEY,
+                            "Authorization": "Bearer " + session.access_token
+                        },
+                        body: JSON.stringify({ request_code: requestCode })
+                    }
+                );
+                const notifyResult = await notifyResponse.json().catch(() => ({}));
+                if (!notifyResponse.ok) {
+                    notificationMessage += "\\n\\nThe owner email notification could not be sent: " + (notifyResult.error || "Please check the email service settings.");
+                } else {
+                    notificationMessage += "\\n\\nThe owner has been notified by email.";
+                }
+            } catch (notifyError) {
+                notificationMessage += "\\n\\nPayment was saved, but the owner email notification could not be confirmed.";
+            }
+        } else {
+            notificationMessage += "\\n\\nPlease sign in again to send the owner notification.";
+        }
 
-
+        alert(notificationMessage);
         await loadPayments();
 
     } catch (error) {
