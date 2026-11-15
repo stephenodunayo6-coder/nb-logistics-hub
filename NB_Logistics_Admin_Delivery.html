@@ -736,12 +736,6 @@ function createCard(row){
           🟡 In Progress
         </button>
 
-        <button
-          class="action status-completed"
-          onclick="changeStatus('${row.id}','Completed')">
-          🟢 Completed
-        </button>
-
       </div>
 
 
@@ -965,54 +959,9 @@ async function changeStatus(id,newStatus){
   }
 
 
-  /* COMPLETED */
-
+  /* COMPLETED — recipient acknowledgement is the only completion path */
   if(newStatus === "Completed"){
-
-    if(currentStatus !== "in progress"){
-
-      alert(
-        "The delivery must be In Progress before it can be Completed."
-      );
-
-      return;
-    }
-
-    if(!paymentConfirmed){
-
-      alert(
-        "Payment must be confirmed before completing this delivery."
-      );
-
-      return;
-    }
-
-    const { error } = await supabaseClient
-      .from("delivery_requests")
-      .update({
-        status:"Completed",
-        status_message:
-          "Delivery completed successfully.",
-        updated_at:new Date().toISOString()
-      })
-      .eq("id",id);
-
-    if(error){
-
-      alert(
-        "Could not complete delivery:\n\n" +
-        error.message
-      );
-
-      return;
-    }
-
-    showMessage(
-      "Delivery marked as Completed."
-    );
-
-    await loadDeliveries();
-
+    alert("A delivery can only be marked Completed after the recipient confirms physical receipt using the secure acknowledgement link.");
     return;
   }
 
