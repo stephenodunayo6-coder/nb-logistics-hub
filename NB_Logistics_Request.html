@@ -172,12 +172,24 @@ button:disabled{opacity:.55;cursor:not-allowed}
       <div class="price-row price-total"><span>DELIVERY FEE</span><span id="feeDisplay">₦0</span></div>
     </div>
     </div>
+    <div class="card" style="margin-top:22px;background:#f8fbff;border:1px solid #dce7f5">
+      <h2 style="margin-bottom:8px">Person Receiving the Delivery</h2>
+      <p class="subtitle">Please provide the name and phone number of the person who will receive the goods. This person will confirm receipt after delivery.</p>
+      <div class="form-group">
+        <label for="recipientName">Recipient's Full Name</label>
+        <input type="text" id="recipientName" placeholder="Enter the receiver's full name" autocomplete="name" required>
+      </div>
+      <div class="form-group">
+        <label for="recipientPhone">Recipient's Phone Number</label>
+        <input type="tel" id="recipientPhone" placeholder="e.g. 08012345678" autocomplete="tel" required>
+      </div>
+    </div>
     <div class="form-group" style="margin-top:25px">
       <label for="preferredTime">Preferred Delivery Time</label>
       <input type="datetime-local" id="preferredTime">
     </div>
     <div id="deliveryStatus" class="status-box"></div>
-    <button type="button" class="primary-btn" id="continueBtn" onclick="createDeliveryOrder()" disabled>CONTINUE TO PAYMENT</button>
+    <button type="button" class="primary-btn" id="continueBtn" onclick="createDeliveryOrder()" disabled>SUBMIT DELIVERY REQUEST</button>
   </div>
 
   <div id="orderSummary" class="card order-summary">
@@ -602,11 +614,17 @@ async function createDeliveryOrder() {
   const pickupLocation = $("pickupLocation").value.trim();
   const deliveryLocation = $("deliveryLocation").value.trim();
   const preferredTime = $("preferredTime").value;
+  const recipientName = $("recipientName").value.trim();
+  const recipientPhone = $("recipientPhone").value.trim();
   const quotationOnly = isQuotationRequest();
   const serviceType = $("serviceType").value;
   
   if (!packageDetails) {
     showStatus("deliveryStatus", "Please describe what you are delivering.", "error");
+    return;
+  }
+  if (!recipientName || !recipientPhone || recipientPhone.replace(/\\D/g, "").length < 10) {
+    showStatus("deliveryStatus", "Please enter the recipient's full name and a valid phone number. The recipient will acknowledge delivery.", "error");
     return;
   }
   if (!pickupLocation || !deliveryLocation) {
@@ -631,6 +649,9 @@ async function createDeliveryOrder() {
     request_code:requestCode,
     customer_name:customerProfile.full_name,
     phone:customerProfile.phone,
+    recipient_name:recipientName,
+    recipient_phone:recipientPhone,
+    recipient_acknowledgement_status:"pending",
     pickup_location:pickupLocation,
     delivery_location:deliveryLocation,
     package_details:"[" + serviceType + "] " + packageDetails,

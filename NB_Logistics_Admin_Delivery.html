@@ -759,6 +759,12 @@ function createCard(row){
           📞 Call Customer
         </button>
 
+        <button
+          class="action status-completed"
+          onclick="sendRecipientAcknowledgement('${row.id}')">
+          ✓ Send Recipient Acknowledgement
+        </button>
+
       </div>
 
     </div>
@@ -1135,6 +1141,32 @@ Thank you for using NB Logistics Hub. 🏍️`;
   );
 }
 
+
+/* -------------------------------
+   RECIPIENT ACKNOWLEDGEMENT
+-------------------------------- */
+async function sendRecipientAcknowledgement(id){
+  const {data:{session}} = await supabaseClient.auth.getSession();
+  if(!session || !session.access_token){ alert('Please sign in to the NB Logistics Hub admin account first.'); return; }
+  if(String(session.user.email || '').toLowerCase() !== 'stephenodunayo6@gmail.com'){ alert('This action is restricted to the NB Logistics Hub administrator.'); return; }
+  const {data:row,error} = await supabaseClient.from('delivery_requests').select('*').eq('id',id).single();
+  if(error){ alert('Could not load delivery: ' + error.message); return; }
+  if(!row.recipient_name || !row.recipient_phone){ alert('Recipient name and phone are missing.'); return; }
+  if(normalize(row.status) !== 'in progress'){ alert('Mark the delivery In Progress after physical handover, then issue the acknowledgement.'); return; }
+  try{
+    const response = await fetch(SUPABASE_URL + '/functions/v1/recipient-acknowledgement',{
+      method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer ' + session.access_token},
+      body:JSON.stringify({action:'issue',request_code:row.request_code})
+    });
+    const result = await response.json();
+    if(!response.ok) throw new Error(result.error || 'Could not create acknowledgement link.');
+    let phone = String(result.recipient_phone || '').replace(/\D/g,'');
+    if(phone.startsWith('0')) phone = '234' + phone.slice(1);
+    const message = 'Hello ' + result.recipient_name + ', NB Logistics Hub has delivered your goods for request ' + row.request_code + '. Please confirm physical receipt using this secure link (valid for 72 hours): ' + result.link + '\n\nIf you have not received the goods, please do not confirm.';
+    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(message),'_blank');
+    showMessage('Secure acknowledgement link created and opened in WhatsApp for the recipient.');
+  }catch(error){ alert(error.message || 'Unable to send recipient acknowledgement.'); }
+}
 
 /* -------------------------------
    CALL CUSTOMER
