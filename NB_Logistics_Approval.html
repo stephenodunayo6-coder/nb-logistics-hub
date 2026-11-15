@@ -473,6 +473,9 @@ footer {
             autocomplete="off"
         >
 
+        <label for="customerPhone" style="display:block;margin-top:16px">Phone Number Used When Booking</label>
+        <input type="tel" id="customerPhone" placeholder="e.g. 08012345678" autocomplete="tel">
+
 
         <button
             class="check-btn"
@@ -1399,18 +1402,16 @@ async function loadRequest() {
 
     try {
 
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("delivery_requests")
-                .select("*")
-                .ilike(
-                    "request_code",
-                    requestCode
-                )
-                .maybeSingle();
+        const phone = document.getElementById("customerPhone").value.trim();
+        if (!phone || phone.replace(/\\D/g, "").length < 10) {
+            showError("Please enter the phone number used when you booked this delivery.");
+            return;
+        }
+        const { data: rows, error } = await supabaseClient.rpc("track_delivery", {
+            p_request_code: requestCode,
+            p_phone: phone
+        });
+        const data = Array.isArray(rows) ? rows[0] : rows;
 
 
         if (error) {
@@ -1528,31 +1529,13 @@ async function approveDelivery() {
 
     try {
 
-        const approvalTime =
-            new Date().toISOString();
-
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("delivery_requests")
-                .update({
-
-                    customer_approval_status:
-                        "Approved",
-
-                    customer_approved_at:
-                        approvalTime
-
-                })
-                .eq(
-                    "request_code",
-                    requestCode
-                )
-                .select()
-                .maybeSingle();
+        const { data, error } = await supabaseClient.rpc("customer_respond_to_delivery", {
+            p_request_code: requestCode,
+            p_phone: document.getElementById("customerPhone").value.trim(),
+            p_action: "approve"
+        });
+        if (!error && data && data.success === false) throw new Error(data.message || "Approval could not be saved.");
+        const approvalTime = data?.updated_at || new Date().toISOString();
 
 
         if (error) {
@@ -1705,31 +1688,13 @@ async function declineDelivery() {
 
     try {
 
-        const declinedTime =
-            new Date().toISOString();
-
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("delivery_requests")
-                .update({
-
-                    customer_approval_status:
-                        "Declined",
-
-                    customer_declined_at:
-                        declinedTime
-
-                })
-                .eq(
-                    "request_code",
-                    requestCode
-                )
-                .select()
-                .maybeSingle();
+        const { data, error } = await supabaseClient.rpc("customer_respond_to_delivery", {
+            p_request_code: requestCode,
+            p_phone: document.getElementById("customerPhone").value.trim(),
+            p_action: "decline"
+        });
+        if (!error && data && data.success === false) throw new Error(data.message || "Decline could not be saved.");
+        const declinedTime = data?.updated_at || new Date().toISOString();
 
 
         if (error) {
